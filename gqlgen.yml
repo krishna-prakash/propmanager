@@ -3,8 +3,10 @@ schema:
 exec:
       filename: server/generated.go
 models:
-      User:
-            model: github.com/krishna/rogerapp/generated/prisma-client.User
+      Landlord:
+            model: github.com/krishna/rogerapp/generated/prisma-client.Landlord
+      Agent:
+            model: github.com/krishna/rogerapp/generated/prisma-client.Agent
 resolver:
       filename: tmp/resolver.go
       type: Resolver

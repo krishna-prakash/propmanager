@@ -35,6 +35,8 @@ type Config struct {
 }
 
 type ResolverRoot interface {
+	Agent() AgentResolver
+	Landlord() LandlordResolver
 	Mutation() MutationResolver
 	Query() QueryResolver
 }
@@ -43,28 +45,69 @@ type DirectiveRoot struct {
 }
 
 type ComplexityRoot struct {
+	Agent struct {
+		ID              func(childComplexity int) int
+		BusinessService func(childComplexity int) int
+		Title           func(childComplexity int) int
+		FirstName       func(childComplexity int) int
+		LastName        func(childComplexity int) int
+		DisplayName     func(childComplexity int) int
+		Email           func(childComplexity int) int
+		Password        func(childComplexity int) int
+		Mobile          func(childComplexity int) int
+		Fax             func(childComplexity int) int
+		Address1        func(childComplexity int) int
+		Address2        func(childComplexity int) int
+		Postcode        func(childComplexity int) int
+		Country         func(childComplexity int) int
+		Website         func(childComplexity int) int
+		Clients         func(childComplexity int) int
+	}
+
+	Landlord struct {
+		ID         func(childComplexity int) int
+		FullName   func(childComplexity int) int
+		Email      func(childComplexity int) int
+		Password   func(childComplexity int) int
+		Mobile     func(childComplexity int) int
+		Occupation func(childComplexity int) int
+		Address1   func(childComplexity int) int
+		Address2   func(childComplexity int) int
+		Postcode   func(childComplexity int) int
+		Country    func(childComplexity int) int
+		Agent      func(childComplexity int) int
+	}
+
 	Mutation struct {
-		CreateUser func(childComplexity int, userinfo *rogerapp.UserInfo) int
+		CreateLandlord        func(childComplexity int, userinfo rogerapp.SignupInfo) int
+		CreateAgent           func(childComplexity int, userinfo rogerapp.SignupInfo) int
+		UpdateLandlord        func(childComplexity int, id string, landlordInfo rogerapp.LandlordInfo) int
+		AssignAgentToLandlord func(childComplexity int, agentID string, landlordID string) int
 	}
 
 	Query struct {
-		GetUers func(childComplexity int) int
-	}
-
-	User struct {
-		ID       func(childComplexity int) int
-		Name     func(childComplexity int) int
-		Email    func(childComplexity int) int
-		Password func(childComplexity int) int
-		Mobile   func(childComplexity int) int
+		GetLandlords func(childComplexity int) int
+		GetAgents    func(childComplexity int) int
+		GetLandlord  func(childComplexity int, id string) int
 	}
 }
 
+type AgentResolver interface {
+	Clients(ctx context.Context, obj *prisma.Agent) ([]*prisma.Landlord, error)
+}
+type LandlordResolver interface {
+	Agent(ctx context.Context, obj *prisma.Landlord) (*prisma.Agent, error)
+}
 type MutationResolver interface {
-	CreateUser(ctx context.Context, userinfo *rogerapp.UserInfo) (*prisma.User, error)
+	CreateLandlord(ctx context.Context, userinfo rogerapp.SignupInfo) (*prisma.Landlord, error)
+	CreateAgent(ctx context.Context, userinfo rogerapp.SignupInfo) (*prisma.Agent, error)
+	UpdateLandlord(ctx context.Context, id string, landlordInfo rogerapp.LandlordInfo) (*prisma.Landlord, error)
+	AssignAgentToLandlord(ctx context.Context, agentID string, landlordID string) (*prisma.Landlord, error)
 }
 type QueryResolver interface {
-	GetUers(ctx context.Context) ([]prisma.User, error)
+	GetLandlords(ctx context.Context) ([]prisma.Landlord, error)
+	GetAgents(ctx context.Context) ([]prisma.Agent, error)
+	GetLandlord(ctx context.Context, id string) (*prisma.Landlord, error)
 }
 
 type executableSchema struct {
@@ -82,59 +125,268 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 	_ = ec
 	switch typeName + "." + field {
 
-	case "Mutation.CreateUser":
-		if e.complexity.Mutation.CreateUser == nil {
+	case "Agent.ID":
+		if e.complexity.Agent.ID == nil {
 			break
 		}
 
-		args, err := ec.field_Mutation_createUser_args(context.TODO(), rawArgs)
+		return e.complexity.Agent.ID(childComplexity), true
+
+	case "Agent.BusinessService":
+		if e.complexity.Agent.BusinessService == nil {
+			break
+		}
+
+		return e.complexity.Agent.BusinessService(childComplexity), true
+
+	case "Agent.Title":
+		if e.complexity.Agent.Title == nil {
+			break
+		}
+
+		return e.complexity.Agent.Title(childComplexity), true
+
+	case "Agent.FirstName":
+		if e.complexity.Agent.FirstName == nil {
+			break
+		}
+
+		return e.complexity.Agent.FirstName(childComplexity), true
+
+	case "Agent.LastName":
+		if e.complexity.Agent.LastName == nil {
+			break
+		}
+
+		return e.complexity.Agent.LastName(childComplexity), true
+
+	case "Agent.DisplayName":
+		if e.complexity.Agent.DisplayName == nil {
+			break
+		}
+
+		return e.complexity.Agent.DisplayName(childComplexity), true
+
+	case "Agent.Email":
+		if e.complexity.Agent.Email == nil {
+			break
+		}
+
+		return e.complexity.Agent.Email(childComplexity), true
+
+	case "Agent.Password":
+		if e.complexity.Agent.Password == nil {
+			break
+		}
+
+		return e.complexity.Agent.Password(childComplexity), true
+
+	case "Agent.Mobile":
+		if e.complexity.Agent.Mobile == nil {
+			break
+		}
+
+		return e.complexity.Agent.Mobile(childComplexity), true
+
+	case "Agent.Fax":
+		if e.complexity.Agent.Fax == nil {
+			break
+		}
+
+		return e.complexity.Agent.Fax(childComplexity), true
+
+	case "Agent.Address1":
+		if e.complexity.Agent.Address1 == nil {
+			break
+		}
+
+		return e.complexity.Agent.Address1(childComplexity), true
+
+	case "Agent.Address2":
+		if e.complexity.Agent.Address2 == nil {
+			break
+		}
+
+		return e.complexity.Agent.Address2(childComplexity), true
+
+	case "Agent.Postcode":
+		if e.complexity.Agent.Postcode == nil {
+			break
+		}
+
+		return e.complexity.Agent.Postcode(childComplexity), true
+
+	case "Agent.Country":
+		if e.complexity.Agent.Country == nil {
+			break
+		}
+
+		return e.complexity.Agent.Country(childComplexity), true
+
+	case "Agent.Website":
+		if e.complexity.Agent.Website == nil {
+			break
+		}
+
+		return e.complexity.Agent.Website(childComplexity), true
+
+	case "Agent.Clients":
+		if e.complexity.Agent.Clients == nil {
+			break
+		}
+
+		return e.complexity.Agent.Clients(childComplexity), true
+
+	case "Landlord.ID":
+		if e.complexity.Landlord.ID == nil {
+			break
+		}
+
+		return e.complexity.Landlord.ID(childComplexity), true
+
+	case "Landlord.FullName":
+		if e.complexity.Landlord.FullName == nil {
+			break
+		}
+
+		return e.complexity.Landlord.FullName(childComplexity), true
+
+	case "Landlord.Email":
+		if e.complexity.Landlord.Email == nil {
+			break
+		}
+
+		return e.complexity.Landlord.Email(childComplexity), true
+
+	case "Landlord.Password":
+		if e.complexity.Landlord.Password == nil {
+			break
+		}
+
+		return e.complexity.Landlord.Password(childComplexity), true
+
+	case "Landlord.Mobile":
+		if e.complexity.Landlord.Mobile == nil {
+			break
+		}
+
+		return e.complexity.Landlord.Mobile(childComplexity), true
+
+	case "Landlord.Occupation":
+		if e.complexity.Landlord.Occupation == nil {
+			break
+		}
+
+		return e.complexity.Landlord.Occupation(childComplexity), true
+
+	case "Landlord.Address1":
+		if e.complexity.Landlord.Address1 == nil {
+			break
+		}
+
+		return e.complexity.Landlord.Address1(childComplexity), true
+
+	case "Landlord.Address2":
+		if e.complexity.Landlord.Address2 == nil {
+			break
+		}
+
+		return e.complexity.Landlord.Address2(childComplexity), true
+
+	case "Landlord.Postcode":
+		if e.complexity.Landlord.Postcode == nil {
+			break
+		}
+
+		return e.complexity.Landlord.Postcode(childComplexity), true
+
+	case "Landlord.Country":
+		if e.complexity.Landlord.Country == nil {
+			break
+		}
+
+		return e.complexity.Landlord.Country(childComplexity), true
+
+	case "Landlord.Agent":
+		if e.complexity.Landlord.Agent == nil {
+			break
+		}
+
+		return e.complexity.Landlord.Agent(childComplexity), true
+
+	case "Mutation.CreateLandlord":
+		if e.complexity.Mutation.CreateLandlord == nil {
+			break
+		}
+
+		args, err := ec.field_Mutation_createLandlord_args(context.TODO(), rawArgs)
 		if err != nil {
 			return 0, false
 		}
 
-		return e.complexity.Mutation.CreateUser(childComplexity, args["userinfo"].(*rogerapp.UserInfo)), true
+		return e.complexity.Mutation.CreateLandlord(childComplexity, args["userinfo"].(rogerapp.SignupInfo)), true
 
-	case "Query.GetUers":
-		if e.complexity.Query.GetUers == nil {
+	case "Mutation.CreateAgent":
+		if e.complexity.Mutation.CreateAgent == nil {
 			break
 		}
 
-		return e.complexity.Query.GetUers(childComplexity), true
+		args, err := ec.field_Mutation_createAgent_args(context.TODO(), rawArgs)
+		if err != nil {
+			return 0, false
+		}
 
-	case "User.ID":
-		if e.complexity.User.ID == nil {
+		return e.complexity.Mutation.CreateAgent(childComplexity, args["userinfo"].(rogerapp.SignupInfo)), true
+
+	case "Mutation.UpdateLandlord":
+		if e.complexity.Mutation.UpdateLandlord == nil {
 			break
 		}
 
-		return e.complexity.User.ID(childComplexity), true
+		args, err := ec.field_Mutation_updateLandlord_args(context.TODO(), rawArgs)
+		if err != nil {
+			return 0, false
+		}
 
-	case "User.Name":
-		if e.complexity.User.Name == nil {
+		return e.complexity.Mutation.UpdateLandlord(childComplexity, args["id"].(string), args["landlordInfo"].(rogerapp.LandlordInfo)), true
+
+	case "Mutation.AssignAgentToLandlord":
+		if e.complexity.Mutation.AssignAgentToLandlord == nil {
 			break
 		}
 
-		return e.complexity.User.Name(childComplexity), true
+		args, err := ec.field_Mutation_assignAgentToLandlord_args(context.TODO(), rawArgs)
+		if err != nil {
+			return 0, false
+		}
 
-	case "User.Email":
-		if e.complexity.User.Email == nil {
+		return e.complexity.Mutation.AssignAgentToLandlord(childComplexity, args["agentId"].(string), args["landlordId"].(string)), true
+
+	case "Query.GetLandlords":
+		if e.complexity.Query.GetLandlords == nil {
 			break
 		}
 
-		return e.complexity.User.Email(childComplexity), true
+		return e.complexity.Query.GetLandlords(childComplexity), true
 
-	case "User.Password":
-		if e.complexity.User.Password == nil {
+	case "Query.GetAgents":
+		if e.complexity.Query.GetAgents == nil {
 			break
 		}
 
-		return e.complexity.User.Password(childComplexity), true
+		return e.complexity.Query.GetAgents(childComplexity), true
 
-	case "User.Mobile":
-		if e.complexity.User.Mobile == nil {
+	case "Query.GetLandlord":
+		if e.complexity.Query.GetLandlord == nil {
 			break
 		}
 
-		return e.complexity.User.Mobile(childComplexity), true
+		args, err := ec.field_Query_getLandlord_args(context.TODO(), rawArgs)
+		if err != nil {
+			return 0, false
+		}
+
+		return e.complexity.Query.GetLandlord(childComplexity, args["id"].(string)), true
 
 	}
 	return 0, false
@@ -213,26 +465,68 @@ func (ec *executionContext) introspectType(name string) (*introspection.Type, er
 }
 
 var parsedSchema = gqlparser.MustLoadSchema(
-	&ast.Source{Name: "server/schema.graphql", Input: `type User {
+	&ast.Source{Name: "server/schema.graphql", Input: `type Landlord {
       id: ID!
-      name: String!
+      fullName: String!
       email: String!
-      password: String!
+      password: String
       mobile: Int
+      occupation: String
+      address1: String
+      address2: String
+      postcode: String!
+      country: String!
+      agent: Agent
+}
+
+type Agent {
+      id: ID!
+      businessService: String
+      title: String
+      firstName: String!
+      lastName: String
+      displayName: String
+      email: String!
+      password: String
+      mobile: Int
+      fax: Int
+      address1: String
+      address2: String
+      postcode: String!
+      country: String!
+      website: String
+      clients: [Landlord]
 }
 
 type Query {
-      getUers: [User!]!
+      getLandlords: [Landlord!]
+      getAgents: [Agent!]
+      getLandlord(id: ID!): Landlord!
 }
 
-input UserInfo {
+input SignupInfo {
       name: String
       email: String
       password: String
 }
 
+input LandlordInfo {
+      fullName: String
+      email: String
+      password: String
+      mobile: Int
+      occupation: String
+      address1: String
+      address2: String
+      postcode: String
+      country: String
+}
+
 type Mutation {
-      createUser(userinfo: UserInfo): User!
+      createLandlord(userinfo: SignupInfo!): Landlord!
+      createAgent(userinfo: SignupInfo!): Agent!
+      updateLandlord(id: ID!, landlordInfo: LandlordInfo!): Landlord!
+      assignAgentToLandlord(agentId: ID!, landlordId: ID!): Landlord!
 }
 `},
 )
@@ -241,17 +535,75 @@ type Mutation {
 
 // region    ***************************** args.gotpl *****************************
 
-func (ec *executionContext) field_Mutation_createUser_args(ctx context.Context, rawArgs map[string]interface{}) (map[string]interface{}, error) {
+func (ec *executionContext) field_Mutation_assignAgentToLandlord_args(ctx context.Context, rawArgs map[string]interface{}) (map[string]interface{}, error) {
 	var err error
 	args := map[string]interface{}{}
-	var arg0 *rogerapp.UserInfo
+	var arg0 string
+	if tmp, ok := rawArgs["agentId"]; ok {
+		arg0, err = ec.unmarshalNID2string(ctx, tmp)
+		if err != nil {
+			return nil, err
+		}
+	}
+	args["agentId"] = arg0
+	var arg1 string
+	if tmp, ok := rawArgs["landlordId"]; ok {
+		arg1, err = ec.unmarshalNID2string(ctx, tmp)
+		if err != nil {
+			return nil, err
+		}
+	}
+	args["landlordId"] = arg1
+	return args, nil
+}
+
+func (ec *executionContext) field_Mutation_createAgent_args(ctx context.Context, rawArgs map[string]interface{}) (map[string]interface{}, error) {
+	var err error
+	args := map[string]interface{}{}
+	var arg0 rogerapp.SignupInfo
 	if tmp, ok := rawArgs["userinfo"]; ok {
-		arg0, err = ec.unmarshalOUserInfo2ᚖgithubᚗcomᚋkrishnaᚋrogerappᚐUserInfo(ctx, tmp)
+		arg0, err = ec.unmarshalNSignupInfo2githubᚗcomᚋkrishnaᚋrogerappᚐSignupInfo(ctx, tmp)
 		if err != nil {
 			return nil, err
 		}
 	}
 	args["userinfo"] = arg0
+	return args, nil
+}
+
+func (ec *executionContext) field_Mutation_createLandlord_args(ctx context.Context, rawArgs map[string]interface{}) (map[string]interface{}, error) {
+	var err error
+	args := map[string]interface{}{}
+	var arg0 rogerapp.SignupInfo
+	if tmp, ok := rawArgs["userinfo"]; ok {
+		arg0, err = ec.unmarshalNSignupInfo2githubᚗcomᚋkrishnaᚋrogerappᚐSignupInfo(ctx, tmp)
+		if err != nil {
+			return nil, err
+		}
+	}
+	args["userinfo"] = arg0
+	return args, nil
+}
+
+func (ec *executionContext) field_Mutation_updateLandlord_args(ctx context.Context, rawArgs map[string]interface{}) (map[string]interface{}, error) {
+	var err error
+	args := map[string]interface{}{}
+	var arg0 string
+	if tmp, ok := rawArgs["id"]; ok {
+		arg0, err = ec.unmarshalNID2string(ctx, tmp)
+		if err != nil {
+			return nil, err
+		}
+	}
+	args["id"] = arg0
+	var arg1 rogerapp.LandlordInfo
+	if tmp, ok := rawArgs["landlordInfo"]; ok {
+		arg1, err = ec.unmarshalNLandlordInfo2githubᚗcomᚋkrishnaᚋrogerappᚐLandlordInfo(ctx, tmp)
+		if err != nil {
+			return nil, err
+		}
+	}
+	args["landlordInfo"] = arg1
 	return args, nil
 }
 
@@ -266,6 +618,20 @@ func (ec *executionContext) field_Query___type_args(ctx context.Context, rawArgs
 		}
 	}
 	args["name"] = arg0
+	return args, nil
+}
+
+func (ec *executionContext) field_Query_getLandlord_args(ctx context.Context, rawArgs map[string]interface{}) (map[string]interface{}, error) {
+	var err error
+	args := map[string]interface{}{}
+	var arg0 string
+	if tmp, ok := rawArgs["id"]; ok {
+		arg0, err = ec.unmarshalNID2string(ctx, tmp)
+		if err != nil {
+			return nil, err
+		}
+	}
+	args["id"] = arg0
 	return args, nil
 }
 
@@ -301,7 +667,658 @@ func (ec *executionContext) field___Type_fields_args(ctx context.Context, rawArg
 
 // region    **************************** field.gotpl *****************************
 
-func (ec *executionContext) _Mutation_createUser(ctx context.Context, field graphql.CollectedField) graphql.Marshaler {
+func (ec *executionContext) _Agent_id(ctx context.Context, field graphql.CollectedField, obj *prisma.Agent) graphql.Marshaler {
+	ctx = ec.Tracer.StartFieldExecution(ctx, field)
+	defer func() { ec.Tracer.EndFieldExecution(ctx) }()
+	rctx := &graphql.ResolverContext{
+		Object: "Agent",
+		Field:  field,
+		Args:   nil,
+	}
+	ctx = graphql.WithResolverContext(ctx, rctx)
+	ctx = ec.Tracer.StartFieldResolverExecution(ctx, rctx)
+	resTmp := ec.FieldMiddleware(ctx, obj, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.ID, nil
+	})
+	if resTmp == nil {
+		if !ec.HasError(rctx) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(string)
+	rctx.Result = res
+	ctx = ec.Tracer.StartFieldChildExecution(ctx)
+	return ec.marshalNID2string(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _Agent_businessService(ctx context.Context, field graphql.CollectedField, obj *prisma.Agent) graphql.Marshaler {
+	ctx = ec.Tracer.StartFieldExecution(ctx, field)
+	defer func() { ec.Tracer.EndFieldExecution(ctx) }()
+	rctx := &graphql.ResolverContext{
+		Object: "Agent",
+		Field:  field,
+		Args:   nil,
+	}
+	ctx = graphql.WithResolverContext(ctx, rctx)
+	ctx = ec.Tracer.StartFieldResolverExecution(ctx, rctx)
+	resTmp := ec.FieldMiddleware(ctx, obj, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.BusinessService, nil
+	})
+	if resTmp == nil {
+		return graphql.Null
+	}
+	res := resTmp.(*string)
+	rctx.Result = res
+	ctx = ec.Tracer.StartFieldChildExecution(ctx)
+	return ec.marshalOString2ᚖstring(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _Agent_title(ctx context.Context, field graphql.CollectedField, obj *prisma.Agent) graphql.Marshaler {
+	ctx = ec.Tracer.StartFieldExecution(ctx, field)
+	defer func() { ec.Tracer.EndFieldExecution(ctx) }()
+	rctx := &graphql.ResolverContext{
+		Object: "Agent",
+		Field:  field,
+		Args:   nil,
+	}
+	ctx = graphql.WithResolverContext(ctx, rctx)
+	ctx = ec.Tracer.StartFieldResolverExecution(ctx, rctx)
+	resTmp := ec.FieldMiddleware(ctx, obj, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.Title, nil
+	})
+	if resTmp == nil {
+		return graphql.Null
+	}
+	res := resTmp.(*string)
+	rctx.Result = res
+	ctx = ec.Tracer.StartFieldChildExecution(ctx)
+	return ec.marshalOString2ᚖstring(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _Agent_firstName(ctx context.Context, field graphql.CollectedField, obj *prisma.Agent) graphql.Marshaler {
+	ctx = ec.Tracer.StartFieldExecution(ctx, field)
+	defer func() { ec.Tracer.EndFieldExecution(ctx) }()
+	rctx := &graphql.ResolverContext{
+		Object: "Agent",
+		Field:  field,
+		Args:   nil,
+	}
+	ctx = graphql.WithResolverContext(ctx, rctx)
+	ctx = ec.Tracer.StartFieldResolverExecution(ctx, rctx)
+	resTmp := ec.FieldMiddleware(ctx, obj, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.FirstName, nil
+	})
+	if resTmp == nil {
+		if !ec.HasError(rctx) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(string)
+	rctx.Result = res
+	ctx = ec.Tracer.StartFieldChildExecution(ctx)
+	return ec.marshalNString2string(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _Agent_lastName(ctx context.Context, field graphql.CollectedField, obj *prisma.Agent) graphql.Marshaler {
+	ctx = ec.Tracer.StartFieldExecution(ctx, field)
+	defer func() { ec.Tracer.EndFieldExecution(ctx) }()
+	rctx := &graphql.ResolverContext{
+		Object: "Agent",
+		Field:  field,
+		Args:   nil,
+	}
+	ctx = graphql.WithResolverContext(ctx, rctx)
+	ctx = ec.Tracer.StartFieldResolverExecution(ctx, rctx)
+	resTmp := ec.FieldMiddleware(ctx, obj, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.LastName, nil
+	})
+	if resTmp == nil {
+		return graphql.Null
+	}
+	res := resTmp.(*string)
+	rctx.Result = res
+	ctx = ec.Tracer.StartFieldChildExecution(ctx)
+	return ec.marshalOString2ᚖstring(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _Agent_displayName(ctx context.Context, field graphql.CollectedField, obj *prisma.Agent) graphql.Marshaler {
+	ctx = ec.Tracer.StartFieldExecution(ctx, field)
+	defer func() { ec.Tracer.EndFieldExecution(ctx) }()
+	rctx := &graphql.ResolverContext{
+		Object: "Agent",
+		Field:  field,
+		Args:   nil,
+	}
+	ctx = graphql.WithResolverContext(ctx, rctx)
+	ctx = ec.Tracer.StartFieldResolverExecution(ctx, rctx)
+	resTmp := ec.FieldMiddleware(ctx, obj, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.DisplayName, nil
+	})
+	if resTmp == nil {
+		return graphql.Null
+	}
+	res := resTmp.(*string)
+	rctx.Result = res
+	ctx = ec.Tracer.StartFieldChildExecution(ctx)
+	return ec.marshalOString2ᚖstring(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _Agent_email(ctx context.Context, field graphql.CollectedField, obj *prisma.Agent) graphql.Marshaler {
+	ctx = ec.Tracer.StartFieldExecution(ctx, field)
+	defer func() { ec.Tracer.EndFieldExecution(ctx) }()
+	rctx := &graphql.ResolverContext{
+		Object: "Agent",
+		Field:  field,
+		Args:   nil,
+	}
+	ctx = graphql.WithResolverContext(ctx, rctx)
+	ctx = ec.Tracer.StartFieldResolverExecution(ctx, rctx)
+	resTmp := ec.FieldMiddleware(ctx, obj, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.Email, nil
+	})
+	if resTmp == nil {
+		if !ec.HasError(rctx) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(string)
+	rctx.Result = res
+	ctx = ec.Tracer.StartFieldChildExecution(ctx)
+	return ec.marshalNString2string(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _Agent_password(ctx context.Context, field graphql.CollectedField, obj *prisma.Agent) graphql.Marshaler {
+	ctx = ec.Tracer.StartFieldExecution(ctx, field)
+	defer func() { ec.Tracer.EndFieldExecution(ctx) }()
+	rctx := &graphql.ResolverContext{
+		Object: "Agent",
+		Field:  field,
+		Args:   nil,
+	}
+	ctx = graphql.WithResolverContext(ctx, rctx)
+	ctx = ec.Tracer.StartFieldResolverExecution(ctx, rctx)
+	resTmp := ec.FieldMiddleware(ctx, obj, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.Password, nil
+	})
+	if resTmp == nil {
+		return graphql.Null
+	}
+	res := resTmp.(*string)
+	rctx.Result = res
+	ctx = ec.Tracer.StartFieldChildExecution(ctx)
+	return ec.marshalOString2ᚖstring(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _Agent_mobile(ctx context.Context, field graphql.CollectedField, obj *prisma.Agent) graphql.Marshaler {
+	ctx = ec.Tracer.StartFieldExecution(ctx, field)
+	defer func() { ec.Tracer.EndFieldExecution(ctx) }()
+	rctx := &graphql.ResolverContext{
+		Object: "Agent",
+		Field:  field,
+		Args:   nil,
+	}
+	ctx = graphql.WithResolverContext(ctx, rctx)
+	ctx = ec.Tracer.StartFieldResolverExecution(ctx, rctx)
+	resTmp := ec.FieldMiddleware(ctx, obj, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.Mobile, nil
+	})
+	if resTmp == nil {
+		return graphql.Null
+	}
+	res := resTmp.(*int32)
+	rctx.Result = res
+	ctx = ec.Tracer.StartFieldChildExecution(ctx)
+	return ec.marshalOInt2ᚖint32(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _Agent_fax(ctx context.Context, field graphql.CollectedField, obj *prisma.Agent) graphql.Marshaler {
+	ctx = ec.Tracer.StartFieldExecution(ctx, field)
+	defer func() { ec.Tracer.EndFieldExecution(ctx) }()
+	rctx := &graphql.ResolverContext{
+		Object: "Agent",
+		Field:  field,
+		Args:   nil,
+	}
+	ctx = graphql.WithResolverContext(ctx, rctx)
+	ctx = ec.Tracer.StartFieldResolverExecution(ctx, rctx)
+	resTmp := ec.FieldMiddleware(ctx, obj, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.Fax, nil
+	})
+	if resTmp == nil {
+		return graphql.Null
+	}
+	res := resTmp.(*int32)
+	rctx.Result = res
+	ctx = ec.Tracer.StartFieldChildExecution(ctx)
+	return ec.marshalOInt2ᚖint32(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _Agent_address1(ctx context.Context, field graphql.CollectedField, obj *prisma.Agent) graphql.Marshaler {
+	ctx = ec.Tracer.StartFieldExecution(ctx, field)
+	defer func() { ec.Tracer.EndFieldExecution(ctx) }()
+	rctx := &graphql.ResolverContext{
+		Object: "Agent",
+		Field:  field,
+		Args:   nil,
+	}
+	ctx = graphql.WithResolverContext(ctx, rctx)
+	ctx = ec.Tracer.StartFieldResolverExecution(ctx, rctx)
+	resTmp := ec.FieldMiddleware(ctx, obj, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.Address1, nil
+	})
+	if resTmp == nil {
+		return graphql.Null
+	}
+	res := resTmp.(*string)
+	rctx.Result = res
+	ctx = ec.Tracer.StartFieldChildExecution(ctx)
+	return ec.marshalOString2ᚖstring(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _Agent_address2(ctx context.Context, field graphql.CollectedField, obj *prisma.Agent) graphql.Marshaler {
+	ctx = ec.Tracer.StartFieldExecution(ctx, field)
+	defer func() { ec.Tracer.EndFieldExecution(ctx) }()
+	rctx := &graphql.ResolverContext{
+		Object: "Agent",
+		Field:  field,
+		Args:   nil,
+	}
+	ctx = graphql.WithResolverContext(ctx, rctx)
+	ctx = ec.Tracer.StartFieldResolverExecution(ctx, rctx)
+	resTmp := ec.FieldMiddleware(ctx, obj, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.Address2, nil
+	})
+	if resTmp == nil {
+		return graphql.Null
+	}
+	res := resTmp.(*string)
+	rctx.Result = res
+	ctx = ec.Tracer.StartFieldChildExecution(ctx)
+	return ec.marshalOString2ᚖstring(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _Agent_postcode(ctx context.Context, field graphql.CollectedField, obj *prisma.Agent) graphql.Marshaler {
+	ctx = ec.Tracer.StartFieldExecution(ctx, field)
+	defer func() { ec.Tracer.EndFieldExecution(ctx) }()
+	rctx := &graphql.ResolverContext{
+		Object: "Agent",
+		Field:  field,
+		Args:   nil,
+	}
+	ctx = graphql.WithResolverContext(ctx, rctx)
+	ctx = ec.Tracer.StartFieldResolverExecution(ctx, rctx)
+	resTmp := ec.FieldMiddleware(ctx, obj, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.Postcode, nil
+	})
+	if resTmp == nil {
+		if !ec.HasError(rctx) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(string)
+	rctx.Result = res
+	ctx = ec.Tracer.StartFieldChildExecution(ctx)
+	return ec.marshalNString2string(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _Agent_country(ctx context.Context, field graphql.CollectedField, obj *prisma.Agent) graphql.Marshaler {
+	ctx = ec.Tracer.StartFieldExecution(ctx, field)
+	defer func() { ec.Tracer.EndFieldExecution(ctx) }()
+	rctx := &graphql.ResolverContext{
+		Object: "Agent",
+		Field:  field,
+		Args:   nil,
+	}
+	ctx = graphql.WithResolverContext(ctx, rctx)
+	ctx = ec.Tracer.StartFieldResolverExecution(ctx, rctx)
+	resTmp := ec.FieldMiddleware(ctx, obj, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.Country, nil
+	})
+	if resTmp == nil {
+		if !ec.HasError(rctx) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(string)
+	rctx.Result = res
+	ctx = ec.Tracer.StartFieldChildExecution(ctx)
+	return ec.marshalNString2string(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _Agent_website(ctx context.Context, field graphql.CollectedField, obj *prisma.Agent) graphql.Marshaler {
+	ctx = ec.Tracer.StartFieldExecution(ctx, field)
+	defer func() { ec.Tracer.EndFieldExecution(ctx) }()
+	rctx := &graphql.ResolverContext{
+		Object: "Agent",
+		Field:  field,
+		Args:   nil,
+	}
+	ctx = graphql.WithResolverContext(ctx, rctx)
+	ctx = ec.Tracer.StartFieldResolverExecution(ctx, rctx)
+	resTmp := ec.FieldMiddleware(ctx, obj, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.Website, nil
+	})
+	if resTmp == nil {
+		return graphql.Null
+	}
+	res := resTmp.(*string)
+	rctx.Result = res
+	ctx = ec.Tracer.StartFieldChildExecution(ctx)
+	return ec.marshalOString2ᚖstring(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _Agent_clients(ctx context.Context, field graphql.CollectedField, obj *prisma.Agent) graphql.Marshaler {
+	ctx = ec.Tracer.StartFieldExecution(ctx, field)
+	defer func() { ec.Tracer.EndFieldExecution(ctx) }()
+	rctx := &graphql.ResolverContext{
+		Object: "Agent",
+		Field:  field,
+		Args:   nil,
+	}
+	ctx = graphql.WithResolverContext(ctx, rctx)
+	ctx = ec.Tracer.StartFieldResolverExecution(ctx, rctx)
+	resTmp := ec.FieldMiddleware(ctx, obj, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return ec.resolvers.Agent().Clients(rctx, obj)
+	})
+	if resTmp == nil {
+		return graphql.Null
+	}
+	res := resTmp.([]*prisma.Landlord)
+	rctx.Result = res
+	ctx = ec.Tracer.StartFieldChildExecution(ctx)
+	return ec.marshalOLandlord2ᚕᚖgithubᚗcomᚋkrishnaᚋrogerappᚋgeneratedᚋprismaᚑclientᚐLandlord(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _Landlord_id(ctx context.Context, field graphql.CollectedField, obj *prisma.Landlord) graphql.Marshaler {
+	ctx = ec.Tracer.StartFieldExecution(ctx, field)
+	defer func() { ec.Tracer.EndFieldExecution(ctx) }()
+	rctx := &graphql.ResolverContext{
+		Object: "Landlord",
+		Field:  field,
+		Args:   nil,
+	}
+	ctx = graphql.WithResolverContext(ctx, rctx)
+	ctx = ec.Tracer.StartFieldResolverExecution(ctx, rctx)
+	resTmp := ec.FieldMiddleware(ctx, obj, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.ID, nil
+	})
+	if resTmp == nil {
+		if !ec.HasError(rctx) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(string)
+	rctx.Result = res
+	ctx = ec.Tracer.StartFieldChildExecution(ctx)
+	return ec.marshalNID2string(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _Landlord_fullName(ctx context.Context, field graphql.CollectedField, obj *prisma.Landlord) graphql.Marshaler {
+	ctx = ec.Tracer.StartFieldExecution(ctx, field)
+	defer func() { ec.Tracer.EndFieldExecution(ctx) }()
+	rctx := &graphql.ResolverContext{
+		Object: "Landlord",
+		Field:  field,
+		Args:   nil,
+	}
+	ctx = graphql.WithResolverContext(ctx, rctx)
+	ctx = ec.Tracer.StartFieldResolverExecution(ctx, rctx)
+	resTmp := ec.FieldMiddleware(ctx, obj, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.FullName, nil
+	})
+	if resTmp == nil {
+		if !ec.HasError(rctx) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(string)
+	rctx.Result = res
+	ctx = ec.Tracer.StartFieldChildExecution(ctx)
+	return ec.marshalNString2string(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _Landlord_email(ctx context.Context, field graphql.CollectedField, obj *prisma.Landlord) graphql.Marshaler {
+	ctx = ec.Tracer.StartFieldExecution(ctx, field)
+	defer func() { ec.Tracer.EndFieldExecution(ctx) }()
+	rctx := &graphql.ResolverContext{
+		Object: "Landlord",
+		Field:  field,
+		Args:   nil,
+	}
+	ctx = graphql.WithResolverContext(ctx, rctx)
+	ctx = ec.Tracer.StartFieldResolverExecution(ctx, rctx)
+	resTmp := ec.FieldMiddleware(ctx, obj, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.Email, nil
+	})
+	if resTmp == nil {
+		if !ec.HasError(rctx) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(string)
+	rctx.Result = res
+	ctx = ec.Tracer.StartFieldChildExecution(ctx)
+	return ec.marshalNString2string(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _Landlord_password(ctx context.Context, field graphql.CollectedField, obj *prisma.Landlord) graphql.Marshaler {
+	ctx = ec.Tracer.StartFieldExecution(ctx, field)
+	defer func() { ec.Tracer.EndFieldExecution(ctx) }()
+	rctx := &graphql.ResolverContext{
+		Object: "Landlord",
+		Field:  field,
+		Args:   nil,
+	}
+	ctx = graphql.WithResolverContext(ctx, rctx)
+	ctx = ec.Tracer.StartFieldResolverExecution(ctx, rctx)
+	resTmp := ec.FieldMiddleware(ctx, obj, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.Password, nil
+	})
+	if resTmp == nil {
+		return graphql.Null
+	}
+	res := resTmp.(*string)
+	rctx.Result = res
+	ctx = ec.Tracer.StartFieldChildExecution(ctx)
+	return ec.marshalOString2ᚖstring(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _Landlord_mobile(ctx context.Context, field graphql.CollectedField, obj *prisma.Landlord) graphql.Marshaler {
+	ctx = ec.Tracer.StartFieldExecution(ctx, field)
+	defer func() { ec.Tracer.EndFieldExecution(ctx) }()
+	rctx := &graphql.ResolverContext{
+		Object: "Landlord",
+		Field:  field,
+		Args:   nil,
+	}
+	ctx = graphql.WithResolverContext(ctx, rctx)
+	ctx = ec.Tracer.StartFieldResolverExecution(ctx, rctx)
+	resTmp := ec.FieldMiddleware(ctx, obj, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.Mobile, nil
+	})
+	if resTmp == nil {
+		return graphql.Null
+	}
+	res := resTmp.(*int32)
+	rctx.Result = res
+	ctx = ec.Tracer.StartFieldChildExecution(ctx)
+	return ec.marshalOInt2ᚖint32(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _Landlord_occupation(ctx context.Context, field graphql.CollectedField, obj *prisma.Landlord) graphql.Marshaler {
+	ctx = ec.Tracer.StartFieldExecution(ctx, field)
+	defer func() { ec.Tracer.EndFieldExecution(ctx) }()
+	rctx := &graphql.ResolverContext{
+		Object: "Landlord",
+		Field:  field,
+		Args:   nil,
+	}
+	ctx = graphql.WithResolverContext(ctx, rctx)
+	ctx = ec.Tracer.StartFieldResolverExecution(ctx, rctx)
+	resTmp := ec.FieldMiddleware(ctx, obj, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.Occupation, nil
+	})
+	if resTmp == nil {
+		return graphql.Null
+	}
+	res := resTmp.(*string)
+	rctx.Result = res
+	ctx = ec.Tracer.StartFieldChildExecution(ctx)
+	return ec.marshalOString2ᚖstring(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _Landlord_address1(ctx context.Context, field graphql.CollectedField, obj *prisma.Landlord) graphql.Marshaler {
+	ctx = ec.Tracer.StartFieldExecution(ctx, field)
+	defer func() { ec.Tracer.EndFieldExecution(ctx) }()
+	rctx := &graphql.ResolverContext{
+		Object: "Landlord",
+		Field:  field,
+		Args:   nil,
+	}
+	ctx = graphql.WithResolverContext(ctx, rctx)
+	ctx = ec.Tracer.StartFieldResolverExecution(ctx, rctx)
+	resTmp := ec.FieldMiddleware(ctx, obj, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.Address1, nil
+	})
+	if resTmp == nil {
+		return graphql.Null
+	}
+	res := resTmp.(*string)
+	rctx.Result = res
+	ctx = ec.Tracer.StartFieldChildExecution(ctx)
+	return ec.marshalOString2ᚖstring(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _Landlord_address2(ctx context.Context, field graphql.CollectedField, obj *prisma.Landlord) graphql.Marshaler {
+	ctx = ec.Tracer.StartFieldExecution(ctx, field)
+	defer func() { ec.Tracer.EndFieldExecution(ctx) }()
+	rctx := &graphql.ResolverContext{
+		Object: "Landlord",
+		Field:  field,
+		Args:   nil,
+	}
+	ctx = graphql.WithResolverContext(ctx, rctx)
+	ctx = ec.Tracer.StartFieldResolverExecution(ctx, rctx)
+	resTmp := ec.FieldMiddleware(ctx, obj, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.Address2, nil
+	})
+	if resTmp == nil {
+		return graphql.Null
+	}
+	res := resTmp.(*string)
+	rctx.Result = res
+	ctx = ec.Tracer.StartFieldChildExecution(ctx)
+	return ec.marshalOString2ᚖstring(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _Landlord_postcode(ctx context.Context, field graphql.CollectedField, obj *prisma.Landlord) graphql.Marshaler {
+	ctx = ec.Tracer.StartFieldExecution(ctx, field)
+	defer func() { ec.Tracer.EndFieldExecution(ctx) }()
+	rctx := &graphql.ResolverContext{
+		Object: "Landlord",
+		Field:  field,
+		Args:   nil,
+	}
+	ctx = graphql.WithResolverContext(ctx, rctx)
+	ctx = ec.Tracer.StartFieldResolverExecution(ctx, rctx)
+	resTmp := ec.FieldMiddleware(ctx, obj, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.Postcode, nil
+	})
+	if resTmp == nil {
+		if !ec.HasError(rctx) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(string)
+	rctx.Result = res
+	ctx = ec.Tracer.StartFieldChildExecution(ctx)
+	return ec.marshalNString2string(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _Landlord_country(ctx context.Context, field graphql.CollectedField, obj *prisma.Landlord) graphql.Marshaler {
+	ctx = ec.Tracer.StartFieldExecution(ctx, field)
+	defer func() { ec.Tracer.EndFieldExecution(ctx) }()
+	rctx := &graphql.ResolverContext{
+		Object: "Landlord",
+		Field:  field,
+		Args:   nil,
+	}
+	ctx = graphql.WithResolverContext(ctx, rctx)
+	ctx = ec.Tracer.StartFieldResolverExecution(ctx, rctx)
+	resTmp := ec.FieldMiddleware(ctx, obj, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.Country, nil
+	})
+	if resTmp == nil {
+		if !ec.HasError(rctx) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(string)
+	rctx.Result = res
+	ctx = ec.Tracer.StartFieldChildExecution(ctx)
+	return ec.marshalNString2string(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _Landlord_agent(ctx context.Context, field graphql.CollectedField, obj *prisma.Landlord) graphql.Marshaler {
+	ctx = ec.Tracer.StartFieldExecution(ctx, field)
+	defer func() { ec.Tracer.EndFieldExecution(ctx) }()
+	rctx := &graphql.ResolverContext{
+		Object: "Landlord",
+		Field:  field,
+		Args:   nil,
+	}
+	ctx = graphql.WithResolverContext(ctx, rctx)
+	ctx = ec.Tracer.StartFieldResolverExecution(ctx, rctx)
+	resTmp := ec.FieldMiddleware(ctx, obj, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return ec.resolvers.Landlord().Agent(rctx, obj)
+	})
+	if resTmp == nil {
+		return graphql.Null
+	}
+	res := resTmp.(*prisma.Agent)
+	rctx.Result = res
+	ctx = ec.Tracer.StartFieldChildExecution(ctx)
+	return ec.marshalOAgent2ᚖgithubᚗcomᚋkrishnaᚋrogerappᚋgeneratedᚋprismaᚑclientᚐAgent(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _Mutation_createLandlord(ctx context.Context, field graphql.CollectedField) graphql.Marshaler {
 	ctx = ec.Tracer.StartFieldExecution(ctx, field)
 	defer func() { ec.Tracer.EndFieldExecution(ctx) }()
 	rctx := &graphql.ResolverContext{
@@ -311,7 +1328,7 @@ func (ec *executionContext) _Mutation_createUser(ctx context.Context, field grap
 	}
 	ctx = graphql.WithResolverContext(ctx, rctx)
 	rawArgs := field.ArgumentMap(ec.Variables)
-	args, err := ec.field_Mutation_createUser_args(ctx, rawArgs)
+	args, err := ec.field_Mutation_createLandlord_args(ctx, rawArgs)
 	if err != nil {
 		ec.Error(ctx, err)
 		return graphql.Null
@@ -320,7 +1337,7 @@ func (ec *executionContext) _Mutation_createUser(ctx context.Context, field grap
 	ctx = ec.Tracer.StartFieldResolverExecution(ctx, rctx)
 	resTmp := ec.FieldMiddleware(ctx, nil, func(rctx context.Context) (interface{}, error) {
 		ctx = rctx // use context from middleware stack in children
-		return ec.resolvers.Mutation().CreateUser(rctx, args["userinfo"].(*rogerapp.UserInfo))
+		return ec.resolvers.Mutation().CreateLandlord(rctx, args["userinfo"].(rogerapp.SignupInfo))
 	})
 	if resTmp == nil {
 		if !ec.HasError(rctx) {
@@ -328,13 +1345,112 @@ func (ec *executionContext) _Mutation_createUser(ctx context.Context, field grap
 		}
 		return graphql.Null
 	}
-	res := resTmp.(*prisma.User)
+	res := resTmp.(*prisma.Landlord)
 	rctx.Result = res
 	ctx = ec.Tracer.StartFieldChildExecution(ctx)
-	return ec.marshalNUser2ᚖgithubᚗcomᚋkrishnaᚋrogerappᚋgeneratedᚋprismaᚑclientᚐUser(ctx, field.Selections, res)
+	return ec.marshalNLandlord2ᚖgithubᚗcomᚋkrishnaᚋrogerappᚋgeneratedᚋprismaᚑclientᚐLandlord(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _Query_getUers(ctx context.Context, field graphql.CollectedField) graphql.Marshaler {
+func (ec *executionContext) _Mutation_createAgent(ctx context.Context, field graphql.CollectedField) graphql.Marshaler {
+	ctx = ec.Tracer.StartFieldExecution(ctx, field)
+	defer func() { ec.Tracer.EndFieldExecution(ctx) }()
+	rctx := &graphql.ResolverContext{
+		Object: "Mutation",
+		Field:  field,
+		Args:   nil,
+	}
+	ctx = graphql.WithResolverContext(ctx, rctx)
+	rawArgs := field.ArgumentMap(ec.Variables)
+	args, err := ec.field_Mutation_createAgent_args(ctx, rawArgs)
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	rctx.Args = args
+	ctx = ec.Tracer.StartFieldResolverExecution(ctx, rctx)
+	resTmp := ec.FieldMiddleware(ctx, nil, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return ec.resolvers.Mutation().CreateAgent(rctx, args["userinfo"].(rogerapp.SignupInfo))
+	})
+	if resTmp == nil {
+		if !ec.HasError(rctx) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(*prisma.Agent)
+	rctx.Result = res
+	ctx = ec.Tracer.StartFieldChildExecution(ctx)
+	return ec.marshalNAgent2ᚖgithubᚗcomᚋkrishnaᚋrogerappᚋgeneratedᚋprismaᚑclientᚐAgent(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _Mutation_updateLandlord(ctx context.Context, field graphql.CollectedField) graphql.Marshaler {
+	ctx = ec.Tracer.StartFieldExecution(ctx, field)
+	defer func() { ec.Tracer.EndFieldExecution(ctx) }()
+	rctx := &graphql.ResolverContext{
+		Object: "Mutation",
+		Field:  field,
+		Args:   nil,
+	}
+	ctx = graphql.WithResolverContext(ctx, rctx)
+	rawArgs := field.ArgumentMap(ec.Variables)
+	args, err := ec.field_Mutation_updateLandlord_args(ctx, rawArgs)
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	rctx.Args = args
+	ctx = ec.Tracer.StartFieldResolverExecution(ctx, rctx)
+	resTmp := ec.FieldMiddleware(ctx, nil, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return ec.resolvers.Mutation().UpdateLandlord(rctx, args["id"].(string), args["landlordInfo"].(rogerapp.LandlordInfo))
+	})
+	if resTmp == nil {
+		if !ec.HasError(rctx) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(*prisma.Landlord)
+	rctx.Result = res
+	ctx = ec.Tracer.StartFieldChildExecution(ctx)
+	return ec.marshalNLandlord2ᚖgithubᚗcomᚋkrishnaᚋrogerappᚋgeneratedᚋprismaᚑclientᚐLandlord(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _Mutation_assignAgentToLandlord(ctx context.Context, field graphql.CollectedField) graphql.Marshaler {
+	ctx = ec.Tracer.StartFieldExecution(ctx, field)
+	defer func() { ec.Tracer.EndFieldExecution(ctx) }()
+	rctx := &graphql.ResolverContext{
+		Object: "Mutation",
+		Field:  field,
+		Args:   nil,
+	}
+	ctx = graphql.WithResolverContext(ctx, rctx)
+	rawArgs := field.ArgumentMap(ec.Variables)
+	args, err := ec.field_Mutation_assignAgentToLandlord_args(ctx, rawArgs)
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	rctx.Args = args
+	ctx = ec.Tracer.StartFieldResolverExecution(ctx, rctx)
+	resTmp := ec.FieldMiddleware(ctx, nil, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return ec.resolvers.Mutation().AssignAgentToLandlord(rctx, args["agentId"].(string), args["landlordId"].(string))
+	})
+	if resTmp == nil {
+		if !ec.HasError(rctx) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(*prisma.Landlord)
+	rctx.Result = res
+	ctx = ec.Tracer.StartFieldChildExecution(ctx)
+	return ec.marshalNLandlord2ᚖgithubᚗcomᚋkrishnaᚋrogerappᚋgeneratedᚋprismaᚑclientᚐLandlord(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _Query_getLandlords(ctx context.Context, field graphql.CollectedField) graphql.Marshaler {
 	ctx = ec.Tracer.StartFieldExecution(ctx, field)
 	defer func() { ec.Tracer.EndFieldExecution(ctx) }()
 	rctx := &graphql.ResolverContext{
@@ -346,7 +1462,60 @@ func (ec *executionContext) _Query_getUers(ctx context.Context, field graphql.Co
 	ctx = ec.Tracer.StartFieldResolverExecution(ctx, rctx)
 	resTmp := ec.FieldMiddleware(ctx, nil, func(rctx context.Context) (interface{}, error) {
 		ctx = rctx // use context from middleware stack in children
-		return ec.resolvers.Query().GetUers(rctx)
+		return ec.resolvers.Query().GetLandlords(rctx)
+	})
+	if resTmp == nil {
+		return graphql.Null
+	}
+	res := resTmp.([]prisma.Landlord)
+	rctx.Result = res
+	ctx = ec.Tracer.StartFieldChildExecution(ctx)
+	return ec.marshalOLandlord2ᚕgithubᚗcomᚋkrishnaᚋrogerappᚋgeneratedᚋprismaᚑclientᚐLandlord(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _Query_getAgents(ctx context.Context, field graphql.CollectedField) graphql.Marshaler {
+	ctx = ec.Tracer.StartFieldExecution(ctx, field)
+	defer func() { ec.Tracer.EndFieldExecution(ctx) }()
+	rctx := &graphql.ResolverContext{
+		Object: "Query",
+		Field:  field,
+		Args:   nil,
+	}
+	ctx = graphql.WithResolverContext(ctx, rctx)
+	ctx = ec.Tracer.StartFieldResolverExecution(ctx, rctx)
+	resTmp := ec.FieldMiddleware(ctx, nil, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return ec.resolvers.Query().GetAgents(rctx)
+	})
+	if resTmp == nil {
+		return graphql.Null
+	}
+	res := resTmp.([]prisma.Agent)
+	rctx.Result = res
+	ctx = ec.Tracer.StartFieldChildExecution(ctx)
+	return ec.marshalOAgent2ᚕgithubᚗcomᚋkrishnaᚋrogerappᚋgeneratedᚋprismaᚑclientᚐAgent(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _Query_getLandlord(ctx context.Context, field graphql.CollectedField) graphql.Marshaler {
+	ctx = ec.Tracer.StartFieldExecution(ctx, field)
+	defer func() { ec.Tracer.EndFieldExecution(ctx) }()
+	rctx := &graphql.ResolverContext{
+		Object: "Query",
+		Field:  field,
+		Args:   nil,
+	}
+	ctx = graphql.WithResolverContext(ctx, rctx)
+	rawArgs := field.ArgumentMap(ec.Variables)
+	args, err := ec.field_Query_getLandlord_args(ctx, rawArgs)
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	rctx.Args = args
+	ctx = ec.Tracer.StartFieldResolverExecution(ctx, rctx)
+	resTmp := ec.FieldMiddleware(ctx, nil, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return ec.resolvers.Query().GetLandlord(rctx, args["id"].(string))
 	})
 	if resTmp == nil {
 		if !ec.HasError(rctx) {
@@ -354,10 +1523,10 @@ func (ec *executionContext) _Query_getUers(ctx context.Context, field graphql.Co
 		}
 		return graphql.Null
 	}
-	res := resTmp.([]prisma.User)
+	res := resTmp.(*prisma.Landlord)
 	rctx.Result = res
 	ctx = ec.Tracer.StartFieldChildExecution(ctx)
-	return ec.marshalNUser2ᚕgithubᚗcomᚋkrishnaᚋrogerappᚋgeneratedᚋprismaᚑclientᚐUser(ctx, field.Selections, res)
+	return ec.marshalNLandlord2ᚖgithubᚗcomᚋkrishnaᚋrogerappᚋgeneratedᚋprismaᚑclientᚐLandlord(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) _Query___type(ctx context.Context, field graphql.CollectedField) graphql.Marshaler {
@@ -411,133 +1580,6 @@ func (ec *executionContext) _Query___schema(ctx context.Context, field graphql.C
 	rctx.Result = res
 	ctx = ec.Tracer.StartFieldChildExecution(ctx)
 	return ec.marshalO__Schema2ᚖgithubᚗcomᚋ99designsᚋgqlgenᚋgraphqlᚋintrospectionᚐSchema(ctx, field.Selections, res)
-}
-
-func (ec *executionContext) _User_id(ctx context.Context, field graphql.CollectedField, obj *prisma.User) graphql.Marshaler {
-	ctx = ec.Tracer.StartFieldExecution(ctx, field)
-	defer func() { ec.Tracer.EndFieldExecution(ctx) }()
-	rctx := &graphql.ResolverContext{
-		Object: "User",
-		Field:  field,
-		Args:   nil,
-	}
-	ctx = graphql.WithResolverContext(ctx, rctx)
-	ctx = ec.Tracer.StartFieldResolverExecution(ctx, rctx)
-	resTmp := ec.FieldMiddleware(ctx, obj, func(rctx context.Context) (interface{}, error) {
-		ctx = rctx // use context from middleware stack in children
-		return obj.ID, nil
-	})
-	if resTmp == nil {
-		if !ec.HasError(rctx) {
-			ec.Errorf(ctx, "must not be null")
-		}
-		return graphql.Null
-	}
-	res := resTmp.(string)
-	rctx.Result = res
-	ctx = ec.Tracer.StartFieldChildExecution(ctx)
-	return ec.marshalNID2string(ctx, field.Selections, res)
-}
-
-func (ec *executionContext) _User_name(ctx context.Context, field graphql.CollectedField, obj *prisma.User) graphql.Marshaler {
-	ctx = ec.Tracer.StartFieldExecution(ctx, field)
-	defer func() { ec.Tracer.EndFieldExecution(ctx) }()
-	rctx := &graphql.ResolverContext{
-		Object: "User",
-		Field:  field,
-		Args:   nil,
-	}
-	ctx = graphql.WithResolverContext(ctx, rctx)
-	ctx = ec.Tracer.StartFieldResolverExecution(ctx, rctx)
-	resTmp := ec.FieldMiddleware(ctx, obj, func(rctx context.Context) (interface{}, error) {
-		ctx = rctx // use context from middleware stack in children
-		return obj.Name, nil
-	})
-	if resTmp == nil {
-		if !ec.HasError(rctx) {
-			ec.Errorf(ctx, "must not be null")
-		}
-		return graphql.Null
-	}
-	res := resTmp.(string)
-	rctx.Result = res
-	ctx = ec.Tracer.StartFieldChildExecution(ctx)
-	return ec.marshalNString2string(ctx, field.Selections, res)
-}
-
-func (ec *executionContext) _User_email(ctx context.Context, field graphql.CollectedField, obj *prisma.User) graphql.Marshaler {
-	ctx = ec.Tracer.StartFieldExecution(ctx, field)
-	defer func() { ec.Tracer.EndFieldExecution(ctx) }()
-	rctx := &graphql.ResolverContext{
-		Object: "User",
-		Field:  field,
-		Args:   nil,
-	}
-	ctx = graphql.WithResolverContext(ctx, rctx)
-	ctx = ec.Tracer.StartFieldResolverExecution(ctx, rctx)
-	resTmp := ec.FieldMiddleware(ctx, obj, func(rctx context.Context) (interface{}, error) {
-		ctx = rctx // use context from middleware stack in children
-		return obj.Email, nil
-	})
-	if resTmp == nil {
-		if !ec.HasError(rctx) {
-			ec.Errorf(ctx, "must not be null")
-		}
-		return graphql.Null
-	}
-	res := resTmp.(string)
-	rctx.Result = res
-	ctx = ec.Tracer.StartFieldChildExecution(ctx)
-	return ec.marshalNString2string(ctx, field.Selections, res)
-}
-
-func (ec *executionContext) _User_password(ctx context.Context, field graphql.CollectedField, obj *prisma.User) graphql.Marshaler {
-	ctx = ec.Tracer.StartFieldExecution(ctx, field)
-	defer func() { ec.Tracer.EndFieldExecution(ctx) }()
-	rctx := &graphql.ResolverContext{
-		Object: "User",
-		Field:  field,
-		Args:   nil,
-	}
-	ctx = graphql.WithResolverContext(ctx, rctx)
-	ctx = ec.Tracer.StartFieldResolverExecution(ctx, rctx)
-	resTmp := ec.FieldMiddleware(ctx, obj, func(rctx context.Context) (interface{}, error) {
-		ctx = rctx // use context from middleware stack in children
-		return obj.Password, nil
-	})
-	if resTmp == nil {
-		if !ec.HasError(rctx) {
-			ec.Errorf(ctx, "must not be null")
-		}
-		return graphql.Null
-	}
-	res := resTmp.(*string)
-	rctx.Result = res
-	ctx = ec.Tracer.StartFieldChildExecution(ctx)
-	return ec.marshalNString2ᚖstring(ctx, field.Selections, res)
-}
-
-func (ec *executionContext) _User_mobile(ctx context.Context, field graphql.CollectedField, obj *prisma.User) graphql.Marshaler {
-	ctx = ec.Tracer.StartFieldExecution(ctx, field)
-	defer func() { ec.Tracer.EndFieldExecution(ctx) }()
-	rctx := &graphql.ResolverContext{
-		Object: "User",
-		Field:  field,
-		Args:   nil,
-	}
-	ctx = graphql.WithResolverContext(ctx, rctx)
-	ctx = ec.Tracer.StartFieldResolverExecution(ctx, rctx)
-	resTmp := ec.FieldMiddleware(ctx, obj, func(rctx context.Context) (interface{}, error) {
-		ctx = rctx // use context from middleware stack in children
-		return obj.Mobile, nil
-	})
-	if resTmp == nil {
-		return graphql.Null
-	}
-	res := resTmp.(*int32)
-	rctx.Result = res
-	ctx = ec.Tracer.StartFieldChildExecution(ctx)
-	return ec.marshalOInt2ᚖint32(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) ___Directive_name(ctx context.Context, field graphql.CollectedField, obj *introspection.Directive) graphql.Marshaler {
@@ -1339,8 +2381,74 @@ func (ec *executionContext) ___Type_ofType(ctx context.Context, field graphql.Co
 
 // region    **************************** input.gotpl *****************************
 
-func (ec *executionContext) unmarshalInputUserInfo(ctx context.Context, v interface{}) (rogerapp.UserInfo, error) {
-	var it rogerapp.UserInfo
+func (ec *executionContext) unmarshalInputLandlordInfo(ctx context.Context, v interface{}) (rogerapp.LandlordInfo, error) {
+	var it rogerapp.LandlordInfo
+	var asMap = v.(map[string]interface{})
+
+	for k, v := range asMap {
+		switch k {
+		case "fullName":
+			var err error
+			it.FullName, err = ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+		case "email":
+			var err error
+			it.Email, err = ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+		case "password":
+			var err error
+			it.Password, err = ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+		case "mobile":
+			var err error
+			it.Mobile, err = ec.unmarshalOInt2ᚖint(ctx, v)
+			if err != nil {
+				return it, err
+			}
+		case "occupation":
+			var err error
+			it.Occupation, err = ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+		case "address1":
+			var err error
+			it.Address1, err = ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+		case "address2":
+			var err error
+			it.Address2, err = ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+		case "postcode":
+			var err error
+			it.Postcode, err = ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+		case "country":
+			var err error
+			it.Country, err = ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+		}
+	}
+
+	return it, nil
+}
+
+func (ec *executionContext) unmarshalInputSignupInfo(ctx context.Context, v interface{}) (rogerapp.SignupInfo, error) {
+	var it rogerapp.SignupInfo
 	var asMap = v.(map[string]interface{})
 
 	for k, v := range asMap {
@@ -1377,6 +2485,152 @@ func (ec *executionContext) unmarshalInputUserInfo(ctx context.Context, v interf
 
 // region    **************************** object.gotpl ****************************
 
+var agentImplementors = []string{"Agent"}
+
+func (ec *executionContext) _Agent(ctx context.Context, sel ast.SelectionSet, obj *prisma.Agent) graphql.Marshaler {
+	fields := graphql.CollectFields(ctx, sel, agentImplementors)
+
+	out := graphql.NewFieldSet(fields)
+	invalid := false
+	for i, field := range fields {
+		switch field.Name {
+		case "__typename":
+			out.Values[i] = graphql.MarshalString("Agent")
+		case "id":
+			out.Values[i] = ec._Agent_id(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				invalid = true
+			}
+		case "businessService":
+			out.Values[i] = ec._Agent_businessService(ctx, field, obj)
+		case "title":
+			out.Values[i] = ec._Agent_title(ctx, field, obj)
+		case "firstName":
+			out.Values[i] = ec._Agent_firstName(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				invalid = true
+			}
+		case "lastName":
+			out.Values[i] = ec._Agent_lastName(ctx, field, obj)
+		case "displayName":
+			out.Values[i] = ec._Agent_displayName(ctx, field, obj)
+		case "email":
+			out.Values[i] = ec._Agent_email(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				invalid = true
+			}
+		case "password":
+			out.Values[i] = ec._Agent_password(ctx, field, obj)
+		case "mobile":
+			out.Values[i] = ec._Agent_mobile(ctx, field, obj)
+		case "fax":
+			out.Values[i] = ec._Agent_fax(ctx, field, obj)
+		case "address1":
+			out.Values[i] = ec._Agent_address1(ctx, field, obj)
+		case "address2":
+			out.Values[i] = ec._Agent_address2(ctx, field, obj)
+		case "postcode":
+			out.Values[i] = ec._Agent_postcode(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				invalid = true
+			}
+		case "country":
+			out.Values[i] = ec._Agent_country(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				invalid = true
+			}
+		case "website":
+			out.Values[i] = ec._Agent_website(ctx, field, obj)
+		case "clients":
+			field := field
+			out.Concurrently(i, func() (res graphql.Marshaler) {
+				defer func() {
+					if r := recover(); r != nil {
+						ec.Error(ctx, ec.Recover(ctx, r))
+					}
+				}()
+				res = ec._Agent_clients(ctx, field, obj)
+				return res
+			})
+		default:
+			panic("unknown field " + strconv.Quote(field.Name))
+		}
+	}
+	out.Dispatch()
+	if invalid {
+		return graphql.Null
+	}
+	return out
+}
+
+var landlordImplementors = []string{"Landlord"}
+
+func (ec *executionContext) _Landlord(ctx context.Context, sel ast.SelectionSet, obj *prisma.Landlord) graphql.Marshaler {
+	fields := graphql.CollectFields(ctx, sel, landlordImplementors)
+
+	out := graphql.NewFieldSet(fields)
+	invalid := false
+	for i, field := range fields {
+		switch field.Name {
+		case "__typename":
+			out.Values[i] = graphql.MarshalString("Landlord")
+		case "id":
+			out.Values[i] = ec._Landlord_id(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				invalid = true
+			}
+		case "fullName":
+			out.Values[i] = ec._Landlord_fullName(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				invalid = true
+			}
+		case "email":
+			out.Values[i] = ec._Landlord_email(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				invalid = true
+			}
+		case "password":
+			out.Values[i] = ec._Landlord_password(ctx, field, obj)
+		case "mobile":
+			out.Values[i] = ec._Landlord_mobile(ctx, field, obj)
+		case "occupation":
+			out.Values[i] = ec._Landlord_occupation(ctx, field, obj)
+		case "address1":
+			out.Values[i] = ec._Landlord_address1(ctx, field, obj)
+		case "address2":
+			out.Values[i] = ec._Landlord_address2(ctx, field, obj)
+		case "postcode":
+			out.Values[i] = ec._Landlord_postcode(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				invalid = true
+			}
+		case "country":
+			out.Values[i] = ec._Landlord_country(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				invalid = true
+			}
+		case "agent":
+			field := field
+			out.Concurrently(i, func() (res graphql.Marshaler) {
+				defer func() {
+					if r := recover(); r != nil {
+						ec.Error(ctx, ec.Recover(ctx, r))
+					}
+				}()
+				res = ec._Landlord_agent(ctx, field, obj)
+				return res
+			})
+		default:
+			panic("unknown field " + strconv.Quote(field.Name))
+		}
+	}
+	out.Dispatch()
+	if invalid {
+		return graphql.Null
+	}
+	return out
+}
+
 var mutationImplementors = []string{"Mutation"}
 
 func (ec *executionContext) _Mutation(ctx context.Context, sel ast.SelectionSet) graphql.Marshaler {
@@ -1392,8 +2646,23 @@ func (ec *executionContext) _Mutation(ctx context.Context, sel ast.SelectionSet)
 		switch field.Name {
 		case "__typename":
 			out.Values[i] = graphql.MarshalString("Mutation")
-		case "createUser":
-			out.Values[i] = ec._Mutation_createUser(ctx, field)
+		case "createLandlord":
+			out.Values[i] = ec._Mutation_createLandlord(ctx, field)
+			if out.Values[i] == graphql.Null {
+				invalid = true
+			}
+		case "createAgent":
+			out.Values[i] = ec._Mutation_createAgent(ctx, field)
+			if out.Values[i] == graphql.Null {
+				invalid = true
+			}
+		case "updateLandlord":
+			out.Values[i] = ec._Mutation_updateLandlord(ctx, field)
+			if out.Values[i] == graphql.Null {
+				invalid = true
+			}
+		case "assignAgentToLandlord":
+			out.Values[i] = ec._Mutation_assignAgentToLandlord(ctx, field)
 			if out.Values[i] == graphql.Null {
 				invalid = true
 			}
@@ -1423,7 +2692,7 @@ func (ec *executionContext) _Query(ctx context.Context, sel ast.SelectionSet) gr
 		switch field.Name {
 		case "__typename":
 			out.Values[i] = graphql.MarshalString("Query")
-		case "getUers":
+		case "getLandlords":
 			field := field
 			out.Concurrently(i, func() (res graphql.Marshaler) {
 				defer func() {
@@ -1431,7 +2700,29 @@ func (ec *executionContext) _Query(ctx context.Context, sel ast.SelectionSet) gr
 						ec.Error(ctx, ec.Recover(ctx, r))
 					}
 				}()
-				res = ec._Query_getUers(ctx, field)
+				res = ec._Query_getLandlords(ctx, field)
+				return res
+			})
+		case "getAgents":
+			field := field
+			out.Concurrently(i, func() (res graphql.Marshaler) {
+				defer func() {
+					if r := recover(); r != nil {
+						ec.Error(ctx, ec.Recover(ctx, r))
+					}
+				}()
+				res = ec._Query_getAgents(ctx, field)
+				return res
+			})
+		case "getLandlord":
+			field := field
+			out.Concurrently(i, func() (res graphql.Marshaler) {
+				defer func() {
+					if r := recover(); r != nil {
+						ec.Error(ctx, ec.Recover(ctx, r))
+					}
+				}()
+				res = ec._Query_getLandlord(ctx, field)
 				if res == graphql.Null {
 					invalid = true
 				}
@@ -1441,50 +2732,6 @@ func (ec *executionContext) _Query(ctx context.Context, sel ast.SelectionSet) gr
 			out.Values[i] = ec._Query___type(ctx, field)
 		case "__schema":
 			out.Values[i] = ec._Query___schema(ctx, field)
-		default:
-			panic("unknown field " + strconv.Quote(field.Name))
-		}
-	}
-	out.Dispatch()
-	if invalid {
-		return graphql.Null
-	}
-	return out
-}
-
-var userImplementors = []string{"User"}
-
-func (ec *executionContext) _User(ctx context.Context, sel ast.SelectionSet, obj *prisma.User) graphql.Marshaler {
-	fields := graphql.CollectFields(ctx, sel, userImplementors)
-
-	out := graphql.NewFieldSet(fields)
-	invalid := false
-	for i, field := range fields {
-		switch field.Name {
-		case "__typename":
-			out.Values[i] = graphql.MarshalString("User")
-		case "id":
-			out.Values[i] = ec._User_id(ctx, field, obj)
-			if out.Values[i] == graphql.Null {
-				invalid = true
-			}
-		case "name":
-			out.Values[i] = ec._User_name(ctx, field, obj)
-			if out.Values[i] == graphql.Null {
-				invalid = true
-			}
-		case "email":
-			out.Values[i] = ec._User_email(ctx, field, obj)
-			if out.Values[i] == graphql.Null {
-				invalid = true
-			}
-		case "password":
-			out.Values[i] = ec._User_password(ctx, field, obj)
-			if out.Values[i] == graphql.Null {
-				invalid = true
-			}
-		case "mobile":
-			out.Values[i] = ec._User_mobile(ctx, field, obj)
 		default:
 			panic("unknown field " + strconv.Quote(field.Name))
 		}
@@ -1741,6 +2988,20 @@ func (ec *executionContext) ___Type(ctx context.Context, sel ast.SelectionSet, o
 
 // region    ***************************** type.gotpl *****************************
 
+func (ec *executionContext) marshalNAgent2githubᚗcomᚋkrishnaᚋrogerappᚋgeneratedᚋprismaᚑclientᚐAgent(ctx context.Context, sel ast.SelectionSet, v prisma.Agent) graphql.Marshaler {
+	return ec._Agent(ctx, sel, &v)
+}
+
+func (ec *executionContext) marshalNAgent2ᚖgithubᚗcomᚋkrishnaᚋrogerappᚋgeneratedᚋprismaᚑclientᚐAgent(ctx context.Context, sel ast.SelectionSet, v *prisma.Agent) graphql.Marshaler {
+	if v == nil {
+		if !ec.HasError(graphql.GetResolverContext(ctx)) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	return ec._Agent(ctx, sel, v)
+}
+
 func (ec *executionContext) unmarshalNBoolean2bool(ctx context.Context, v interface{}) (bool, error) {
 	return graphql.UnmarshalBoolean(v)
 }
@@ -1757,81 +3018,34 @@ func (ec *executionContext) marshalNID2string(ctx context.Context, sel ast.Selec
 	return graphql.MarshalID(v)
 }
 
+func (ec *executionContext) marshalNLandlord2githubᚗcomᚋkrishnaᚋrogerappᚋgeneratedᚋprismaᚑclientᚐLandlord(ctx context.Context, sel ast.SelectionSet, v prisma.Landlord) graphql.Marshaler {
+	return ec._Landlord(ctx, sel, &v)
+}
+
+func (ec *executionContext) marshalNLandlord2ᚖgithubᚗcomᚋkrishnaᚋrogerappᚋgeneratedᚋprismaᚑclientᚐLandlord(ctx context.Context, sel ast.SelectionSet, v *prisma.Landlord) graphql.Marshaler {
+	if v == nil {
+		if !ec.HasError(graphql.GetResolverContext(ctx)) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	return ec._Landlord(ctx, sel, v)
+}
+
+func (ec *executionContext) unmarshalNLandlordInfo2githubᚗcomᚋkrishnaᚋrogerappᚐLandlordInfo(ctx context.Context, v interface{}) (rogerapp.LandlordInfo, error) {
+	return ec.unmarshalInputLandlordInfo(ctx, v)
+}
+
+func (ec *executionContext) unmarshalNSignupInfo2githubᚗcomᚋkrishnaᚋrogerappᚐSignupInfo(ctx context.Context, v interface{}) (rogerapp.SignupInfo, error) {
+	return ec.unmarshalInputSignupInfo(ctx, v)
+}
+
 func (ec *executionContext) unmarshalNString2string(ctx context.Context, v interface{}) (string, error) {
 	return graphql.UnmarshalString(v)
 }
 
 func (ec *executionContext) marshalNString2string(ctx context.Context, sel ast.SelectionSet, v string) graphql.Marshaler {
 	return graphql.MarshalString(v)
-}
-
-func (ec *executionContext) unmarshalNString2ᚖstring(ctx context.Context, v interface{}) (*string, error) {
-	if v == nil {
-		return nil, nil
-	}
-	res, err := ec.unmarshalNString2string(ctx, v)
-	return &res, err
-}
-
-func (ec *executionContext) marshalNString2ᚖstring(ctx context.Context, sel ast.SelectionSet, v *string) graphql.Marshaler {
-	if v == nil {
-		if !ec.HasError(graphql.GetResolverContext(ctx)) {
-			ec.Errorf(ctx, "must not be null")
-		}
-		return graphql.Null
-	}
-	return ec.marshalNString2string(ctx, sel, *v)
-}
-
-func (ec *executionContext) marshalNUser2githubᚗcomᚋkrishnaᚋrogerappᚋgeneratedᚋprismaᚑclientᚐUser(ctx context.Context, sel ast.SelectionSet, v prisma.User) graphql.Marshaler {
-	return ec._User(ctx, sel, &v)
-}
-
-func (ec *executionContext) marshalNUser2ᚕgithubᚗcomᚋkrishnaᚋrogerappᚋgeneratedᚋprismaᚑclientᚐUser(ctx context.Context, sel ast.SelectionSet, v []prisma.User) graphql.Marshaler {
-	ret := make(graphql.Array, len(v))
-	var wg sync.WaitGroup
-	isLen1 := len(v) == 1
-	if !isLen1 {
-		wg.Add(len(v))
-	}
-	for i := range v {
-		i := i
-		rctx := &graphql.ResolverContext{
-			Index:  &i,
-			Result: &v[i],
-		}
-		ctx := graphql.WithResolverContext(ctx, rctx)
-		f := func(i int) {
-			defer func() {
-				if r := recover(); r != nil {
-					ec.Error(ctx, ec.Recover(ctx, r))
-					ret = nil
-				}
-			}()
-			if !isLen1 {
-				defer wg.Done()
-			}
-			ret[i] = ec.marshalNUser2githubᚗcomᚋkrishnaᚋrogerappᚋgeneratedᚋprismaᚑclientᚐUser(ctx, sel, v[i])
-		}
-		if isLen1 {
-			f(i)
-		} else {
-			go f(i)
-		}
-
-	}
-	wg.Wait()
-	return ret
-}
-
-func (ec *executionContext) marshalNUser2ᚖgithubᚗcomᚋkrishnaᚋrogerappᚋgeneratedᚋprismaᚑclientᚐUser(ctx context.Context, sel ast.SelectionSet, v *prisma.User) graphql.Marshaler {
-	if v == nil {
-		if !ec.HasError(graphql.GetResolverContext(ctx)) {
-			ec.Errorf(ctx, "must not be null")
-		}
-		return graphql.Null
-	}
-	return ec._User(ctx, sel, v)
 }
 
 func (ec *executionContext) marshalN__Directive2githubᚗcomᚋ99designsᚋgqlgenᚋgraphqlᚋintrospectionᚐDirective(ctx context.Context, sel ast.SelectionSet, v introspection.Directive) graphql.Marshaler {
@@ -2048,6 +3262,54 @@ func (ec *executionContext) marshalN__TypeKind2string(ctx context.Context, sel a
 	return graphql.MarshalString(v)
 }
 
+func (ec *executionContext) marshalOAgent2githubᚗcomᚋkrishnaᚋrogerappᚋgeneratedᚋprismaᚑclientᚐAgent(ctx context.Context, sel ast.SelectionSet, v prisma.Agent) graphql.Marshaler {
+	return ec._Agent(ctx, sel, &v)
+}
+
+func (ec *executionContext) marshalOAgent2ᚕgithubᚗcomᚋkrishnaᚋrogerappᚋgeneratedᚋprismaᚑclientᚐAgent(ctx context.Context, sel ast.SelectionSet, v []prisma.Agent) graphql.Marshaler {
+	ret := make(graphql.Array, len(v))
+	var wg sync.WaitGroup
+	isLen1 := len(v) == 1
+	if !isLen1 {
+		wg.Add(len(v))
+	}
+	for i := range v {
+		i := i
+		rctx := &graphql.ResolverContext{
+			Index:  &i,
+			Result: &v[i],
+		}
+		ctx := graphql.WithResolverContext(ctx, rctx)
+		f := func(i int) {
+			defer func() {
+				if r := recover(); r != nil {
+					ec.Error(ctx, ec.Recover(ctx, r))
+					ret = nil
+				}
+			}()
+			if !isLen1 {
+				defer wg.Done()
+			}
+			ret[i] = ec.marshalNAgent2githubᚗcomᚋkrishnaᚋrogerappᚋgeneratedᚋprismaᚑclientᚐAgent(ctx, sel, v[i])
+		}
+		if isLen1 {
+			f(i)
+		} else {
+			go f(i)
+		}
+
+	}
+	wg.Wait()
+	return ret
+}
+
+func (ec *executionContext) marshalOAgent2ᚖgithubᚗcomᚋkrishnaᚋrogerappᚋgeneratedᚋprismaᚑclientᚐAgent(ctx context.Context, sel ast.SelectionSet, v *prisma.Agent) graphql.Marshaler {
+	if v == nil {
+		return graphql.Null
+	}
+	return ec._Agent(ctx, sel, v)
+}
+
 func (ec *executionContext) unmarshalOBoolean2bool(ctx context.Context, v interface{}) (bool, error) {
 	return graphql.UnmarshalBoolean(v)
 }
@@ -2071,12 +3333,35 @@ func (ec *executionContext) marshalOBoolean2ᚖbool(ctx context.Context, sel ast
 	return ec.marshalOBoolean2bool(ctx, sel, *v)
 }
 
+func (ec *executionContext) unmarshalOInt2int(ctx context.Context, v interface{}) (int, error) {
+	return graphql.UnmarshalInt(v)
+}
+
+func (ec *executionContext) marshalOInt2int(ctx context.Context, sel ast.SelectionSet, v int) graphql.Marshaler {
+	return graphql.MarshalInt(v)
+}
+
 func (ec *executionContext) unmarshalOInt2int32(ctx context.Context, v interface{}) (int32, error) {
 	return graphql.UnmarshalInt32(v)
 }
 
 func (ec *executionContext) marshalOInt2int32(ctx context.Context, sel ast.SelectionSet, v int32) graphql.Marshaler {
 	return graphql.MarshalInt32(v)
+}
+
+func (ec *executionContext) unmarshalOInt2ᚖint(ctx context.Context, v interface{}) (*int, error) {
+	if v == nil {
+		return nil, nil
+	}
+	res, err := ec.unmarshalOInt2int(ctx, v)
+	return &res, err
+}
+
+func (ec *executionContext) marshalOInt2ᚖint(ctx context.Context, sel ast.SelectionSet, v *int) graphql.Marshaler {
+	if v == nil {
+		return graphql.Null
+	}
+	return ec.marshalOInt2int(ctx, sel, *v)
 }
 
 func (ec *executionContext) unmarshalOInt2ᚖint32(ctx context.Context, v interface{}) (*int32, error) {
@@ -2092,6 +3377,91 @@ func (ec *executionContext) marshalOInt2ᚖint32(ctx context.Context, sel ast.Se
 		return graphql.Null
 	}
 	return ec.marshalOInt2int32(ctx, sel, *v)
+}
+
+func (ec *executionContext) marshalOLandlord2githubᚗcomᚋkrishnaᚋrogerappᚋgeneratedᚋprismaᚑclientᚐLandlord(ctx context.Context, sel ast.SelectionSet, v prisma.Landlord) graphql.Marshaler {
+	return ec._Landlord(ctx, sel, &v)
+}
+
+func (ec *executionContext) marshalOLandlord2ᚕgithubᚗcomᚋkrishnaᚋrogerappᚋgeneratedᚋprismaᚑclientᚐLandlord(ctx context.Context, sel ast.SelectionSet, v []prisma.Landlord) graphql.Marshaler {
+	ret := make(graphql.Array, len(v))
+	var wg sync.WaitGroup
+	isLen1 := len(v) == 1
+	if !isLen1 {
+		wg.Add(len(v))
+	}
+	for i := range v {
+		i := i
+		rctx := &graphql.ResolverContext{
+			Index:  &i,
+			Result: &v[i],
+		}
+		ctx := graphql.WithResolverContext(ctx, rctx)
+		f := func(i int) {
+			defer func() {
+				if r := recover(); r != nil {
+					ec.Error(ctx, ec.Recover(ctx, r))
+					ret = nil
+				}
+			}()
+			if !isLen1 {
+				defer wg.Done()
+			}
+			ret[i] = ec.marshalNLandlord2githubᚗcomᚋkrishnaᚋrogerappᚋgeneratedᚋprismaᚑclientᚐLandlord(ctx, sel, v[i])
+		}
+		if isLen1 {
+			f(i)
+		} else {
+			go f(i)
+		}
+
+	}
+	wg.Wait()
+	return ret
+}
+
+func (ec *executionContext) marshalOLandlord2ᚕᚖgithubᚗcomᚋkrishnaᚋrogerappᚋgeneratedᚋprismaᚑclientᚐLandlord(ctx context.Context, sel ast.SelectionSet, v []*prisma.Landlord) graphql.Marshaler {
+	ret := make(graphql.Array, len(v))
+	var wg sync.WaitGroup
+	isLen1 := len(v) == 1
+	if !isLen1 {
+		wg.Add(len(v))
+	}
+	for i := range v {
+		i := i
+		rctx := &graphql.ResolverContext{
+			Index:  &i,
+			Result: &v[i],
+		}
+		ctx := graphql.WithResolverContext(ctx, rctx)
+		f := func(i int) {
+			defer func() {
+				if r := recover(); r != nil {
+					ec.Error(ctx, ec.Recover(ctx, r))
+					ret = nil
+				}
+			}()
+			if !isLen1 {
+				defer wg.Done()
+			}
+			ret[i] = ec.marshalOLandlord2ᚖgithubᚗcomᚋkrishnaᚋrogerappᚋgeneratedᚋprismaᚑclientᚐLandlord(ctx, sel, v[i])
+		}
+		if isLen1 {
+			f(i)
+		} else {
+			go f(i)
+		}
+
+	}
+	wg.Wait()
+	return ret
+}
+
+func (ec *executionContext) marshalOLandlord2ᚖgithubᚗcomᚋkrishnaᚋrogerappᚋgeneratedᚋprismaᚑclientᚐLandlord(ctx context.Context, sel ast.SelectionSet, v *prisma.Landlord) graphql.Marshaler {
+	if v == nil {
+		return graphql.Null
+	}
+	return ec._Landlord(ctx, sel, v)
 }
 
 func (ec *executionContext) unmarshalOString2string(ctx context.Context, v interface{}) (string, error) {
@@ -2115,18 +3485,6 @@ func (ec *executionContext) marshalOString2ᚖstring(ctx context.Context, sel as
 		return graphql.Null
 	}
 	return ec.marshalOString2string(ctx, sel, *v)
-}
-
-func (ec *executionContext) unmarshalOUserInfo2githubᚗcomᚋkrishnaᚋrogerappᚐUserInfo(ctx context.Context, v interface{}) (rogerapp.UserInfo, error) {
-	return ec.unmarshalInputUserInfo(ctx, v)
-}
-
-func (ec *executionContext) unmarshalOUserInfo2ᚖgithubᚗcomᚋkrishnaᚋrogerappᚐUserInfo(ctx context.Context, v interface{}) (*rogerapp.UserInfo, error) {
-	if v == nil {
-		return nil, nil
-	}
-	res, err := ec.unmarshalOUserInfo2githubᚗcomᚋkrishnaᚋrogerappᚐUserInfo(ctx, v)
-	return &res, err
 }
 
 func (ec *executionContext) marshalO__EnumValue2ᚕgithubᚗcomᚋ99designsᚋgqlgenᚋgraphqlᚋintrospectionᚐEnumValue(ctx context.Context, sel ast.SelectionSet, v []introspection.EnumValue) graphql.Marshaler {

@@ -69,7 +69,7 @@ func GetAuth0Token() string {
 
 }
 
-func CreateUser(userInput *input.UserInfo) {
+func CreateUser(userInput *input.SignupInfo) {
 	url := "https://epnweb.auth0.com/api/v2/users"
 
 	payload := user{

@@ -2,7 +2,19 @@
 
 package rogerapp
 
-type UserInfo struct {
+type LandlordInfo struct {
+	FullName   *string `json:"fullName"`
+	Email      *string `json:"email"`
+	Password   *string `json:"password"`
+	Mobile     *int    `json:"mobile"`
+	Occupation *string `json:"occupation"`
+	Address1   *string `json:"address1"`
+	Address2   *string `json:"address2"`
+	Postcode   *string `json:"postcode"`
+	Country    *string `json:"country"`
+}
+
+type SignupInfo struct {
 	Name     *string `json:"name"`
 	Email    *string `json:"email"`
 	Password *string `json:"password"`

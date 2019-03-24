@@ -1,7 +1,33 @@
-type User {
+type Landlord {
       id: ID! @unique
-      name: String!
+      fullName: String!
       email: String! @unique
       password: String
       mobile: Int
+      dob: DateTime
+      occupation: String
+      address1: String
+      address2: String
+      postcode: String!
+      country: String!
+      agent: Agent
+}
+
+type Agent {
+      id: ID! @unique
+      businessService: String
+      title: String
+      firstName: String!
+      lastName: String
+      displayName: String
+      email: String! @unique
+      password: String
+      mobile: Int
+      fax: Int
+      address1: String
+      address2: String
+      postcode: String!
+      country: String!
+      website: String
+      clients: [Landlord]
 }

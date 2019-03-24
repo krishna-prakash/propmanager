@@ -1,21 +1,63 @@
-type User {
+type Landlord {
       id: ID!
-      name: String!
+      fullName: String!
       email: String!
-      password: String!
+      password: String
       mobile: Int
+      occupation: String
+      address1: String
+      address2: String
+      postcode: String!
+      country: String!
+      agent: Agent
+}
+
+type Agent {
+      id: ID!
+      businessService: String
+      title: String
+      firstName: String!
+      lastName: String
+      displayName: String
+      email: String!
+      password: String
+      mobile: Int
+      fax: Int
+      address1: String
+      address2: String
+      postcode: String!
+      country: String!
+      website: String
+      clients: [Landlord]
 }
 
 type Query {
-      getUers: [User!]!
+      getLandlords: [Landlord!]
+      getAgents: [Agent!]
+      getLandlord(id: ID!): Landlord!
 }
 
-input UserInfo {
+input SignupInfo {
       name: String
       email: String
       password: String
 }
 
+input LandlordInfo {
+      fullName: String
+      email: String
+      password: String
+      mobile: Int
+      occupation: String
+      address1: String
+      address2: String
+      postcode: String
+      country: String
+}
+
 type Mutation {
-      createUser(userinfo: UserInfo): User!
+      createLandlord(userinfo: SignupInfo!): Landlord!
+      createAgent(userinfo: SignupInfo!): Agent!
+      updateLandlord(id: ID!, landlordInfo: LandlordInfo!): Landlord!
+      assignAgentToLandlord(agentId: ID!, landlordId: ID!): Landlord!
 }
