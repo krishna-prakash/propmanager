@@ -2,16 +2,18 @@ package auth0
 
 import (
 	"bytes"
+	"context"
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
 	"net/http"
 
+	jwt "github.com/dgrijalva/jwt-go"
 	input "github.com/krishna/rogerapp"
 )
 
 var clientId = "Ey30MV9vtSWAxNx1wPH98P1TbDEEs4ml"
-var clientSecret = "NU0INtEBwHSMCCjdlMnTF1lxU0VEF_QMr1PqXqanipIkvS3xwDUz3MXcPmxaj-3-"
+var clientSecret = "hDG2ZnUmzIgTSssyQNre0ogLNiMpoux1ZI5j4-U8kEnGbegxSt1glUkYzwI41_G9"
 var audience = "https://epnweb.auth0.com/api/v2/"
 var grantType = "client_credentials"
 
@@ -34,6 +36,26 @@ type response struct {
 	Scope       string `json:"scope"`
 	ExpiresIn   int    `json:"expires_in"`
 	TokenType   string `json:"token_type"`
+}
+
+type Claims struct {
+	Username string `json:"username"`
+	jwt.StandardClaims
+}
+
+var jwtKey = []byte("my_secret_key")
+
+type Jwks struct {
+	Keys []JSONWebKeys `json:"keys"`
+}
+
+type JSONWebKeys struct {
+	Kty string   `json:"kty"`
+	Kid string   `json:"kid"`
+	Use string   `json:"use"`
+	N   string   `json:"n"`
+	E   string   `json:"e"`
+	X5c []string `json:"x5c"`
 }
 
 func GetAuth0Token() string {
@@ -94,4 +116,19 @@ func CreateUser(userInput *input.SignupInfo) {
 	body, _ := ioutil.ReadAll(res.Body)
 
 	fmt.Println(string(body))
+}
+
+func JwtVerification(ctx context.Context) error {
+	var Authorization string
+	tokenString, _ := ctx.Value(Authorization).(string)
+	_, err := jwt.Parse(tokenString, func(token *jwt.Token) (interface{}, error) {
+		if _, ok := token.Method.(*jwt.SigningMethodHMAC); !ok {
+			return nil, fmt.Errorf("Unexpected signing method: %v", token.Header["alg"])
+		}
+		return []byte(clientSecret), nil
+	})
+	if err != nil {
+		return err
+	}
+	return nil
 }

@@ -27,7 +27,7 @@ func (r *Resolver) Query() main.QueryResolver {
 
 type agentResolver struct{ *Resolver }
 
-func (r *agentResolver) Clients(ctx context.Context, obj *prisma.Agent) ([]*prisma.Landlord, error) {
+func (r *agentResolver) Clients(ctx context.Context, obj *prisma.Agent) ([]prisma.Landlord, error) {
 	panic("not implemented")
 }
 

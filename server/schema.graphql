@@ -28,7 +28,7 @@ type Agent {
       postcode: String!
       country: String!
       website: String
-      clients: [Landlord]
+      clients: [Landlord!]
 }
 
 type Query {

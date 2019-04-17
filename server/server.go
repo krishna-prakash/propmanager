@@ -6,6 +6,8 @@ import (
 	"os"
 
 	"github.com/99designs/gqlgen/handler"
+	"github.com/go-chi/chi"
+	"github.com/krishna/rogerapp/auth"
 	prisma "github.com/krishna/rogerapp/generated/prisma-client"
 )
 
@@ -22,11 +24,15 @@ func main() {
 		Prisma: client,
 	}
 
-	http.Handle("/", handler.Playground("GraphQL Playground", "/query"))
-	http.Handle("/query", handler.GraphQL(NewExecutableSchema(Config{Resolvers: &resolver})))
+	router := chi.NewRouter()
+
+	router.Use(auth.Middleware())
+
+	router.Handle("/", handler.Playground("GraphQL Playground", "/query"))
+	router.Handle("/query", handler.GraphQL(NewExecutableSchema(Config{Resolvers: &resolver})))
 
 	log.Printf("Server is running on http://localhost:%s", port)
-	err := http.ListenAndServe(":"+port, nil)
+	err := http.ListenAndServe(":"+port, router)
 	if err != nil {
 		log.Fatal(err)
 	}
