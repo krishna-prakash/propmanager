@@ -13,7 +13,8 @@ import (
 )
 
 var clientId = "Ey30MV9vtSWAxNx1wPH98P1TbDEEs4ml"
-var clientSecret = "hDG2ZnUmzIgTSssyQNre0ogLNiMpoux1ZI5j4-U8kEnGbegxSt1glUkYzwI41_G9"
+var tokenkey = "hDG2ZnUmzIgTSssyQNre0ogLNiMpoux1ZI5j4-U8kEnGbegxSt1glUkYzwI41_G9"
+var clientSecret = "NU0INtEBwHSMCCjdlMnTF1lxU0VEF_QMr1PqXqanipIkvS3xwDUz3MXcPmxaj-3-"
 var audience = "https://epnweb.auth0.com/api/v2/"
 var grantType = "client_credentials"
 
@@ -25,10 +26,11 @@ type creds struct {
 }
 
 type user struct {
-	Connection string `json:"connection"`
-	Email      string `json:"email"`
-	Password   string `json:"password"`
-	Name       string `json:"name"`
+	Connection    string `json:"connection"`
+	Email         string `json:"email"`
+	Password      string `json:"password"`
+	Name          string `json:"name"`
+	EmailVerified bool   `json:"email_verified"`
 }
 
 type response struct {
@@ -36,26 +38,6 @@ type response struct {
 	Scope       string `json:"scope"`
 	ExpiresIn   int    `json:"expires_in"`
 	TokenType   string `json:"token_type"`
-}
-
-type Claims struct {
-	Username string `json:"username"`
-	jwt.StandardClaims
-}
-
-var jwtKey = []byte("my_secret_key")
-
-type Jwks struct {
-	Keys []JSONWebKeys `json:"keys"`
-}
-
-type JSONWebKeys struct {
-	Kty string   `json:"kty"`
-	Kid string   `json:"kid"`
-	Use string   `json:"use"`
-	N   string   `json:"n"`
-	E   string   `json:"e"`
-	X5c []string `json:"x5c"`
 }
 
 func GetAuth0Token() string {
@@ -95,10 +77,11 @@ func CreateUser(userInput *input.SignupInfo) {
 	url := "https://epnweb.auth0.com/api/v2/users"
 
 	payload := user{
-		Connection: "Username-Password-Authentication",
-		Email:      *userInput.Email,
-		Password:   *userInput.Password,
-		Name:       *userInput.Name,
+		Connection:    "Username-Password-Authentication",
+		Email:         userInput.Email,
+		Password:      userInput.Password,
+		Name:          userInput.Name,
+		EmailVerified: false,
 	}
 	payloadJSON, err := json.Marshal(payload)
 
@@ -125,7 +108,7 @@ func JwtVerification(ctx context.Context) error {
 		if _, ok := token.Method.(*jwt.SigningMethodHMAC); !ok {
 			return nil, fmt.Errorf("Unexpected signing method: %v", token.Header["alg"])
 		}
-		return []byte(clientSecret), nil
+		return []byte(tokenkey), nil
 	})
 	if err != nil {
 		return err

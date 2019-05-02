@@ -31,3 +31,30 @@ type Agent {
       website: String
       clients: [Landlord]
 }
+
+type Property {
+      id: ID! @unique
+      displayname: String
+      address1: String!
+      address2: String
+      postcode: String!
+      city: String!
+      country: String!
+      percentageofownership: Int
+      status: String!
+      purchaseprice: Int
+      currentprice: Int
+      currency: String
+      tenants: [Tenant]
+      landlords: [Landlord]
+}
+
+type Tenant {
+      id: ID! @unique
+      firstName: String!
+      lastName: String
+      email: String! @unique
+      homenumber: Int
+      mobilenumber: Int
+      property: Property
+}

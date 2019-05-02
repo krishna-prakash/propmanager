@@ -180,6 +180,124 @@ func (client *Client) LandlordsConnection(params *LandlordsConnectionParams) Lan
 	panic("not implemented")
 }
 
+func (client *Client) Property(params PropertyWhereUniqueInput) *PropertyExec {
+	ret := client.Client.GetOne(
+		nil,
+		params,
+		[2]string{"PropertyWhereUniqueInput!", "Property"},
+		"property",
+		[]string{"id", "displayname", "address1", "address2", "postcode", "city", "country", "percentageofownership", "status", "purchaseprice", "currentprice", "currency"})
+
+	return &PropertyExec{ret}
+}
+
+type PropertiesParams struct {
+	Where   *PropertyWhereInput   `json:"where,omitempty"`
+	OrderBy *PropertyOrderByInput `json:"orderBy,omitempty"`
+	Skip    *int32                `json:"skip,omitempty"`
+	After   *string               `json:"after,omitempty"`
+	Before  *string               `json:"before,omitempty"`
+	First   *int32                `json:"first,omitempty"`
+	Last    *int32                `json:"last,omitempty"`
+}
+
+func (client *Client) Properties(params *PropertiesParams) *PropertyExecArray {
+	var wparams *prisma.WhereParams
+	if params != nil {
+		wparams = &prisma.WhereParams{
+			Where:   params.Where,
+			OrderBy: (*string)(params.OrderBy),
+			Skip:    params.Skip,
+			After:   params.After,
+			Before:  params.Before,
+			First:   params.First,
+			Last:    params.Last,
+		}
+	}
+
+	ret := client.Client.GetMany(
+		nil,
+		wparams,
+		[3]string{"PropertyWhereInput", "PropertyOrderByInput", "Property"},
+		"properties",
+		[]string{"id", "displayname", "address1", "address2", "postcode", "city", "country", "percentageofownership", "status", "purchaseprice", "currentprice", "currency"})
+
+	return &PropertyExecArray{ret}
+}
+
+type PropertiesConnectionParams struct {
+	Where   *PropertyWhereInput   `json:"where,omitempty"`
+	OrderBy *PropertyOrderByInput `json:"orderBy,omitempty"`
+	Skip    *int32                `json:"skip,omitempty"`
+	After   *string               `json:"after,omitempty"`
+	Before  *string               `json:"before,omitempty"`
+	First   *int32                `json:"first,omitempty"`
+	Last    *int32                `json:"last,omitempty"`
+}
+
+func (client *Client) PropertiesConnection(params *PropertiesConnectionParams) PropertyConnectionExec {
+	panic("not implemented")
+}
+
+func (client *Client) Tenant(params TenantWhereUniqueInput) *TenantExec {
+	ret := client.Client.GetOne(
+		nil,
+		params,
+		[2]string{"TenantWhereUniqueInput!", "Tenant"},
+		"tenant",
+		[]string{"id", "firstName", "lastName", "email", "homenumber", "mobilenumber"})
+
+	return &TenantExec{ret}
+}
+
+type TenantsParams struct {
+	Where   *TenantWhereInput   `json:"where,omitempty"`
+	OrderBy *TenantOrderByInput `json:"orderBy,omitempty"`
+	Skip    *int32              `json:"skip,omitempty"`
+	After   *string             `json:"after,omitempty"`
+	Before  *string             `json:"before,omitempty"`
+	First   *int32              `json:"first,omitempty"`
+	Last    *int32              `json:"last,omitempty"`
+}
+
+func (client *Client) Tenants(params *TenantsParams) *TenantExecArray {
+	var wparams *prisma.WhereParams
+	if params != nil {
+		wparams = &prisma.WhereParams{
+			Where:   params.Where,
+			OrderBy: (*string)(params.OrderBy),
+			Skip:    params.Skip,
+			After:   params.After,
+			Before:  params.Before,
+			First:   params.First,
+			Last:    params.Last,
+		}
+	}
+
+	ret := client.Client.GetMany(
+		nil,
+		wparams,
+		[3]string{"TenantWhereInput", "TenantOrderByInput", "Tenant"},
+		"tenants",
+		[]string{"id", "firstName", "lastName", "email", "homenumber", "mobilenumber"})
+
+	return &TenantExecArray{ret}
+}
+
+type TenantsConnectionParams struct {
+	Where   *TenantWhereInput   `json:"where,omitempty"`
+	OrderBy *TenantOrderByInput `json:"orderBy,omitempty"`
+	Skip    *int32              `json:"skip,omitempty"`
+	After   *string             `json:"after,omitempty"`
+	Before  *string             `json:"before,omitempty"`
+	First   *int32              `json:"first,omitempty"`
+	Last    *int32              `json:"last,omitempty"`
+}
+
+func (client *Client) TenantsConnection(params *TenantsConnectionParams) TenantConnectionExec {
+	panic("not implemented")
+}
+
 func (client *Client) CreateAgent(params AgentCreateInput) *AgentExec {
 	ret := client.Client.Create(
 		params,
@@ -340,6 +458,166 @@ func (client *Client) DeleteManyLandlords(params *LandlordWhereInput) *BatchPayl
 	return &BatchPayloadExec{exec}
 }
 
+func (client *Client) CreateProperty(params PropertyCreateInput) *PropertyExec {
+	ret := client.Client.Create(
+		params,
+		[2]string{"PropertyCreateInput!", "Property"},
+		"createProperty",
+		[]string{"id", "displayname", "address1", "address2", "postcode", "city", "country", "percentageofownership", "status", "purchaseprice", "currentprice", "currency"})
+
+	return &PropertyExec{ret}
+}
+
+type PropertyUpdateParams struct {
+	Data  PropertyUpdateInput      `json:"data"`
+	Where PropertyWhereUniqueInput `json:"where"`
+}
+
+func (client *Client) UpdateProperty(params PropertyUpdateParams) *PropertyExec {
+	ret := client.Client.Update(
+		prisma.UpdateParams{
+			Data:  params.Data,
+			Where: params.Where,
+		},
+		[3]string{"PropertyUpdateInput!", "PropertyWhereUniqueInput!", "Property"},
+		"updateProperty",
+		[]string{"id", "displayname", "address1", "address2", "postcode", "city", "country", "percentageofownership", "status", "purchaseprice", "currentprice", "currency"})
+
+	return &PropertyExec{ret}
+}
+
+type PropertyUpdateManyParams struct {
+	Data  PropertyUpdateManyMutationInput `json:"data"`
+	Where *PropertyWhereInput             `json:"where,omitempty"`
+}
+
+func (client *Client) UpdateManyProperties(params PropertyUpdateManyParams) *BatchPayloadExec {
+	exec := client.Client.UpdateMany(
+		prisma.UpdateParams{
+			Data:  params.Data,
+			Where: params.Where,
+		},
+		[2]string{"PropertyUpdateManyMutationInput!", "PropertyWhereInput"},
+		"updateManyProperties")
+	return &BatchPayloadExec{exec}
+}
+
+type PropertyUpsertParams struct {
+	Where  PropertyWhereUniqueInput `json:"where"`
+	Create PropertyCreateInput      `json:"create"`
+	Update PropertyUpdateInput      `json:"update"`
+}
+
+func (client *Client) UpsertProperty(params PropertyUpsertParams) *PropertyExec {
+	uparams := &prisma.UpsertParams{
+		Where:  params.Where,
+		Create: params.Create,
+		Update: params.Update,
+	}
+	ret := client.Client.Upsert(
+		uparams,
+		[4]string{"PropertyWhereUniqueInput!", "PropertyCreateInput!", "PropertyUpdateInput!", "Property"},
+		"upsertProperty",
+		[]string{"id", "displayname", "address1", "address2", "postcode", "city", "country", "percentageofownership", "status", "purchaseprice", "currentprice", "currency"})
+
+	return &PropertyExec{ret}
+}
+
+func (client *Client) DeleteProperty(params PropertyWhereUniqueInput) *PropertyExec {
+	ret := client.Client.Delete(
+		params,
+		[2]string{"PropertyWhereUniqueInput!", "Property"},
+		"deleteProperty",
+		[]string{"id", "displayname", "address1", "address2", "postcode", "city", "country", "percentageofownership", "status", "purchaseprice", "currentprice", "currency"})
+
+	return &PropertyExec{ret}
+}
+
+func (client *Client) DeleteManyProperties(params *PropertyWhereInput) *BatchPayloadExec {
+	exec := client.Client.DeleteMany(params, "PropertyWhereInput", "deleteManyProperties")
+	return &BatchPayloadExec{exec}
+}
+
+func (client *Client) CreateTenant(params TenantCreateInput) *TenantExec {
+	ret := client.Client.Create(
+		params,
+		[2]string{"TenantCreateInput!", "Tenant"},
+		"createTenant",
+		[]string{"id", "firstName", "lastName", "email", "homenumber", "mobilenumber"})
+
+	return &TenantExec{ret}
+}
+
+type TenantUpdateParams struct {
+	Data  TenantUpdateInput      `json:"data"`
+	Where TenantWhereUniqueInput `json:"where"`
+}
+
+func (client *Client) UpdateTenant(params TenantUpdateParams) *TenantExec {
+	ret := client.Client.Update(
+		prisma.UpdateParams{
+			Data:  params.Data,
+			Where: params.Where,
+		},
+		[3]string{"TenantUpdateInput!", "TenantWhereUniqueInput!", "Tenant"},
+		"updateTenant",
+		[]string{"id", "firstName", "lastName", "email", "homenumber", "mobilenumber"})
+
+	return &TenantExec{ret}
+}
+
+type TenantUpdateManyParams struct {
+	Data  TenantUpdateManyMutationInput `json:"data"`
+	Where *TenantWhereInput             `json:"where,omitempty"`
+}
+
+func (client *Client) UpdateManyTenants(params TenantUpdateManyParams) *BatchPayloadExec {
+	exec := client.Client.UpdateMany(
+		prisma.UpdateParams{
+			Data:  params.Data,
+			Where: params.Where,
+		},
+		[2]string{"TenantUpdateManyMutationInput!", "TenantWhereInput"},
+		"updateManyTenants")
+	return &BatchPayloadExec{exec}
+}
+
+type TenantUpsertParams struct {
+	Where  TenantWhereUniqueInput `json:"where"`
+	Create TenantCreateInput      `json:"create"`
+	Update TenantUpdateInput      `json:"update"`
+}
+
+func (client *Client) UpsertTenant(params TenantUpsertParams) *TenantExec {
+	uparams := &prisma.UpsertParams{
+		Where:  params.Where,
+		Create: params.Create,
+		Update: params.Update,
+	}
+	ret := client.Client.Upsert(
+		uparams,
+		[4]string{"TenantWhereUniqueInput!", "TenantCreateInput!", "TenantUpdateInput!", "Tenant"},
+		"upsertTenant",
+		[]string{"id", "firstName", "lastName", "email", "homenumber", "mobilenumber"})
+
+	return &TenantExec{ret}
+}
+
+func (client *Client) DeleteTenant(params TenantWhereUniqueInput) *TenantExec {
+	ret := client.Client.Delete(
+		params,
+		[2]string{"TenantWhereUniqueInput!", "Tenant"},
+		"deleteTenant",
+		[]string{"id", "firstName", "lastName", "email", "homenumber", "mobilenumber"})
+
+	return &TenantExec{ret}
+}
+
+func (client *Client) DeleteManyTenants(params *TenantWhereInput) *BatchPayloadExec {
+	exec := client.Client.DeleteMany(params, "TenantWhereInput", "deleteManyTenants")
+	return &BatchPayloadExec{exec}
+}
+
 type LandlordOrderByInput string
 
 const (
@@ -365,10 +643,14 @@ const (
 	LandlordOrderByInputPostcodeDesc   LandlordOrderByInput = "postcode_DESC"
 	LandlordOrderByInputCountryAsc     LandlordOrderByInput = "country_ASC"
 	LandlordOrderByInputCountryDesc    LandlordOrderByInput = "country_DESC"
-	LandlordOrderByInputCreatedAtAsc   LandlordOrderByInput = "createdAt_ASC"
-	LandlordOrderByInputCreatedAtDesc  LandlordOrderByInput = "createdAt_DESC"
-	LandlordOrderByInputUpdatedAtAsc   LandlordOrderByInput = "updatedAt_ASC"
-	LandlordOrderByInputUpdatedAtDesc  LandlordOrderByInput = "updatedAt_DESC"
+)
+
+type MutationType string
+
+const (
+	MutationTypeCreated MutationType = "CREATED"
+	MutationTypeUpdated MutationType = "UPDATED"
+	MutationTypeDeleted MutationType = "DELETED"
 )
 
 type AgentOrderByInput string
@@ -404,30 +686,67 @@ const (
 	AgentOrderByInputCountryDesc         AgentOrderByInput = "country_DESC"
 	AgentOrderByInputWebsiteAsc          AgentOrderByInput = "website_ASC"
 	AgentOrderByInputWebsiteDesc         AgentOrderByInput = "website_DESC"
-	AgentOrderByInputCreatedAtAsc        AgentOrderByInput = "createdAt_ASC"
-	AgentOrderByInputCreatedAtDesc       AgentOrderByInput = "createdAt_DESC"
-	AgentOrderByInputUpdatedAtAsc        AgentOrderByInput = "updatedAt_ASC"
-	AgentOrderByInputUpdatedAtDesc       AgentOrderByInput = "updatedAt_DESC"
 )
 
-type MutationType string
+type TenantOrderByInput string
 
 const (
-	MutationTypeCreated MutationType = "CREATED"
-	MutationTypeUpdated MutationType = "UPDATED"
-	MutationTypeDeleted MutationType = "DELETED"
+	TenantOrderByInputIDAsc            TenantOrderByInput = "id_ASC"
+	TenantOrderByInputIDDesc           TenantOrderByInput = "id_DESC"
+	TenantOrderByInputFirstNameAsc     TenantOrderByInput = "firstName_ASC"
+	TenantOrderByInputFirstNameDesc    TenantOrderByInput = "firstName_DESC"
+	TenantOrderByInputLastNameAsc      TenantOrderByInput = "lastName_ASC"
+	TenantOrderByInputLastNameDesc     TenantOrderByInput = "lastName_DESC"
+	TenantOrderByInputEmailAsc         TenantOrderByInput = "email_ASC"
+	TenantOrderByInputEmailDesc        TenantOrderByInput = "email_DESC"
+	TenantOrderByInputHomenumberAsc    TenantOrderByInput = "homenumber_ASC"
+	TenantOrderByInputHomenumberDesc   TenantOrderByInput = "homenumber_DESC"
+	TenantOrderByInputMobilenumberAsc  TenantOrderByInput = "mobilenumber_ASC"
+	TenantOrderByInputMobilenumberDesc TenantOrderByInput = "mobilenumber_DESC"
 )
 
-type LandlordUpdateManyWithoutAgentInput struct {
-	Create     []LandlordCreateWithoutAgentInput                `json:"create,omitempty"`
-	Delete     []LandlordWhereUniqueInput                       `json:"delete,omitempty"`
-	Connect    []LandlordWhereUniqueInput                       `json:"connect,omitempty"`
-	Set        []LandlordWhereUniqueInput                       `json:"set,omitempty"`
-	Disconnect []LandlordWhereUniqueInput                       `json:"disconnect,omitempty"`
-	Update     []LandlordUpdateWithWhereUniqueWithoutAgentInput `json:"update,omitempty"`
-	Upsert     []LandlordUpsertWithWhereUniqueWithoutAgentInput `json:"upsert,omitempty"`
-	DeleteMany []LandlordScalarWhereInput                       `json:"deleteMany,omitempty"`
-	UpdateMany []LandlordUpdateManyWithWhereNestedInput         `json:"updateMany,omitempty"`
+type PropertyOrderByInput string
+
+const (
+	PropertyOrderByInputIDAsc                     PropertyOrderByInput = "id_ASC"
+	PropertyOrderByInputIDDesc                    PropertyOrderByInput = "id_DESC"
+	PropertyOrderByInputDisplaynameAsc            PropertyOrderByInput = "displayname_ASC"
+	PropertyOrderByInputDisplaynameDesc           PropertyOrderByInput = "displayname_DESC"
+	PropertyOrderByInputAddress1Asc               PropertyOrderByInput = "address1_ASC"
+	PropertyOrderByInputAddress1Desc              PropertyOrderByInput = "address1_DESC"
+	PropertyOrderByInputAddress2Asc               PropertyOrderByInput = "address2_ASC"
+	PropertyOrderByInputAddress2Desc              PropertyOrderByInput = "address2_DESC"
+	PropertyOrderByInputPostcodeAsc               PropertyOrderByInput = "postcode_ASC"
+	PropertyOrderByInputPostcodeDesc              PropertyOrderByInput = "postcode_DESC"
+	PropertyOrderByInputCityAsc                   PropertyOrderByInput = "city_ASC"
+	PropertyOrderByInputCityDesc                  PropertyOrderByInput = "city_DESC"
+	PropertyOrderByInputCountryAsc                PropertyOrderByInput = "country_ASC"
+	PropertyOrderByInputCountryDesc               PropertyOrderByInput = "country_DESC"
+	PropertyOrderByInputPercentageofownershipAsc  PropertyOrderByInput = "percentageofownership_ASC"
+	PropertyOrderByInputPercentageofownershipDesc PropertyOrderByInput = "percentageofownership_DESC"
+	PropertyOrderByInputStatusAsc                 PropertyOrderByInput = "status_ASC"
+	PropertyOrderByInputStatusDesc                PropertyOrderByInput = "status_DESC"
+	PropertyOrderByInputPurchasepriceAsc          PropertyOrderByInput = "purchaseprice_ASC"
+	PropertyOrderByInputPurchasepriceDesc         PropertyOrderByInput = "purchaseprice_DESC"
+	PropertyOrderByInputCurrentpriceAsc           PropertyOrderByInput = "currentprice_ASC"
+	PropertyOrderByInputCurrentpriceDesc          PropertyOrderByInput = "currentprice_DESC"
+	PropertyOrderByInputCurrencyAsc               PropertyOrderByInput = "currency_ASC"
+	PropertyOrderByInputCurrencyDesc              PropertyOrderByInput = "currency_DESC"
+)
+
+type TenantUpdateManyWithWhereNestedInput struct {
+	Where TenantScalarWhereInput    `json:"where"`
+	Data  TenantUpdateManyDataInput `json:"data"`
+}
+
+type TenantUpdateWithWhereUniqueWithoutPropertyInput struct {
+	Where TenantWhereUniqueInput               `json:"where"`
+	Data  TenantUpdateWithoutPropertyDataInput `json:"data"`
+}
+
+type LandlordCreateManyWithoutAgentInput struct {
+	Create  []LandlordCreateWithoutAgentInput `json:"create,omitempty"`
+	Connect []LandlordWhereUniqueInput        `json:"connect,omitempty"`
 }
 
 type AgentWhereUniqueInput struct {
@@ -435,172 +754,17 @@ type AgentWhereUniqueInput struct {
 	Email *string `json:"email,omitempty"`
 }
 
-type LandlordUpdateWithoutAgentDataInput struct {
-	FullName   *string `json:"fullName,omitempty"`
-	Email      *string `json:"email,omitempty"`
+type LandlordCreateWithoutAgentInput struct {
+	FullName   string  `json:"fullName"`
+	Email      string  `json:"email"`
 	Password   *string `json:"password,omitempty"`
 	Mobile     *int32  `json:"mobile,omitempty"`
 	Dob        *string `json:"dob,omitempty"`
 	Occupation *string `json:"occupation,omitempty"`
 	Address1   *string `json:"address1,omitempty"`
 	Address2   *string `json:"address2,omitempty"`
-	Postcode   *string `json:"postcode,omitempty"`
-	Country    *string `json:"country,omitempty"`
-}
-
-type LandlordWhereInput struct {
-	ID                      *string              `json:"id,omitempty"`
-	IDNot                   *string              `json:"id_not,omitempty"`
-	IDIn                    []string             `json:"id_in,omitempty"`
-	IDNotIn                 []string             `json:"id_not_in,omitempty"`
-	IDLt                    *string              `json:"id_lt,omitempty"`
-	IDLte                   *string              `json:"id_lte,omitempty"`
-	IDGt                    *string              `json:"id_gt,omitempty"`
-	IDGte                   *string              `json:"id_gte,omitempty"`
-	IDContains              *string              `json:"id_contains,omitempty"`
-	IDNotContains           *string              `json:"id_not_contains,omitempty"`
-	IDStartsWith            *string              `json:"id_starts_with,omitempty"`
-	IDNotStartsWith         *string              `json:"id_not_starts_with,omitempty"`
-	IDEndsWith              *string              `json:"id_ends_with,omitempty"`
-	IDNotEndsWith           *string              `json:"id_not_ends_with,omitempty"`
-	FullName                *string              `json:"fullName,omitempty"`
-	FullNameNot             *string              `json:"fullName_not,omitempty"`
-	FullNameIn              []string             `json:"fullName_in,omitempty"`
-	FullNameNotIn           []string             `json:"fullName_not_in,omitempty"`
-	FullNameLt              *string              `json:"fullName_lt,omitempty"`
-	FullNameLte             *string              `json:"fullName_lte,omitempty"`
-	FullNameGt              *string              `json:"fullName_gt,omitempty"`
-	FullNameGte             *string              `json:"fullName_gte,omitempty"`
-	FullNameContains        *string              `json:"fullName_contains,omitempty"`
-	FullNameNotContains     *string              `json:"fullName_not_contains,omitempty"`
-	FullNameStartsWith      *string              `json:"fullName_starts_with,omitempty"`
-	FullNameNotStartsWith   *string              `json:"fullName_not_starts_with,omitempty"`
-	FullNameEndsWith        *string              `json:"fullName_ends_with,omitempty"`
-	FullNameNotEndsWith     *string              `json:"fullName_not_ends_with,omitempty"`
-	Email                   *string              `json:"email,omitempty"`
-	EmailNot                *string              `json:"email_not,omitempty"`
-	EmailIn                 []string             `json:"email_in,omitempty"`
-	EmailNotIn              []string             `json:"email_not_in,omitempty"`
-	EmailLt                 *string              `json:"email_lt,omitempty"`
-	EmailLte                *string              `json:"email_lte,omitempty"`
-	EmailGt                 *string              `json:"email_gt,omitempty"`
-	EmailGte                *string              `json:"email_gte,omitempty"`
-	EmailContains           *string              `json:"email_contains,omitempty"`
-	EmailNotContains        *string              `json:"email_not_contains,omitempty"`
-	EmailStartsWith         *string              `json:"email_starts_with,omitempty"`
-	EmailNotStartsWith      *string              `json:"email_not_starts_with,omitempty"`
-	EmailEndsWith           *string              `json:"email_ends_with,omitempty"`
-	EmailNotEndsWith        *string              `json:"email_not_ends_with,omitempty"`
-	Password                *string              `json:"password,omitempty"`
-	PasswordNot             *string              `json:"password_not,omitempty"`
-	PasswordIn              []string             `json:"password_in,omitempty"`
-	PasswordNotIn           []string             `json:"password_not_in,omitempty"`
-	PasswordLt              *string              `json:"password_lt,omitempty"`
-	PasswordLte             *string              `json:"password_lte,omitempty"`
-	PasswordGt              *string              `json:"password_gt,omitempty"`
-	PasswordGte             *string              `json:"password_gte,omitempty"`
-	PasswordContains        *string              `json:"password_contains,omitempty"`
-	PasswordNotContains     *string              `json:"password_not_contains,omitempty"`
-	PasswordStartsWith      *string              `json:"password_starts_with,omitempty"`
-	PasswordNotStartsWith   *string              `json:"password_not_starts_with,omitempty"`
-	PasswordEndsWith        *string              `json:"password_ends_with,omitempty"`
-	PasswordNotEndsWith     *string              `json:"password_not_ends_with,omitempty"`
-	Mobile                  *int32               `json:"mobile,omitempty"`
-	MobileNot               *int32               `json:"mobile_not,omitempty"`
-	MobileIn                []int32              `json:"mobile_in,omitempty"`
-	MobileNotIn             []int32              `json:"mobile_not_in,omitempty"`
-	MobileLt                *int32               `json:"mobile_lt,omitempty"`
-	MobileLte               *int32               `json:"mobile_lte,omitempty"`
-	MobileGt                *int32               `json:"mobile_gt,omitempty"`
-	MobileGte               *int32               `json:"mobile_gte,omitempty"`
-	Dob                     *string              `json:"dob,omitempty"`
-	DobNot                  *string              `json:"dob_not,omitempty"`
-	DobIn                   []string             `json:"dob_in,omitempty"`
-	DobNotIn                []string             `json:"dob_not_in,omitempty"`
-	DobLt                   *string              `json:"dob_lt,omitempty"`
-	DobLte                  *string              `json:"dob_lte,omitempty"`
-	DobGt                   *string              `json:"dob_gt,omitempty"`
-	DobGte                  *string              `json:"dob_gte,omitempty"`
-	Occupation              *string              `json:"occupation,omitempty"`
-	OccupationNot           *string              `json:"occupation_not,omitempty"`
-	OccupationIn            []string             `json:"occupation_in,omitempty"`
-	OccupationNotIn         []string             `json:"occupation_not_in,omitempty"`
-	OccupationLt            *string              `json:"occupation_lt,omitempty"`
-	OccupationLte           *string              `json:"occupation_lte,omitempty"`
-	OccupationGt            *string              `json:"occupation_gt,omitempty"`
-	OccupationGte           *string              `json:"occupation_gte,omitempty"`
-	OccupationContains      *string              `json:"occupation_contains,omitempty"`
-	OccupationNotContains   *string              `json:"occupation_not_contains,omitempty"`
-	OccupationStartsWith    *string              `json:"occupation_starts_with,omitempty"`
-	OccupationNotStartsWith *string              `json:"occupation_not_starts_with,omitempty"`
-	OccupationEndsWith      *string              `json:"occupation_ends_with,omitempty"`
-	OccupationNotEndsWith   *string              `json:"occupation_not_ends_with,omitempty"`
-	Address1                *string              `json:"address1,omitempty"`
-	Address1Not             *string              `json:"address1_not,omitempty"`
-	Address1In              []string             `json:"address1_in,omitempty"`
-	Address1NotIn           []string             `json:"address1_not_in,omitempty"`
-	Address1Lt              *string              `json:"address1_lt,omitempty"`
-	Address1Lte             *string              `json:"address1_lte,omitempty"`
-	Address1Gt              *string              `json:"address1_gt,omitempty"`
-	Address1Gte             *string              `json:"address1_gte,omitempty"`
-	Address1Contains        *string              `json:"address1_contains,omitempty"`
-	Address1NotContains     *string              `json:"address1_not_contains,omitempty"`
-	Address1StartsWith      *string              `json:"address1_starts_with,omitempty"`
-	Address1NotStartsWith   *string              `json:"address1_not_starts_with,omitempty"`
-	Address1EndsWith        *string              `json:"address1_ends_with,omitempty"`
-	Address1NotEndsWith     *string              `json:"address1_not_ends_with,omitempty"`
-	Address2                *string              `json:"address2,omitempty"`
-	Address2Not             *string              `json:"address2_not,omitempty"`
-	Address2In              []string             `json:"address2_in,omitempty"`
-	Address2NotIn           []string             `json:"address2_not_in,omitempty"`
-	Address2Lt              *string              `json:"address2_lt,omitempty"`
-	Address2Lte             *string              `json:"address2_lte,omitempty"`
-	Address2Gt              *string              `json:"address2_gt,omitempty"`
-	Address2Gte             *string              `json:"address2_gte,omitempty"`
-	Address2Contains        *string              `json:"address2_contains,omitempty"`
-	Address2NotContains     *string              `json:"address2_not_contains,omitempty"`
-	Address2StartsWith      *string              `json:"address2_starts_with,omitempty"`
-	Address2NotStartsWith   *string              `json:"address2_not_starts_with,omitempty"`
-	Address2EndsWith        *string              `json:"address2_ends_with,omitempty"`
-	Address2NotEndsWith     *string              `json:"address2_not_ends_with,omitempty"`
-	Postcode                *string              `json:"postcode,omitempty"`
-	PostcodeNot             *string              `json:"postcode_not,omitempty"`
-	PostcodeIn              []string             `json:"postcode_in,omitempty"`
-	PostcodeNotIn           []string             `json:"postcode_not_in,omitempty"`
-	PostcodeLt              *string              `json:"postcode_lt,omitempty"`
-	PostcodeLte             *string              `json:"postcode_lte,omitempty"`
-	PostcodeGt              *string              `json:"postcode_gt,omitempty"`
-	PostcodeGte             *string              `json:"postcode_gte,omitempty"`
-	PostcodeContains        *string              `json:"postcode_contains,omitempty"`
-	PostcodeNotContains     *string              `json:"postcode_not_contains,omitempty"`
-	PostcodeStartsWith      *string              `json:"postcode_starts_with,omitempty"`
-	PostcodeNotStartsWith   *string              `json:"postcode_not_starts_with,omitempty"`
-	PostcodeEndsWith        *string              `json:"postcode_ends_with,omitempty"`
-	PostcodeNotEndsWith     *string              `json:"postcode_not_ends_with,omitempty"`
-	Country                 *string              `json:"country,omitempty"`
-	CountryNot              *string              `json:"country_not,omitempty"`
-	CountryIn               []string             `json:"country_in,omitempty"`
-	CountryNotIn            []string             `json:"country_not_in,omitempty"`
-	CountryLt               *string              `json:"country_lt,omitempty"`
-	CountryLte              *string              `json:"country_lte,omitempty"`
-	CountryGt               *string              `json:"country_gt,omitempty"`
-	CountryGte              *string              `json:"country_gte,omitempty"`
-	CountryContains         *string              `json:"country_contains,omitempty"`
-	CountryNotContains      *string              `json:"country_not_contains,omitempty"`
-	CountryStartsWith       *string              `json:"country_starts_with,omitempty"`
-	CountryNotStartsWith    *string              `json:"country_not_starts_with,omitempty"`
-	CountryEndsWith         *string              `json:"country_ends_with,omitempty"`
-	CountryNotEndsWith      *string              `json:"country_not_ends_with,omitempty"`
-	Agent                   *AgentWhereInput     `json:"agent,omitempty"`
-	And                     []LandlordWhereInput `json:"AND,omitempty"`
-	Or                      []LandlordWhereInput `json:"OR,omitempty"`
-	Not                     []LandlordWhereInput `json:"NOT,omitempty"`
-}
-
-type LandlordUpsertWithWhereUniqueWithoutAgentInput struct {
-	Where  LandlordWhereUniqueInput            `json:"where"`
-	Update LandlordUpdateWithoutAgentDataInput `json:"update"`
-	Create LandlordCreateWithoutAgentInput     `json:"create"`
+	Postcode   string  `json:"postcode"`
+	Country    string  `json:"country"`
 }
 
 type AgentWhereInput struct {
@@ -810,9 +974,231 @@ type AgentWhereInput struct {
 	Not                          []AgentWhereInput   `json:"NOT,omitempty"`
 }
 
-type LandlordUpdateManyWithWhereNestedInput struct {
-	Where LandlordScalarWhereInput    `json:"where"`
-	Data  LandlordUpdateManyDataInput `json:"data"`
+type AgentUpdateInput struct {
+	BusinessService *string                              `json:"businessService,omitempty"`
+	Title           *string                              `json:"title,omitempty"`
+	FirstName       *string                              `json:"firstName,omitempty"`
+	LastName        *string                              `json:"lastName,omitempty"`
+	DisplayName     *string                              `json:"displayName,omitempty"`
+	Email           *string                              `json:"email,omitempty"`
+	Password        *string                              `json:"password,omitempty"`
+	Mobile          *int32                               `json:"mobile,omitempty"`
+	Fax             *int32                               `json:"fax,omitempty"`
+	Address1        *string                              `json:"address1,omitempty"`
+	Address2        *string                              `json:"address2,omitempty"`
+	Postcode        *string                              `json:"postcode,omitempty"`
+	Country         *string                              `json:"country,omitempty"`
+	Website         *string                              `json:"website,omitempty"`
+	Clients         *LandlordUpdateManyWithoutAgentInput `json:"clients,omitempty"`
+}
+
+type LandlordWhereInput struct {
+	ID                      *string              `json:"id,omitempty"`
+	IDNot                   *string              `json:"id_not,omitempty"`
+	IDIn                    []string             `json:"id_in,omitempty"`
+	IDNotIn                 []string             `json:"id_not_in,omitempty"`
+	IDLt                    *string              `json:"id_lt,omitempty"`
+	IDLte                   *string              `json:"id_lte,omitempty"`
+	IDGt                    *string              `json:"id_gt,omitempty"`
+	IDGte                   *string              `json:"id_gte,omitempty"`
+	IDContains              *string              `json:"id_contains,omitempty"`
+	IDNotContains           *string              `json:"id_not_contains,omitempty"`
+	IDStartsWith            *string              `json:"id_starts_with,omitempty"`
+	IDNotStartsWith         *string              `json:"id_not_starts_with,omitempty"`
+	IDEndsWith              *string              `json:"id_ends_with,omitempty"`
+	IDNotEndsWith           *string              `json:"id_not_ends_with,omitempty"`
+	FullName                *string              `json:"fullName,omitempty"`
+	FullNameNot             *string              `json:"fullName_not,omitempty"`
+	FullNameIn              []string             `json:"fullName_in,omitempty"`
+	FullNameNotIn           []string             `json:"fullName_not_in,omitempty"`
+	FullNameLt              *string              `json:"fullName_lt,omitempty"`
+	FullNameLte             *string              `json:"fullName_lte,omitempty"`
+	FullNameGt              *string              `json:"fullName_gt,omitempty"`
+	FullNameGte             *string              `json:"fullName_gte,omitempty"`
+	FullNameContains        *string              `json:"fullName_contains,omitempty"`
+	FullNameNotContains     *string              `json:"fullName_not_contains,omitempty"`
+	FullNameStartsWith      *string              `json:"fullName_starts_with,omitempty"`
+	FullNameNotStartsWith   *string              `json:"fullName_not_starts_with,omitempty"`
+	FullNameEndsWith        *string              `json:"fullName_ends_with,omitempty"`
+	FullNameNotEndsWith     *string              `json:"fullName_not_ends_with,omitempty"`
+	Email                   *string              `json:"email,omitempty"`
+	EmailNot                *string              `json:"email_not,omitempty"`
+	EmailIn                 []string             `json:"email_in,omitempty"`
+	EmailNotIn              []string             `json:"email_not_in,omitempty"`
+	EmailLt                 *string              `json:"email_lt,omitempty"`
+	EmailLte                *string              `json:"email_lte,omitempty"`
+	EmailGt                 *string              `json:"email_gt,omitempty"`
+	EmailGte                *string              `json:"email_gte,omitempty"`
+	EmailContains           *string              `json:"email_contains,omitempty"`
+	EmailNotContains        *string              `json:"email_not_contains,omitempty"`
+	EmailStartsWith         *string              `json:"email_starts_with,omitempty"`
+	EmailNotStartsWith      *string              `json:"email_not_starts_with,omitempty"`
+	EmailEndsWith           *string              `json:"email_ends_with,omitempty"`
+	EmailNotEndsWith        *string              `json:"email_not_ends_with,omitempty"`
+	Password                *string              `json:"password,omitempty"`
+	PasswordNot             *string              `json:"password_not,omitempty"`
+	PasswordIn              []string             `json:"password_in,omitempty"`
+	PasswordNotIn           []string             `json:"password_not_in,omitempty"`
+	PasswordLt              *string              `json:"password_lt,omitempty"`
+	PasswordLte             *string              `json:"password_lte,omitempty"`
+	PasswordGt              *string              `json:"password_gt,omitempty"`
+	PasswordGte             *string              `json:"password_gte,omitempty"`
+	PasswordContains        *string              `json:"password_contains,omitempty"`
+	PasswordNotContains     *string              `json:"password_not_contains,omitempty"`
+	PasswordStartsWith      *string              `json:"password_starts_with,omitempty"`
+	PasswordNotStartsWith   *string              `json:"password_not_starts_with,omitempty"`
+	PasswordEndsWith        *string              `json:"password_ends_with,omitempty"`
+	PasswordNotEndsWith     *string              `json:"password_not_ends_with,omitempty"`
+	Mobile                  *int32               `json:"mobile,omitempty"`
+	MobileNot               *int32               `json:"mobile_not,omitempty"`
+	MobileIn                []int32              `json:"mobile_in,omitempty"`
+	MobileNotIn             []int32              `json:"mobile_not_in,omitempty"`
+	MobileLt                *int32               `json:"mobile_lt,omitempty"`
+	MobileLte               *int32               `json:"mobile_lte,omitempty"`
+	MobileGt                *int32               `json:"mobile_gt,omitempty"`
+	MobileGte               *int32               `json:"mobile_gte,omitempty"`
+	Dob                     *string              `json:"dob,omitempty"`
+	DobNot                  *string              `json:"dob_not,omitempty"`
+	DobIn                   []string             `json:"dob_in,omitempty"`
+	DobNotIn                []string             `json:"dob_not_in,omitempty"`
+	DobLt                   *string              `json:"dob_lt,omitempty"`
+	DobLte                  *string              `json:"dob_lte,omitempty"`
+	DobGt                   *string              `json:"dob_gt,omitempty"`
+	DobGte                  *string              `json:"dob_gte,omitempty"`
+	Occupation              *string              `json:"occupation,omitempty"`
+	OccupationNot           *string              `json:"occupation_not,omitempty"`
+	OccupationIn            []string             `json:"occupation_in,omitempty"`
+	OccupationNotIn         []string             `json:"occupation_not_in,omitempty"`
+	OccupationLt            *string              `json:"occupation_lt,omitempty"`
+	OccupationLte           *string              `json:"occupation_lte,omitempty"`
+	OccupationGt            *string              `json:"occupation_gt,omitempty"`
+	OccupationGte           *string              `json:"occupation_gte,omitempty"`
+	OccupationContains      *string              `json:"occupation_contains,omitempty"`
+	OccupationNotContains   *string              `json:"occupation_not_contains,omitempty"`
+	OccupationStartsWith    *string              `json:"occupation_starts_with,omitempty"`
+	OccupationNotStartsWith *string              `json:"occupation_not_starts_with,omitempty"`
+	OccupationEndsWith      *string              `json:"occupation_ends_with,omitempty"`
+	OccupationNotEndsWith   *string              `json:"occupation_not_ends_with,omitempty"`
+	Address1                *string              `json:"address1,omitempty"`
+	Address1Not             *string              `json:"address1_not,omitempty"`
+	Address1In              []string             `json:"address1_in,omitempty"`
+	Address1NotIn           []string             `json:"address1_not_in,omitempty"`
+	Address1Lt              *string              `json:"address1_lt,omitempty"`
+	Address1Lte             *string              `json:"address1_lte,omitempty"`
+	Address1Gt              *string              `json:"address1_gt,omitempty"`
+	Address1Gte             *string              `json:"address1_gte,omitempty"`
+	Address1Contains        *string              `json:"address1_contains,omitempty"`
+	Address1NotContains     *string              `json:"address1_not_contains,omitempty"`
+	Address1StartsWith      *string              `json:"address1_starts_with,omitempty"`
+	Address1NotStartsWith   *string              `json:"address1_not_starts_with,omitempty"`
+	Address1EndsWith        *string              `json:"address1_ends_with,omitempty"`
+	Address1NotEndsWith     *string              `json:"address1_not_ends_with,omitempty"`
+	Address2                *string              `json:"address2,omitempty"`
+	Address2Not             *string              `json:"address2_not,omitempty"`
+	Address2In              []string             `json:"address2_in,omitempty"`
+	Address2NotIn           []string             `json:"address2_not_in,omitempty"`
+	Address2Lt              *string              `json:"address2_lt,omitempty"`
+	Address2Lte             *string              `json:"address2_lte,omitempty"`
+	Address2Gt              *string              `json:"address2_gt,omitempty"`
+	Address2Gte             *string              `json:"address2_gte,omitempty"`
+	Address2Contains        *string              `json:"address2_contains,omitempty"`
+	Address2NotContains     *string              `json:"address2_not_contains,omitempty"`
+	Address2StartsWith      *string              `json:"address2_starts_with,omitempty"`
+	Address2NotStartsWith   *string              `json:"address2_not_starts_with,omitempty"`
+	Address2EndsWith        *string              `json:"address2_ends_with,omitempty"`
+	Address2NotEndsWith     *string              `json:"address2_not_ends_with,omitempty"`
+	Postcode                *string              `json:"postcode,omitempty"`
+	PostcodeNot             *string              `json:"postcode_not,omitempty"`
+	PostcodeIn              []string             `json:"postcode_in,omitempty"`
+	PostcodeNotIn           []string             `json:"postcode_not_in,omitempty"`
+	PostcodeLt              *string              `json:"postcode_lt,omitempty"`
+	PostcodeLte             *string              `json:"postcode_lte,omitempty"`
+	PostcodeGt              *string              `json:"postcode_gt,omitempty"`
+	PostcodeGte             *string              `json:"postcode_gte,omitempty"`
+	PostcodeContains        *string              `json:"postcode_contains,omitempty"`
+	PostcodeNotContains     *string              `json:"postcode_not_contains,omitempty"`
+	PostcodeStartsWith      *string              `json:"postcode_starts_with,omitempty"`
+	PostcodeNotStartsWith   *string              `json:"postcode_not_starts_with,omitempty"`
+	PostcodeEndsWith        *string              `json:"postcode_ends_with,omitempty"`
+	PostcodeNotEndsWith     *string              `json:"postcode_not_ends_with,omitempty"`
+	Country                 *string              `json:"country,omitempty"`
+	CountryNot              *string              `json:"country_not,omitempty"`
+	CountryIn               []string             `json:"country_in,omitempty"`
+	CountryNotIn            []string             `json:"country_not_in,omitempty"`
+	CountryLt               *string              `json:"country_lt,omitempty"`
+	CountryLte              *string              `json:"country_lte,omitempty"`
+	CountryGt               *string              `json:"country_gt,omitempty"`
+	CountryGte              *string              `json:"country_gte,omitempty"`
+	CountryContains         *string              `json:"country_contains,omitempty"`
+	CountryNotContains      *string              `json:"country_not_contains,omitempty"`
+	CountryStartsWith       *string              `json:"country_starts_with,omitempty"`
+	CountryNotStartsWith    *string              `json:"country_not_starts_with,omitempty"`
+	CountryEndsWith         *string              `json:"country_ends_with,omitempty"`
+	CountryNotEndsWith      *string              `json:"country_not_ends_with,omitempty"`
+	Agent                   *AgentWhereInput     `json:"agent,omitempty"`
+	And                     []LandlordWhereInput `json:"AND,omitempty"`
+	Or                      []LandlordWhereInput `json:"OR,omitempty"`
+	Not                     []LandlordWhereInput `json:"NOT,omitempty"`
+}
+
+type LandlordUpdateManyWithoutAgentInput struct {
+	Create     []LandlordCreateWithoutAgentInput                `json:"create,omitempty"`
+	Delete     []LandlordWhereUniqueInput                       `json:"delete,omitempty"`
+	Connect    []LandlordWhereUniqueInput                       `json:"connect,omitempty"`
+	Set        []LandlordWhereUniqueInput                       `json:"set,omitempty"`
+	Disconnect []LandlordWhereUniqueInput                       `json:"disconnect,omitempty"`
+	Update     []LandlordUpdateWithWhereUniqueWithoutAgentInput `json:"update,omitempty"`
+	Upsert     []LandlordUpsertWithWhereUniqueWithoutAgentInput `json:"upsert,omitempty"`
+	DeleteMany []LandlordScalarWhereInput                       `json:"deleteMany,omitempty"`
+	UpdateMany []LandlordUpdateManyWithWhereNestedInput         `json:"updateMany,omitempty"`
+}
+
+type PropertyUpsertWithoutTenantsInput struct {
+	Update PropertyUpdateWithoutTenantsDataInput `json:"update"`
+	Create PropertyCreateWithoutTenantsInput     `json:"create"`
+}
+
+type LandlordUpdateWithWhereUniqueWithoutAgentInput struct {
+	Where LandlordWhereUniqueInput            `json:"where"`
+	Data  LandlordUpdateWithoutAgentDataInput `json:"data"`
+}
+
+type PropertyUpdateOneWithoutTenantsInput struct {
+	Create     *PropertyCreateWithoutTenantsInput     `json:"create,omitempty"`
+	Update     *PropertyUpdateWithoutTenantsDataInput `json:"update,omitempty"`
+	Upsert     *PropertyUpsertWithoutTenantsInput     `json:"upsert,omitempty"`
+	Delete     *bool                                  `json:"delete,omitempty"`
+	Disconnect *bool                                  `json:"disconnect,omitempty"`
+	Connect    *PropertyWhereUniqueInput              `json:"connect,omitempty"`
+}
+
+type LandlordUpdateWithoutAgentDataInput struct {
+	FullName   *string `json:"fullName,omitempty"`
+	Email      *string `json:"email,omitempty"`
+	Password   *string `json:"password,omitempty"`
+	Mobile     *int32  `json:"mobile,omitempty"`
+	Dob        *string `json:"dob,omitempty"`
+	Occupation *string `json:"occupation,omitempty"`
+	Address1   *string `json:"address1,omitempty"`
+	Address2   *string `json:"address2,omitempty"`
+	Postcode   *string `json:"postcode,omitempty"`
+	Country    *string `json:"country,omitempty"`
+}
+
+type LandlordWhereUniqueInput struct {
+	ID    *string `json:"id,omitempty"`
+	Email *string `json:"email,omitempty"`
+}
+
+type LandlordUpsertWithWhereUniqueWithoutAgentInput struct {
+	Where  LandlordWhereUniqueInput            `json:"where"`
+	Update LandlordUpdateWithoutAgentDataInput `json:"update"`
+	Create LandlordCreateWithoutAgentInput     `json:"create"`
+}
+
+type PropertyCreateOneWithoutTenantsInput struct {
+	Create  *PropertyCreateWithoutTenantsInput `json:"create,omitempty"`
+	Connect *PropertyWhereUniqueInput          `json:"connect,omitempty"`
 }
 
 type LandlordScalarWhereInput struct {
@@ -963,109 +1349,92 @@ type LandlordScalarWhereInput struct {
 	Not                     []LandlordScalarWhereInput `json:"NOT,omitempty"`
 }
 
-type AgentCreateInput struct {
-	BusinessService *string                              `json:"businessService,omitempty"`
-	Title           *string                              `json:"title,omitempty"`
-	FirstName       string                               `json:"firstName"`
-	LastName        *string                              `json:"lastName,omitempty"`
-	DisplayName     *string                              `json:"displayName,omitempty"`
-	Email           string                               `json:"email"`
-	Password        *string                              `json:"password,omitempty"`
-	Mobile          *int32                               `json:"mobile,omitempty"`
-	Fax             *int32                               `json:"fax,omitempty"`
-	Address1        *string                              `json:"address1,omitempty"`
-	Address2        *string                              `json:"address2,omitempty"`
-	Postcode        string                               `json:"postcode"`
-	Country         string                               `json:"country"`
-	Website         *string                              `json:"website,omitempty"`
-	Clients         *LandlordCreateManyWithoutAgentInput `json:"clients,omitempty"`
+type PropertyWhereUniqueInput struct {
+	ID *string `json:"id,omitempty"`
 }
 
-type AgentSubscriptionWhereInput struct {
-	MutationIn                 []MutationType                `json:"mutation_in,omitempty"`
-	UpdatedFieldsContains      *string                       `json:"updatedFields_contains,omitempty"`
-	UpdatedFieldsContainsEvery []string                      `json:"updatedFields_contains_every,omitempty"`
-	UpdatedFieldsContainsSome  []string                      `json:"updatedFields_contains_some,omitempty"`
-	Node                       *AgentWhereInput              `json:"node,omitempty"`
-	And                        []AgentSubscriptionWhereInput `json:"AND,omitempty"`
-	Or                         []AgentSubscriptionWhereInput `json:"OR,omitempty"`
-	Not                        []AgentSubscriptionWhereInput `json:"NOT,omitempty"`
+type LandlordUpdateManyWithWhereNestedInput struct {
+	Where LandlordScalarWhereInput    `json:"where"`
+	Data  LandlordUpdateManyDataInput `json:"data"`
 }
 
-type LandlordCreateManyWithoutAgentInput struct {
-	Create  []LandlordCreateWithoutAgentInput `json:"create,omitempty"`
-	Connect []LandlordWhereUniqueInput        `json:"connect,omitempty"`
-}
-
-type AgentUpsertWithoutClientsInput struct {
-	Update AgentUpdateWithoutClientsDataInput `json:"update"`
-	Create AgentCreateWithoutClientsInput     `json:"create"`
-}
-
-type LandlordCreateWithoutAgentInput struct {
-	FullName   string  `json:"fullName"`
-	Email      string  `json:"email"`
-	Password   *string `json:"password,omitempty"`
-	Mobile     *int32  `json:"mobile,omitempty"`
-	Dob        *string `json:"dob,omitempty"`
-	Occupation *string `json:"occupation,omitempty"`
-	Address1   *string `json:"address1,omitempty"`
-	Address2   *string `json:"address2,omitempty"`
-	Postcode   string  `json:"postcode"`
-	Country    string  `json:"country"`
-}
-
-type LandlordWhereUniqueInput struct {
-	ID    *string `json:"id,omitempty"`
-	Email *string `json:"email,omitempty"`
-}
-
-type AgentUpdateInput struct {
-	BusinessService *string                              `json:"businessService,omitempty"`
-	Title           *string                              `json:"title,omitempty"`
-	FirstName       *string                              `json:"firstName,omitempty"`
-	LastName        *string                              `json:"lastName,omitempty"`
-	DisplayName     *string                              `json:"displayName,omitempty"`
-	Email           *string                              `json:"email,omitempty"`
-	Password        *string                              `json:"password,omitempty"`
-	Mobile          *int32                               `json:"mobile,omitempty"`
-	Fax             *int32                               `json:"fax,omitempty"`
-	Address1        *string                              `json:"address1,omitempty"`
-	Address2        *string                              `json:"address2,omitempty"`
-	Postcode        *string                              `json:"postcode,omitempty"`
-	Country         *string                              `json:"country,omitempty"`
-	Website         *string                              `json:"website,omitempty"`
-	Clients         *LandlordUpdateManyWithoutAgentInput `json:"clients,omitempty"`
-}
-
-type LandlordUpdateInput struct {
-	FullName   *string                            `json:"fullName,omitempty"`
-	Email      *string                            `json:"email,omitempty"`
-	Password   *string                            `json:"password,omitempty"`
-	Mobile     *int32                             `json:"mobile,omitempty"`
-	Dob        *string                            `json:"dob,omitempty"`
-	Occupation *string                            `json:"occupation,omitempty"`
-	Address1   *string                            `json:"address1,omitempty"`
-	Address2   *string                            `json:"address2,omitempty"`
-	Postcode   *string                            `json:"postcode,omitempty"`
-	Country    *string                            `json:"country,omitempty"`
-	Agent      *AgentUpdateOneWithoutClientsInput `json:"agent,omitempty"`
-}
-
-type AgentCreateOneWithoutClientsInput struct {
-	Create  *AgentCreateWithoutClientsInput `json:"create,omitempty"`
-	Connect *AgentWhereUniqueInput          `json:"connect,omitempty"`
-}
-
-type LandlordSubscriptionWhereInput struct {
-	MutationIn                 []MutationType                   `json:"mutation_in,omitempty"`
-	UpdatedFieldsContains      *string                          `json:"updatedFields_contains,omitempty"`
-	UpdatedFieldsContainsEvery []string                         `json:"updatedFields_contains_every,omitempty"`
-	UpdatedFieldsContainsSome  []string                         `json:"updatedFields_contains_some,omitempty"`
-	Node                       *LandlordWhereInput              `json:"node,omitempty"`
-	And                        []LandlordSubscriptionWhereInput `json:"AND,omitempty"`
-	Or                         []LandlordSubscriptionWhereInput `json:"OR,omitempty"`
-	Not                        []LandlordSubscriptionWhereInput `json:"NOT,omitempty"`
+type TenantWhereInput struct {
+	ID                     *string             `json:"id,omitempty"`
+	IDNot                  *string             `json:"id_not,omitempty"`
+	IDIn                   []string            `json:"id_in,omitempty"`
+	IDNotIn                []string            `json:"id_not_in,omitempty"`
+	IDLt                   *string             `json:"id_lt,omitempty"`
+	IDLte                  *string             `json:"id_lte,omitempty"`
+	IDGt                   *string             `json:"id_gt,omitempty"`
+	IDGte                  *string             `json:"id_gte,omitempty"`
+	IDContains             *string             `json:"id_contains,omitempty"`
+	IDNotContains          *string             `json:"id_not_contains,omitempty"`
+	IDStartsWith           *string             `json:"id_starts_with,omitempty"`
+	IDNotStartsWith        *string             `json:"id_not_starts_with,omitempty"`
+	IDEndsWith             *string             `json:"id_ends_with,omitempty"`
+	IDNotEndsWith          *string             `json:"id_not_ends_with,omitempty"`
+	FirstName              *string             `json:"firstName,omitempty"`
+	FirstNameNot           *string             `json:"firstName_not,omitempty"`
+	FirstNameIn            []string            `json:"firstName_in,omitempty"`
+	FirstNameNotIn         []string            `json:"firstName_not_in,omitempty"`
+	FirstNameLt            *string             `json:"firstName_lt,omitempty"`
+	FirstNameLte           *string             `json:"firstName_lte,omitempty"`
+	FirstNameGt            *string             `json:"firstName_gt,omitempty"`
+	FirstNameGte           *string             `json:"firstName_gte,omitempty"`
+	FirstNameContains      *string             `json:"firstName_contains,omitempty"`
+	FirstNameNotContains   *string             `json:"firstName_not_contains,omitempty"`
+	FirstNameStartsWith    *string             `json:"firstName_starts_with,omitempty"`
+	FirstNameNotStartsWith *string             `json:"firstName_not_starts_with,omitempty"`
+	FirstNameEndsWith      *string             `json:"firstName_ends_with,omitempty"`
+	FirstNameNotEndsWith   *string             `json:"firstName_not_ends_with,omitempty"`
+	LastName               *string             `json:"lastName,omitempty"`
+	LastNameNot            *string             `json:"lastName_not,omitempty"`
+	LastNameIn             []string            `json:"lastName_in,omitempty"`
+	LastNameNotIn          []string            `json:"lastName_not_in,omitempty"`
+	LastNameLt             *string             `json:"lastName_lt,omitempty"`
+	LastNameLte            *string             `json:"lastName_lte,omitempty"`
+	LastNameGt             *string             `json:"lastName_gt,omitempty"`
+	LastNameGte            *string             `json:"lastName_gte,omitempty"`
+	LastNameContains       *string             `json:"lastName_contains,omitempty"`
+	LastNameNotContains    *string             `json:"lastName_not_contains,omitempty"`
+	LastNameStartsWith     *string             `json:"lastName_starts_with,omitempty"`
+	LastNameNotStartsWith  *string             `json:"lastName_not_starts_with,omitempty"`
+	LastNameEndsWith       *string             `json:"lastName_ends_with,omitempty"`
+	LastNameNotEndsWith    *string             `json:"lastName_not_ends_with,omitempty"`
+	Email                  *string             `json:"email,omitempty"`
+	EmailNot               *string             `json:"email_not,omitempty"`
+	EmailIn                []string            `json:"email_in,omitempty"`
+	EmailNotIn             []string            `json:"email_not_in,omitempty"`
+	EmailLt                *string             `json:"email_lt,omitempty"`
+	EmailLte               *string             `json:"email_lte,omitempty"`
+	EmailGt                *string             `json:"email_gt,omitempty"`
+	EmailGte               *string             `json:"email_gte,omitempty"`
+	EmailContains          *string             `json:"email_contains,omitempty"`
+	EmailNotContains       *string             `json:"email_not_contains,omitempty"`
+	EmailStartsWith        *string             `json:"email_starts_with,omitempty"`
+	EmailNotStartsWith     *string             `json:"email_not_starts_with,omitempty"`
+	EmailEndsWith          *string             `json:"email_ends_with,omitempty"`
+	EmailNotEndsWith       *string             `json:"email_not_ends_with,omitempty"`
+	Homenumber             *int32              `json:"homenumber,omitempty"`
+	HomenumberNot          *int32              `json:"homenumber_not,omitempty"`
+	HomenumberIn           []int32             `json:"homenumber_in,omitempty"`
+	HomenumberNotIn        []int32             `json:"homenumber_not_in,omitempty"`
+	HomenumberLt           *int32              `json:"homenumber_lt,omitempty"`
+	HomenumberLte          *int32              `json:"homenumber_lte,omitempty"`
+	HomenumberGt           *int32              `json:"homenumber_gt,omitempty"`
+	HomenumberGte          *int32              `json:"homenumber_gte,omitempty"`
+	Mobilenumber           *int32              `json:"mobilenumber,omitempty"`
+	MobilenumberNot        *int32              `json:"mobilenumber_not,omitempty"`
+	MobilenumberIn         []int32             `json:"mobilenumber_in,omitempty"`
+	MobilenumberNotIn      []int32             `json:"mobilenumber_not_in,omitempty"`
+	MobilenumberLt         *int32              `json:"mobilenumber_lt,omitempty"`
+	MobilenumberLte        *int32              `json:"mobilenumber_lte,omitempty"`
+	MobilenumberGt         *int32              `json:"mobilenumber_gt,omitempty"`
+	MobilenumberGte        *int32              `json:"mobilenumber_gte,omitempty"`
+	Property               *PropertyWhereInput `json:"property,omitempty"`
+	And                    []TenantWhereInput  `json:"AND,omitempty"`
+	Or                     []TenantWhereInput  `json:"OR,omitempty"`
+	Not                    []TenantWhereInput  `json:"NOT,omitempty"`
 }
 
 type LandlordUpdateManyDataInput struct {
@@ -1079,6 +1448,17 @@ type LandlordUpdateManyDataInput struct {
 	Address2   *string `json:"address2,omitempty"`
 	Postcode   *string `json:"postcode,omitempty"`
 	Country    *string `json:"country,omitempty"`
+}
+
+type LandlordSubscriptionWhereInput struct {
+	MutationIn                 []MutationType                   `json:"mutation_in,omitempty"`
+	UpdatedFieldsContains      *string                          `json:"updatedFields_contains,omitempty"`
+	UpdatedFieldsContainsEvery []string                         `json:"updatedFields_contains_every,omitempty"`
+	UpdatedFieldsContainsSome  []string                         `json:"updatedFields_contains_some,omitempty"`
+	Node                       *LandlordWhereInput              `json:"node,omitempty"`
+	And                        []LandlordSubscriptionWhereInput `json:"AND,omitempty"`
+	Or                         []LandlordSubscriptionWhereInput `json:"OR,omitempty"`
+	Not                        []LandlordSubscriptionWhereInput `json:"NOT,omitempty"`
 }
 
 type AgentUpdateManyMutationInput struct {
@@ -1098,6 +1478,41 @@ type AgentUpdateManyMutationInput struct {
 	Website         *string `json:"website,omitempty"`
 }
 
+type PropertySubscriptionWhereInput struct {
+	MutationIn                 []MutationType                   `json:"mutation_in,omitempty"`
+	UpdatedFieldsContains      *string                          `json:"updatedFields_contains,omitempty"`
+	UpdatedFieldsContainsEvery []string                         `json:"updatedFields_contains_every,omitempty"`
+	UpdatedFieldsContainsSome  []string                         `json:"updatedFields_contains_some,omitempty"`
+	Node                       *PropertyWhereInput              `json:"node,omitempty"`
+	And                        []PropertySubscriptionWhereInput `json:"AND,omitempty"`
+	Or                         []PropertySubscriptionWhereInput `json:"OR,omitempty"`
+	Not                        []PropertySubscriptionWhereInput `json:"NOT,omitempty"`
+}
+
+type TenantUpsertWithWhereUniqueWithoutPropertyInput struct {
+	Where  TenantWhereUniqueInput               `json:"where"`
+	Update TenantUpdateWithoutPropertyDataInput `json:"update"`
+	Create TenantCreateWithoutPropertyInput     `json:"create"`
+}
+
+type LandlordUpdateWithWhereUniqueNestedInput struct {
+	Where LandlordWhereUniqueInput `json:"where"`
+	Data  LandlordUpdateDataInput  `json:"data"`
+}
+
+type TenantUpdateWithoutPropertyDataInput struct {
+	FirstName    *string `json:"firstName,omitempty"`
+	LastName     *string `json:"lastName,omitempty"`
+	Email        *string `json:"email,omitempty"`
+	Homenumber   *int32  `json:"homenumber,omitempty"`
+	Mobilenumber *int32  `json:"mobilenumber,omitempty"`
+}
+
+type TenantWhereUniqueInput struct {
+	ID    *string `json:"id,omitempty"`
+	Email *string `json:"email,omitempty"`
+}
+
 type LandlordCreateInput struct {
 	FullName   string                             `json:"fullName"`
 	Email      string                             `json:"email"`
@@ -1112,22 +1527,31 @@ type LandlordCreateInput struct {
 	Agent      *AgentCreateOneWithoutClientsInput `json:"agent,omitempty"`
 }
 
-type LandlordUpdateWithWhereUniqueWithoutAgentInput struct {
-	Where LandlordWhereUniqueInput            `json:"where"`
-	Data  LandlordUpdateWithoutAgentDataInput `json:"data"`
+type TenantSubscriptionWhereInput struct {
+	MutationIn                 []MutationType                 `json:"mutation_in,omitempty"`
+	UpdatedFieldsContains      *string                        `json:"updatedFields_contains,omitempty"`
+	UpdatedFieldsContainsEvery []string                       `json:"updatedFields_contains_every,omitempty"`
+	UpdatedFieldsContainsSome  []string                       `json:"updatedFields_contains_some,omitempty"`
+	Node                       *TenantWhereInput              `json:"node,omitempty"`
+	And                        []TenantSubscriptionWhereInput `json:"AND,omitempty"`
+	Or                         []TenantSubscriptionWhereInput `json:"OR,omitempty"`
+	Not                        []TenantSubscriptionWhereInput `json:"NOT,omitempty"`
 }
 
-type LandlordUpdateManyMutationInput struct {
-	FullName   *string `json:"fullName,omitempty"`
-	Email      *string `json:"email,omitempty"`
-	Password   *string `json:"password,omitempty"`
-	Mobile     *int32  `json:"mobile,omitempty"`
-	Dob        *string `json:"dob,omitempty"`
-	Occupation *string `json:"occupation,omitempty"`
-	Address1   *string `json:"address1,omitempty"`
-	Address2   *string `json:"address2,omitempty"`
-	Postcode   *string `json:"postcode,omitempty"`
-	Country    *string `json:"country,omitempty"`
+type AgentCreateOneWithoutClientsInput struct {
+	Create  *AgentCreateWithoutClientsInput `json:"create,omitempty"`
+	Connect *AgentWhereUniqueInput          `json:"connect,omitempty"`
+}
+
+type AgentSubscriptionWhereInput struct {
+	MutationIn                 []MutationType                `json:"mutation_in,omitempty"`
+	UpdatedFieldsContains      *string                       `json:"updatedFields_contains,omitempty"`
+	UpdatedFieldsContainsEvery []string                      `json:"updatedFields_contains_every,omitempty"`
+	UpdatedFieldsContainsSome  []string                      `json:"updatedFields_contains_some,omitempty"`
+	Node                       *AgentWhereInput              `json:"node,omitempty"`
+	And                        []AgentSubscriptionWhereInput `json:"AND,omitempty"`
+	Or                         []AgentSubscriptionWhereInput `json:"OR,omitempty"`
+	Not                        []AgentSubscriptionWhereInput `json:"NOT,omitempty"`
 }
 
 type AgentCreateWithoutClientsInput struct {
@@ -1147,6 +1571,50 @@ type AgentCreateWithoutClientsInput struct {
 	Website         *string `json:"website,omitempty"`
 }
 
+type PropertyUpdateWithoutTenantsDataInput struct {
+	Displayname           *string                  `json:"displayname,omitempty"`
+	Address1              *string                  `json:"address1,omitempty"`
+	Address2              *string                  `json:"address2,omitempty"`
+	Postcode              *string                  `json:"postcode,omitempty"`
+	City                  *string                  `json:"city,omitempty"`
+	Country               *string                  `json:"country,omitempty"`
+	Percentageofownership *int32                   `json:"percentageofownership,omitempty"`
+	Status                *string                  `json:"status,omitempty"`
+	Purchaseprice         *int32                   `json:"purchaseprice,omitempty"`
+	Currentprice          *int32                   `json:"currentprice,omitempty"`
+	Currency              *string                  `json:"currency,omitempty"`
+	Landlords             *LandlordUpdateManyInput `json:"landlords,omitempty"`
+}
+
+type LandlordUpdateInput struct {
+	FullName   *string                            `json:"fullName,omitempty"`
+	Email      *string                            `json:"email,omitempty"`
+	Password   *string                            `json:"password,omitempty"`
+	Mobile     *int32                             `json:"mobile,omitempty"`
+	Dob        *string                            `json:"dob,omitempty"`
+	Occupation *string                            `json:"occupation,omitempty"`
+	Address1   *string                            `json:"address1,omitempty"`
+	Address2   *string                            `json:"address2,omitempty"`
+	Postcode   *string                            `json:"postcode,omitempty"`
+	Country    *string                            `json:"country,omitempty"`
+	Agent      *AgentUpdateOneWithoutClientsInput `json:"agent,omitempty"`
+}
+
+type PropertyCreateWithoutTenantsInput struct {
+	Displayname           *string                  `json:"displayname,omitempty"`
+	Address1              string                   `json:"address1"`
+	Address2              *string                  `json:"address2,omitempty"`
+	Postcode              string                   `json:"postcode"`
+	City                  string                   `json:"city"`
+	Country               string                   `json:"country"`
+	Percentageofownership *int32                   `json:"percentageofownership,omitempty"`
+	Status                string                   `json:"status"`
+	Purchaseprice         *int32                   `json:"purchaseprice,omitempty"`
+	Currentprice          *int32                   `json:"currentprice,omitempty"`
+	Currency              *string                  `json:"currency,omitempty"`
+	Landlords             *LandlordCreateManyInput `json:"landlords,omitempty"`
+}
+
 type AgentUpdateOneWithoutClientsInput struct {
 	Create     *AgentCreateWithoutClientsInput     `json:"create,omitempty"`
 	Update     *AgentUpdateWithoutClientsDataInput `json:"update,omitempty"`
@@ -1154,6 +1622,20 @@ type AgentUpdateOneWithoutClientsInput struct {
 	Delete     *bool                               `json:"delete,omitempty"`
 	Disconnect *bool                               `json:"disconnect,omitempty"`
 	Connect    *AgentWhereUniqueInput              `json:"connect,omitempty"`
+}
+
+type PropertyUpdateManyMutationInput struct {
+	Displayname           *string `json:"displayname,omitempty"`
+	Address1              *string `json:"address1,omitempty"`
+	Address2              *string `json:"address2,omitempty"`
+	Postcode              *string `json:"postcode,omitempty"`
+	City                  *string `json:"city,omitempty"`
+	Country               *string `json:"country,omitempty"`
+	Percentageofownership *int32  `json:"percentageofownership,omitempty"`
+	Status                *string `json:"status,omitempty"`
+	Purchaseprice         *int32  `json:"purchaseprice,omitempty"`
+	Currentprice          *int32  `json:"currentprice,omitempty"`
+	Currency              *string `json:"currency,omitempty"`
 }
 
 type AgentUpdateWithoutClientsDataInput struct {
@@ -1173,148 +1655,408 @@ type AgentUpdateWithoutClientsDataInput struct {
 	Website         *string `json:"website,omitempty"`
 }
 
-type LandlordPreviousValuesExec struct {
-	exec *prisma.Exec
+type LandlordUpsertWithWhereUniqueNestedInput struct {
+	Where  LandlordWhereUniqueInput `json:"where"`
+	Update LandlordUpdateDataInput  `json:"update"`
+	Create LandlordCreateInput      `json:"create"`
 }
 
-func (instance LandlordPreviousValuesExec) Exec(ctx context.Context) (*LandlordPreviousValues, error) {
-	var v LandlordPreviousValues
-	ok, err := instance.exec.Exec(ctx, &v)
-	if err != nil {
-		return nil, err
-	}
-	if !ok {
-		return nil, ErrNoResult
-	}
-	return &v, nil
+type AgentUpsertWithoutClientsInput struct {
+	Update AgentUpdateWithoutClientsDataInput `json:"update"`
+	Create AgentCreateWithoutClientsInput     `json:"create"`
 }
 
-func (instance LandlordPreviousValuesExec) Exists(ctx context.Context) (bool, error) {
-	return instance.exec.Exists(ctx)
+type LandlordUpdateManyInput struct {
+	Create     []LandlordCreateInput                      `json:"create,omitempty"`
+	Update     []LandlordUpdateWithWhereUniqueNestedInput `json:"update,omitempty"`
+	Upsert     []LandlordUpsertWithWhereUniqueNestedInput `json:"upsert,omitempty"`
+	Delete     []LandlordWhereUniqueInput                 `json:"delete,omitempty"`
+	Connect    []LandlordWhereUniqueInput                 `json:"connect,omitempty"`
+	Set        []LandlordWhereUniqueInput                 `json:"set,omitempty"`
+	Disconnect []LandlordWhereUniqueInput                 `json:"disconnect,omitempty"`
+	DeleteMany []LandlordScalarWhereInput                 `json:"deleteMany,omitempty"`
+	UpdateMany []LandlordUpdateManyWithWhereNestedInput   `json:"updateMany,omitempty"`
 }
 
-type LandlordPreviousValuesExecArray struct {
-	exec *prisma.Exec
-}
-
-func (instance LandlordPreviousValuesExecArray) Exec(ctx context.Context) ([]LandlordPreviousValues, error) {
-	var v []LandlordPreviousValues
-	err := instance.exec.ExecArray(ctx, &v)
-	return v, err
-}
-
-type LandlordPreviousValues struct {
-	ID         string  `json:"id"`
-	FullName   string  `json:"fullName"`
-	Email      string  `json:"email"`
+type LandlordUpdateManyMutationInput struct {
+	FullName   *string `json:"fullName,omitempty"`
+	Email      *string `json:"email,omitempty"`
 	Password   *string `json:"password,omitempty"`
 	Mobile     *int32  `json:"mobile,omitempty"`
 	Dob        *string `json:"dob,omitempty"`
 	Occupation *string `json:"occupation,omitempty"`
 	Address1   *string `json:"address1,omitempty"`
 	Address2   *string `json:"address2,omitempty"`
-	Postcode   string  `json:"postcode"`
-	Country    string  `json:"country"`
+	Postcode   *string `json:"postcode,omitempty"`
+	Country    *string `json:"country,omitempty"`
 }
 
-type LandlordExec struct {
-	exec *prisma.Exec
+type TenantScalarWhereInput struct {
+	ID                     *string                  `json:"id,omitempty"`
+	IDNot                  *string                  `json:"id_not,omitempty"`
+	IDIn                   []string                 `json:"id_in,omitempty"`
+	IDNotIn                []string                 `json:"id_not_in,omitempty"`
+	IDLt                   *string                  `json:"id_lt,omitempty"`
+	IDLte                  *string                  `json:"id_lte,omitempty"`
+	IDGt                   *string                  `json:"id_gt,omitempty"`
+	IDGte                  *string                  `json:"id_gte,omitempty"`
+	IDContains             *string                  `json:"id_contains,omitempty"`
+	IDNotContains          *string                  `json:"id_not_contains,omitempty"`
+	IDStartsWith           *string                  `json:"id_starts_with,omitempty"`
+	IDNotStartsWith        *string                  `json:"id_not_starts_with,omitempty"`
+	IDEndsWith             *string                  `json:"id_ends_with,omitempty"`
+	IDNotEndsWith          *string                  `json:"id_not_ends_with,omitempty"`
+	FirstName              *string                  `json:"firstName,omitempty"`
+	FirstNameNot           *string                  `json:"firstName_not,omitempty"`
+	FirstNameIn            []string                 `json:"firstName_in,omitempty"`
+	FirstNameNotIn         []string                 `json:"firstName_not_in,omitempty"`
+	FirstNameLt            *string                  `json:"firstName_lt,omitempty"`
+	FirstNameLte           *string                  `json:"firstName_lte,omitempty"`
+	FirstNameGt            *string                  `json:"firstName_gt,omitempty"`
+	FirstNameGte           *string                  `json:"firstName_gte,omitempty"`
+	FirstNameContains      *string                  `json:"firstName_contains,omitempty"`
+	FirstNameNotContains   *string                  `json:"firstName_not_contains,omitempty"`
+	FirstNameStartsWith    *string                  `json:"firstName_starts_with,omitempty"`
+	FirstNameNotStartsWith *string                  `json:"firstName_not_starts_with,omitempty"`
+	FirstNameEndsWith      *string                  `json:"firstName_ends_with,omitempty"`
+	FirstNameNotEndsWith   *string                  `json:"firstName_not_ends_with,omitempty"`
+	LastName               *string                  `json:"lastName,omitempty"`
+	LastNameNot            *string                  `json:"lastName_not,omitempty"`
+	LastNameIn             []string                 `json:"lastName_in,omitempty"`
+	LastNameNotIn          []string                 `json:"lastName_not_in,omitempty"`
+	LastNameLt             *string                  `json:"lastName_lt,omitempty"`
+	LastNameLte            *string                  `json:"lastName_lte,omitempty"`
+	LastNameGt             *string                  `json:"lastName_gt,omitempty"`
+	LastNameGte            *string                  `json:"lastName_gte,omitempty"`
+	LastNameContains       *string                  `json:"lastName_contains,omitempty"`
+	LastNameNotContains    *string                  `json:"lastName_not_contains,omitempty"`
+	LastNameStartsWith     *string                  `json:"lastName_starts_with,omitempty"`
+	LastNameNotStartsWith  *string                  `json:"lastName_not_starts_with,omitempty"`
+	LastNameEndsWith       *string                  `json:"lastName_ends_with,omitempty"`
+	LastNameNotEndsWith    *string                  `json:"lastName_not_ends_with,omitempty"`
+	Email                  *string                  `json:"email,omitempty"`
+	EmailNot               *string                  `json:"email_not,omitempty"`
+	EmailIn                []string                 `json:"email_in,omitempty"`
+	EmailNotIn             []string                 `json:"email_not_in,omitempty"`
+	EmailLt                *string                  `json:"email_lt,omitempty"`
+	EmailLte               *string                  `json:"email_lte,omitempty"`
+	EmailGt                *string                  `json:"email_gt,omitempty"`
+	EmailGte               *string                  `json:"email_gte,omitempty"`
+	EmailContains          *string                  `json:"email_contains,omitempty"`
+	EmailNotContains       *string                  `json:"email_not_contains,omitempty"`
+	EmailStartsWith        *string                  `json:"email_starts_with,omitempty"`
+	EmailNotStartsWith     *string                  `json:"email_not_starts_with,omitempty"`
+	EmailEndsWith          *string                  `json:"email_ends_with,omitempty"`
+	EmailNotEndsWith       *string                  `json:"email_not_ends_with,omitempty"`
+	Homenumber             *int32                   `json:"homenumber,omitempty"`
+	HomenumberNot          *int32                   `json:"homenumber_not,omitempty"`
+	HomenumberIn           []int32                  `json:"homenumber_in,omitempty"`
+	HomenumberNotIn        []int32                  `json:"homenumber_not_in,omitempty"`
+	HomenumberLt           *int32                   `json:"homenumber_lt,omitempty"`
+	HomenumberLte          *int32                   `json:"homenumber_lte,omitempty"`
+	HomenumberGt           *int32                   `json:"homenumber_gt,omitempty"`
+	HomenumberGte          *int32                   `json:"homenumber_gte,omitempty"`
+	Mobilenumber           *int32                   `json:"mobilenumber,omitempty"`
+	MobilenumberNot        *int32                   `json:"mobilenumber_not,omitempty"`
+	MobilenumberIn         []int32                  `json:"mobilenumber_in,omitempty"`
+	MobilenumberNotIn      []int32                  `json:"mobilenumber_not_in,omitempty"`
+	MobilenumberLt         *int32                   `json:"mobilenumber_lt,omitempty"`
+	MobilenumberLte        *int32                   `json:"mobilenumber_lte,omitempty"`
+	MobilenumberGt         *int32                   `json:"mobilenumber_gt,omitempty"`
+	MobilenumberGte        *int32                   `json:"mobilenumber_gte,omitempty"`
+	And                    []TenantScalarWhereInput `json:"AND,omitempty"`
+	Or                     []TenantScalarWhereInput `json:"OR,omitempty"`
+	Not                    []TenantScalarWhereInput `json:"NOT,omitempty"`
 }
 
-func (instance *LandlordExec) Agent() *AgentExec {
-	ret := instance.exec.Client.GetOne(
-		instance.exec,
-		nil,
-		[2]string{"", "Agent"},
-		"agent",
-		[]string{"id", "businessService", "title", "firstName", "lastName", "displayName", "email", "password", "mobile", "fax", "address1", "address2", "postcode", "country", "website"})
-
-	return &AgentExec{ret}
+type PropertyCreateInput struct {
+	Displayname           *string                               `json:"displayname,omitempty"`
+	Address1              string                                `json:"address1"`
+	Address2              *string                               `json:"address2,omitempty"`
+	Postcode              string                                `json:"postcode"`
+	City                  string                                `json:"city"`
+	Country               string                                `json:"country"`
+	Percentageofownership *int32                                `json:"percentageofownership,omitempty"`
+	Status                string                                `json:"status"`
+	Purchaseprice         *int32                                `json:"purchaseprice,omitempty"`
+	Currentprice          *int32                                `json:"currentprice,omitempty"`
+	Currency              *string                               `json:"currency,omitempty"`
+	Tenants               *TenantCreateManyWithoutPropertyInput `json:"tenants,omitempty"`
+	Landlords             *LandlordCreateManyInput              `json:"landlords,omitempty"`
 }
 
-func (instance LandlordExec) Exec(ctx context.Context) (*Landlord, error) {
-	var v Landlord
-	ok, err := instance.exec.Exec(ctx, &v)
-	if err != nil {
-		return nil, err
-	}
-	if !ok {
-		return nil, ErrNoResult
-	}
-	return &v, nil
+type TenantUpdateManyMutationInput struct {
+	FirstName    *string `json:"firstName,omitempty"`
+	LastName     *string `json:"lastName,omitempty"`
+	Email        *string `json:"email,omitempty"`
+	Homenumber   *int32  `json:"homenumber,omitempty"`
+	Mobilenumber *int32  `json:"mobilenumber,omitempty"`
 }
 
-func (instance LandlordExec) Exists(ctx context.Context) (bool, error) {
-	return instance.exec.Exists(ctx)
+type TenantCreateManyWithoutPropertyInput struct {
+	Create  []TenantCreateWithoutPropertyInput `json:"create,omitempty"`
+	Connect []TenantWhereUniqueInput           `json:"connect,omitempty"`
 }
 
-type LandlordExecArray struct {
-	exec *prisma.Exec
+type TenantCreateInput struct {
+	FirstName    string                                `json:"firstName"`
+	LastName     *string                               `json:"lastName,omitempty"`
+	Email        string                                `json:"email"`
+	Homenumber   *int32                                `json:"homenumber,omitempty"`
+	Mobilenumber *int32                                `json:"mobilenumber,omitempty"`
+	Property     *PropertyCreateOneWithoutTenantsInput `json:"property,omitempty"`
 }
 
-func (instance LandlordExecArray) Exec(ctx context.Context) ([]Landlord, error) {
-	var v []Landlord
-	err := instance.exec.ExecArray(ctx, &v)
-	return v, err
+type TenantUpdateManyWithoutPropertyInput struct {
+	Create     []TenantCreateWithoutPropertyInput                `json:"create,omitempty"`
+	Delete     []TenantWhereUniqueInput                          `json:"delete,omitempty"`
+	Connect    []TenantWhereUniqueInput                          `json:"connect,omitempty"`
+	Set        []TenantWhereUniqueInput                          `json:"set,omitempty"`
+	Disconnect []TenantWhereUniqueInput                          `json:"disconnect,omitempty"`
+	Update     []TenantUpdateWithWhereUniqueWithoutPropertyInput `json:"update,omitempty"`
+	Upsert     []TenantUpsertWithWhereUniqueWithoutPropertyInput `json:"upsert,omitempty"`
+	DeleteMany []TenantScalarWhereInput                          `json:"deleteMany,omitempty"`
+	UpdateMany []TenantUpdateManyWithWhereNestedInput            `json:"updateMany,omitempty"`
 }
 
-type Landlord struct {
-	ID         string  `json:"id"`
-	FullName   string  `json:"fullName"`
-	Email      string  `json:"email"`
-	Password   *string `json:"password,omitempty"`
-	Mobile     *int32  `json:"mobile,omitempty"`
-	Dob        *string `json:"dob,omitempty"`
-	Occupation *string `json:"occupation,omitempty"`
-	Address1   *string `json:"address1,omitempty"`
-	Address2   *string `json:"address2,omitempty"`
-	Postcode   string  `json:"postcode"`
-	Country    string  `json:"country"`
+type PropertyUpdateInput struct {
+	Displayname           *string                               `json:"displayname,omitempty"`
+	Address1              *string                               `json:"address1,omitempty"`
+	Address2              *string                               `json:"address2,omitempty"`
+	Postcode              *string                               `json:"postcode,omitempty"`
+	City                  *string                               `json:"city,omitempty"`
+	Country               *string                               `json:"country,omitempty"`
+	Percentageofownership *int32                                `json:"percentageofownership,omitempty"`
+	Status                *string                               `json:"status,omitempty"`
+	Purchaseprice         *int32                                `json:"purchaseprice,omitempty"`
+	Currentprice          *int32                                `json:"currentprice,omitempty"`
+	Currency              *string                               `json:"currency,omitempty"`
+	Tenants               *TenantUpdateManyWithoutPropertyInput `json:"tenants,omitempty"`
+	Landlords             *LandlordUpdateManyInput              `json:"landlords,omitempty"`
 }
 
-type AgentEdgeExec struct {
-	exec *prisma.Exec
+type LandlordCreateManyInput struct {
+	Create  []LandlordCreateInput      `json:"create,omitempty"`
+	Connect []LandlordWhereUniqueInput `json:"connect,omitempty"`
 }
 
-func (instance *AgentEdgeExec) Node() *AgentExec {
-	ret := instance.exec.Client.GetOne(
-		instance.exec,
-		nil,
-		[2]string{"", "Agent"},
-		"node",
-		[]string{"id", "businessService", "title", "firstName", "lastName", "displayName", "email", "password", "mobile", "fax", "address1", "address2", "postcode", "country", "website"})
-
-	return &AgentExec{ret}
+type TenantCreateWithoutPropertyInput struct {
+	FirstName    string  `json:"firstName"`
+	LastName     *string `json:"lastName,omitempty"`
+	Email        string  `json:"email"`
+	Homenumber   *int32  `json:"homenumber,omitempty"`
+	Mobilenumber *int32  `json:"mobilenumber,omitempty"`
 }
 
-func (instance AgentEdgeExec) Exec(ctx context.Context) (*AgentEdge, error) {
-	var v AgentEdge
-	ok, err := instance.exec.Exec(ctx, &v)
-	if err != nil {
-		return nil, err
-	}
-	if !ok {
-		return nil, ErrNoResult
-	}
-	return &v, nil
+type PropertyWhereInput struct {
+	ID                         *string              `json:"id,omitempty"`
+	IDNot                      *string              `json:"id_not,omitempty"`
+	IDIn                       []string             `json:"id_in,omitempty"`
+	IDNotIn                    []string             `json:"id_not_in,omitempty"`
+	IDLt                       *string              `json:"id_lt,omitempty"`
+	IDLte                      *string              `json:"id_lte,omitempty"`
+	IDGt                       *string              `json:"id_gt,omitempty"`
+	IDGte                      *string              `json:"id_gte,omitempty"`
+	IDContains                 *string              `json:"id_contains,omitempty"`
+	IDNotContains              *string              `json:"id_not_contains,omitempty"`
+	IDStartsWith               *string              `json:"id_starts_with,omitempty"`
+	IDNotStartsWith            *string              `json:"id_not_starts_with,omitempty"`
+	IDEndsWith                 *string              `json:"id_ends_with,omitempty"`
+	IDNotEndsWith              *string              `json:"id_not_ends_with,omitempty"`
+	Displayname                *string              `json:"displayname,omitempty"`
+	DisplaynameNot             *string              `json:"displayname_not,omitempty"`
+	DisplaynameIn              []string             `json:"displayname_in,omitempty"`
+	DisplaynameNotIn           []string             `json:"displayname_not_in,omitempty"`
+	DisplaynameLt              *string              `json:"displayname_lt,omitempty"`
+	DisplaynameLte             *string              `json:"displayname_lte,omitempty"`
+	DisplaynameGt              *string              `json:"displayname_gt,omitempty"`
+	DisplaynameGte             *string              `json:"displayname_gte,omitempty"`
+	DisplaynameContains        *string              `json:"displayname_contains,omitempty"`
+	DisplaynameNotContains     *string              `json:"displayname_not_contains,omitempty"`
+	DisplaynameStartsWith      *string              `json:"displayname_starts_with,omitempty"`
+	DisplaynameNotStartsWith   *string              `json:"displayname_not_starts_with,omitempty"`
+	DisplaynameEndsWith        *string              `json:"displayname_ends_with,omitempty"`
+	DisplaynameNotEndsWith     *string              `json:"displayname_not_ends_with,omitempty"`
+	Address1                   *string              `json:"address1,omitempty"`
+	Address1Not                *string              `json:"address1_not,omitempty"`
+	Address1In                 []string             `json:"address1_in,omitempty"`
+	Address1NotIn              []string             `json:"address1_not_in,omitempty"`
+	Address1Lt                 *string              `json:"address1_lt,omitempty"`
+	Address1Lte                *string              `json:"address1_lte,omitempty"`
+	Address1Gt                 *string              `json:"address1_gt,omitempty"`
+	Address1Gte                *string              `json:"address1_gte,omitempty"`
+	Address1Contains           *string              `json:"address1_contains,omitempty"`
+	Address1NotContains        *string              `json:"address1_not_contains,omitempty"`
+	Address1StartsWith         *string              `json:"address1_starts_with,omitempty"`
+	Address1NotStartsWith      *string              `json:"address1_not_starts_with,omitempty"`
+	Address1EndsWith           *string              `json:"address1_ends_with,omitempty"`
+	Address1NotEndsWith        *string              `json:"address1_not_ends_with,omitempty"`
+	Address2                   *string              `json:"address2,omitempty"`
+	Address2Not                *string              `json:"address2_not,omitempty"`
+	Address2In                 []string             `json:"address2_in,omitempty"`
+	Address2NotIn              []string             `json:"address2_not_in,omitempty"`
+	Address2Lt                 *string              `json:"address2_lt,omitempty"`
+	Address2Lte                *string              `json:"address2_lte,omitempty"`
+	Address2Gt                 *string              `json:"address2_gt,omitempty"`
+	Address2Gte                *string              `json:"address2_gte,omitempty"`
+	Address2Contains           *string              `json:"address2_contains,omitempty"`
+	Address2NotContains        *string              `json:"address2_not_contains,omitempty"`
+	Address2StartsWith         *string              `json:"address2_starts_with,omitempty"`
+	Address2NotStartsWith      *string              `json:"address2_not_starts_with,omitempty"`
+	Address2EndsWith           *string              `json:"address2_ends_with,omitempty"`
+	Address2NotEndsWith        *string              `json:"address2_not_ends_with,omitempty"`
+	Postcode                   *string              `json:"postcode,omitempty"`
+	PostcodeNot                *string              `json:"postcode_not,omitempty"`
+	PostcodeIn                 []string             `json:"postcode_in,omitempty"`
+	PostcodeNotIn              []string             `json:"postcode_not_in,omitempty"`
+	PostcodeLt                 *string              `json:"postcode_lt,omitempty"`
+	PostcodeLte                *string              `json:"postcode_lte,omitempty"`
+	PostcodeGt                 *string              `json:"postcode_gt,omitempty"`
+	PostcodeGte                *string              `json:"postcode_gte,omitempty"`
+	PostcodeContains           *string              `json:"postcode_contains,omitempty"`
+	PostcodeNotContains        *string              `json:"postcode_not_contains,omitempty"`
+	PostcodeStartsWith         *string              `json:"postcode_starts_with,omitempty"`
+	PostcodeNotStartsWith      *string              `json:"postcode_not_starts_with,omitempty"`
+	PostcodeEndsWith           *string              `json:"postcode_ends_with,omitempty"`
+	PostcodeNotEndsWith        *string              `json:"postcode_not_ends_with,omitempty"`
+	City                       *string              `json:"city,omitempty"`
+	CityNot                    *string              `json:"city_not,omitempty"`
+	CityIn                     []string             `json:"city_in,omitempty"`
+	CityNotIn                  []string             `json:"city_not_in,omitempty"`
+	CityLt                     *string              `json:"city_lt,omitempty"`
+	CityLte                    *string              `json:"city_lte,omitempty"`
+	CityGt                     *string              `json:"city_gt,omitempty"`
+	CityGte                    *string              `json:"city_gte,omitempty"`
+	CityContains               *string              `json:"city_contains,omitempty"`
+	CityNotContains            *string              `json:"city_not_contains,omitempty"`
+	CityStartsWith             *string              `json:"city_starts_with,omitempty"`
+	CityNotStartsWith          *string              `json:"city_not_starts_with,omitempty"`
+	CityEndsWith               *string              `json:"city_ends_with,omitempty"`
+	CityNotEndsWith            *string              `json:"city_not_ends_with,omitempty"`
+	Country                    *string              `json:"country,omitempty"`
+	CountryNot                 *string              `json:"country_not,omitempty"`
+	CountryIn                  []string             `json:"country_in,omitempty"`
+	CountryNotIn               []string             `json:"country_not_in,omitempty"`
+	CountryLt                  *string              `json:"country_lt,omitempty"`
+	CountryLte                 *string              `json:"country_lte,omitempty"`
+	CountryGt                  *string              `json:"country_gt,omitempty"`
+	CountryGte                 *string              `json:"country_gte,omitempty"`
+	CountryContains            *string              `json:"country_contains,omitempty"`
+	CountryNotContains         *string              `json:"country_not_contains,omitempty"`
+	CountryStartsWith          *string              `json:"country_starts_with,omitempty"`
+	CountryNotStartsWith       *string              `json:"country_not_starts_with,omitempty"`
+	CountryEndsWith            *string              `json:"country_ends_with,omitempty"`
+	CountryNotEndsWith         *string              `json:"country_not_ends_with,omitempty"`
+	Percentageofownership      *int32               `json:"percentageofownership,omitempty"`
+	PercentageofownershipNot   *int32               `json:"percentageofownership_not,omitempty"`
+	PercentageofownershipIn    []int32              `json:"percentageofownership_in,omitempty"`
+	PercentageofownershipNotIn []int32              `json:"percentageofownership_not_in,omitempty"`
+	PercentageofownershipLt    *int32               `json:"percentageofownership_lt,omitempty"`
+	PercentageofownershipLte   *int32               `json:"percentageofownership_lte,omitempty"`
+	PercentageofownershipGt    *int32               `json:"percentageofownership_gt,omitempty"`
+	PercentageofownershipGte   *int32               `json:"percentageofownership_gte,omitempty"`
+	Status                     *string              `json:"status,omitempty"`
+	StatusNot                  *string              `json:"status_not,omitempty"`
+	StatusIn                   []string             `json:"status_in,omitempty"`
+	StatusNotIn                []string             `json:"status_not_in,omitempty"`
+	StatusLt                   *string              `json:"status_lt,omitempty"`
+	StatusLte                  *string              `json:"status_lte,omitempty"`
+	StatusGt                   *string              `json:"status_gt,omitempty"`
+	StatusGte                  *string              `json:"status_gte,omitempty"`
+	StatusContains             *string              `json:"status_contains,omitempty"`
+	StatusNotContains          *string              `json:"status_not_contains,omitempty"`
+	StatusStartsWith           *string              `json:"status_starts_with,omitempty"`
+	StatusNotStartsWith        *string              `json:"status_not_starts_with,omitempty"`
+	StatusEndsWith             *string              `json:"status_ends_with,omitempty"`
+	StatusNotEndsWith          *string              `json:"status_not_ends_with,omitempty"`
+	Purchaseprice              *int32               `json:"purchaseprice,omitempty"`
+	PurchasepriceNot           *int32               `json:"purchaseprice_not,omitempty"`
+	PurchasepriceIn            []int32              `json:"purchaseprice_in,omitempty"`
+	PurchasepriceNotIn         []int32              `json:"purchaseprice_not_in,omitempty"`
+	PurchasepriceLt            *int32               `json:"purchaseprice_lt,omitempty"`
+	PurchasepriceLte           *int32               `json:"purchaseprice_lte,omitempty"`
+	PurchasepriceGt            *int32               `json:"purchaseprice_gt,omitempty"`
+	PurchasepriceGte           *int32               `json:"purchaseprice_gte,omitempty"`
+	Currentprice               *int32               `json:"currentprice,omitempty"`
+	CurrentpriceNot            *int32               `json:"currentprice_not,omitempty"`
+	CurrentpriceIn             []int32              `json:"currentprice_in,omitempty"`
+	CurrentpriceNotIn          []int32              `json:"currentprice_not_in,omitempty"`
+	CurrentpriceLt             *int32               `json:"currentprice_lt,omitempty"`
+	CurrentpriceLte            *int32               `json:"currentprice_lte,omitempty"`
+	CurrentpriceGt             *int32               `json:"currentprice_gt,omitempty"`
+	CurrentpriceGte            *int32               `json:"currentprice_gte,omitempty"`
+	Currency                   *string              `json:"currency,omitempty"`
+	CurrencyNot                *string              `json:"currency_not,omitempty"`
+	CurrencyIn                 []string             `json:"currency_in,omitempty"`
+	CurrencyNotIn              []string             `json:"currency_not_in,omitempty"`
+	CurrencyLt                 *string              `json:"currency_lt,omitempty"`
+	CurrencyLte                *string              `json:"currency_lte,omitempty"`
+	CurrencyGt                 *string              `json:"currency_gt,omitempty"`
+	CurrencyGte                *string              `json:"currency_gte,omitempty"`
+	CurrencyContains           *string              `json:"currency_contains,omitempty"`
+	CurrencyNotContains        *string              `json:"currency_not_contains,omitempty"`
+	CurrencyStartsWith         *string              `json:"currency_starts_with,omitempty"`
+	CurrencyNotStartsWith      *string              `json:"currency_not_starts_with,omitempty"`
+	CurrencyEndsWith           *string              `json:"currency_ends_with,omitempty"`
+	CurrencyNotEndsWith        *string              `json:"currency_not_ends_with,omitempty"`
+	TenantsEvery               *TenantWhereInput    `json:"tenants_every,omitempty"`
+	TenantsSome                *TenantWhereInput    `json:"tenants_some,omitempty"`
+	TenantsNone                *TenantWhereInput    `json:"tenants_none,omitempty"`
+	LandlordsEvery             *LandlordWhereInput  `json:"landlords_every,omitempty"`
+	LandlordsSome              *LandlordWhereInput  `json:"landlords_some,omitempty"`
+	LandlordsNone              *LandlordWhereInput  `json:"landlords_none,omitempty"`
+	And                        []PropertyWhereInput `json:"AND,omitempty"`
+	Or                         []PropertyWhereInput `json:"OR,omitempty"`
+	Not                        []PropertyWhereInput `json:"NOT,omitempty"`
 }
 
-func (instance AgentEdgeExec) Exists(ctx context.Context) (bool, error) {
-	return instance.exec.Exists(ctx)
+type TenantUpdateInput struct {
+	FirstName    *string                               `json:"firstName,omitempty"`
+	LastName     *string                               `json:"lastName,omitempty"`
+	Email        *string                               `json:"email,omitempty"`
+	Homenumber   *int32                                `json:"homenumber,omitempty"`
+	Mobilenumber *int32                                `json:"mobilenumber,omitempty"`
+	Property     *PropertyUpdateOneWithoutTenantsInput `json:"property,omitempty"`
 }
 
-type AgentEdgeExecArray struct {
-	exec *prisma.Exec
+type AgentCreateInput struct {
+	BusinessService *string                              `json:"businessService,omitempty"`
+	Title           *string                              `json:"title,omitempty"`
+	FirstName       string                               `json:"firstName"`
+	LastName        *string                              `json:"lastName,omitempty"`
+	DisplayName     *string                              `json:"displayName,omitempty"`
+	Email           string                               `json:"email"`
+	Password        *string                              `json:"password,omitempty"`
+	Mobile          *int32                               `json:"mobile,omitempty"`
+	Fax             *int32                               `json:"fax,omitempty"`
+	Address1        *string                              `json:"address1,omitempty"`
+	Address2        *string                              `json:"address2,omitempty"`
+	Postcode        string                               `json:"postcode"`
+	Country         string                               `json:"country"`
+	Website         *string                              `json:"website,omitempty"`
+	Clients         *LandlordCreateManyWithoutAgentInput `json:"clients,omitempty"`
 }
 
-func (instance AgentEdgeExecArray) Exec(ctx context.Context) ([]AgentEdge, error) {
-	var v []AgentEdge
-	err := instance.exec.ExecArray(ctx, &v)
-	return v, err
+type TenantUpdateManyDataInput struct {
+	FirstName    *string `json:"firstName,omitempty"`
+	LastName     *string `json:"lastName,omitempty"`
+	Email        *string `json:"email,omitempty"`
+	Homenumber   *int32  `json:"homenumber,omitempty"`
+	Mobilenumber *int32  `json:"mobilenumber,omitempty"`
 }
 
-type AgentEdge struct {
-	Cursor string `json:"cursor"`
+type LandlordUpdateDataInput struct {
+	FullName   *string                            `json:"fullName,omitempty"`
+	Email      *string                            `json:"email,omitempty"`
+	Password   *string                            `json:"password,omitempty"`
+	Mobile     *int32                             `json:"mobile,omitempty"`
+	Dob        *string                            `json:"dob,omitempty"`
+	Occupation *string                            `json:"occupation,omitempty"`
+	Address1   *string                            `json:"address1,omitempty"`
+	Address2   *string                            `json:"address2,omitempty"`
+	Postcode   *string                            `json:"postcode,omitempty"`
+	Country    *string                            `json:"country,omitempty"`
+	Agent      *AgentUpdateOneWithoutClientsInput `json:"agent,omitempty"`
 }
 
 type AgentExec struct {
@@ -1399,11 +2141,11 @@ type Agent struct {
 	Website         *string `json:"website,omitempty"`
 }
 
-type AgentSubscriptionPayloadExec struct {
+type AgentEdgeExec struct {
 	exec *prisma.Exec
 }
 
-func (instance *AgentSubscriptionPayloadExec) Node() *AgentExec {
+func (instance *AgentEdgeExec) Node() *AgentExec {
 	ret := instance.exec.Client.GetOne(
 		instance.exec,
 		nil,
@@ -1414,19 +2156,8 @@ func (instance *AgentSubscriptionPayloadExec) Node() *AgentExec {
 	return &AgentExec{ret}
 }
 
-func (instance *AgentSubscriptionPayloadExec) PreviousValues() *AgentPreviousValuesExec {
-	ret := instance.exec.Client.GetOne(
-		instance.exec,
-		nil,
-		[2]string{"", "AgentPreviousValues"},
-		"previousValues",
-		[]string{"id", "businessService", "title", "firstName", "lastName", "displayName", "email", "password", "mobile", "fax", "address1", "address2", "postcode", "country", "website"})
-
-	return &AgentPreviousValuesExec{ret}
-}
-
-func (instance AgentSubscriptionPayloadExec) Exec(ctx context.Context) (*AgentSubscriptionPayload, error) {
-	var v AgentSubscriptionPayload
+func (instance AgentEdgeExec) Exec(ctx context.Context) (*AgentEdge, error) {
+	var v AgentEdge
 	ok, err := instance.exec.Exec(ctx, &v)
 	if err != nil {
 		return nil, err
@@ -1437,23 +2168,163 @@ func (instance AgentSubscriptionPayloadExec) Exec(ctx context.Context) (*AgentSu
 	return &v, nil
 }
 
-func (instance AgentSubscriptionPayloadExec) Exists(ctx context.Context) (bool, error) {
+func (instance AgentEdgeExec) Exists(ctx context.Context) (bool, error) {
 	return instance.exec.Exists(ctx)
 }
 
-type AgentSubscriptionPayloadExecArray struct {
+type AgentEdgeExecArray struct {
 	exec *prisma.Exec
 }
 
-func (instance AgentSubscriptionPayloadExecArray) Exec(ctx context.Context) ([]AgentSubscriptionPayload, error) {
-	var v []AgentSubscriptionPayload
+func (instance AgentEdgeExecArray) Exec(ctx context.Context) ([]AgentEdge, error) {
+	var v []AgentEdge
 	err := instance.exec.ExecArray(ctx, &v)
 	return v, err
 }
 
-type AgentSubscriptionPayload struct {
+type AgentEdge struct {
+	Cursor string `json:"cursor"`
+}
+
+type TenantPreviousValuesExec struct {
+	exec *prisma.Exec
+}
+
+func (instance TenantPreviousValuesExec) Exec(ctx context.Context) (*TenantPreviousValues, error) {
+	var v TenantPreviousValues
+	ok, err := instance.exec.Exec(ctx, &v)
+	if err != nil {
+		return nil, err
+	}
+	if !ok {
+		return nil, ErrNoResult
+	}
+	return &v, nil
+}
+
+func (instance TenantPreviousValuesExec) Exists(ctx context.Context) (bool, error) {
+	return instance.exec.Exists(ctx)
+}
+
+type TenantPreviousValuesExecArray struct {
+	exec *prisma.Exec
+}
+
+func (instance TenantPreviousValuesExecArray) Exec(ctx context.Context) ([]TenantPreviousValues, error) {
+	var v []TenantPreviousValues
+	err := instance.exec.ExecArray(ctx, &v)
+	return v, err
+}
+
+type TenantPreviousValues struct {
+	ID           string  `json:"id"`
+	FirstName    string  `json:"firstName"`
+	LastName     *string `json:"lastName,omitempty"`
+	Email        string  `json:"email"`
+	Homenumber   *int32  `json:"homenumber,omitempty"`
+	Mobilenumber *int32  `json:"mobilenumber,omitempty"`
+}
+
+type TenantSubscriptionPayloadExec struct {
+	exec *prisma.Exec
+}
+
+func (instance *TenantSubscriptionPayloadExec) Node() *TenantExec {
+	ret := instance.exec.Client.GetOne(
+		instance.exec,
+		nil,
+		[2]string{"", "Tenant"},
+		"node",
+		[]string{"id", "firstName", "lastName", "email", "homenumber", "mobilenumber"})
+
+	return &TenantExec{ret}
+}
+
+func (instance *TenantSubscriptionPayloadExec) PreviousValues() *TenantPreviousValuesExec {
+	ret := instance.exec.Client.GetOne(
+		instance.exec,
+		nil,
+		[2]string{"", "TenantPreviousValues"},
+		"previousValues",
+		[]string{"id", "firstName", "lastName", "email", "homenumber", "mobilenumber"})
+
+	return &TenantPreviousValuesExec{ret}
+}
+
+func (instance TenantSubscriptionPayloadExec) Exec(ctx context.Context) (*TenantSubscriptionPayload, error) {
+	var v TenantSubscriptionPayload
+	ok, err := instance.exec.Exec(ctx, &v)
+	if err != nil {
+		return nil, err
+	}
+	if !ok {
+		return nil, ErrNoResult
+	}
+	return &v, nil
+}
+
+func (instance TenantSubscriptionPayloadExec) Exists(ctx context.Context) (bool, error) {
+	return instance.exec.Exists(ctx)
+}
+
+type TenantSubscriptionPayloadExecArray struct {
+	exec *prisma.Exec
+}
+
+func (instance TenantSubscriptionPayloadExecArray) Exec(ctx context.Context) ([]TenantSubscriptionPayload, error) {
+	var v []TenantSubscriptionPayload
+	err := instance.exec.ExecArray(ctx, &v)
+	return v, err
+}
+
+type TenantSubscriptionPayload struct {
 	Mutation      MutationType `json:"mutation"`
 	UpdatedFields []string     `json:"updatedFields,omitempty"`
+}
+
+type TenantEdgeExec struct {
+	exec *prisma.Exec
+}
+
+func (instance *TenantEdgeExec) Node() *TenantExec {
+	ret := instance.exec.Client.GetOne(
+		instance.exec,
+		nil,
+		[2]string{"", "Tenant"},
+		"node",
+		[]string{"id", "firstName", "lastName", "email", "homenumber", "mobilenumber"})
+
+	return &TenantExec{ret}
+}
+
+func (instance TenantEdgeExec) Exec(ctx context.Context) (*TenantEdge, error) {
+	var v TenantEdge
+	ok, err := instance.exec.Exec(ctx, &v)
+	if err != nil {
+		return nil, err
+	}
+	if !ok {
+		return nil, ErrNoResult
+	}
+	return &v, nil
+}
+
+func (instance TenantEdgeExec) Exists(ctx context.Context) (bool, error) {
+	return instance.exec.Exists(ctx)
+}
+
+type TenantEdgeExecArray struct {
+	exec *prisma.Exec
+}
+
+func (instance TenantEdgeExecArray) Exec(ctx context.Context) ([]TenantEdge, error) {
+	var v []TenantEdge
+	err := instance.exec.ExecArray(ctx, &v)
+	return v, err
+}
+
+type TenantEdge struct {
+	Cursor string `json:"cursor"`
 }
 
 type PageInfoExec struct {
@@ -1491,54 +2362,6 @@ type PageInfo struct {
 	HasPreviousPage bool    `json:"hasPreviousPage"`
 	StartCursor     *string `json:"startCursor,omitempty"`
 	EndCursor       *string `json:"endCursor,omitempty"`
-}
-
-type AgentPreviousValuesExec struct {
-	exec *prisma.Exec
-}
-
-func (instance AgentPreviousValuesExec) Exec(ctx context.Context) (*AgentPreviousValues, error) {
-	var v AgentPreviousValues
-	ok, err := instance.exec.Exec(ctx, &v)
-	if err != nil {
-		return nil, err
-	}
-	if !ok {
-		return nil, ErrNoResult
-	}
-	return &v, nil
-}
-
-func (instance AgentPreviousValuesExec) Exists(ctx context.Context) (bool, error) {
-	return instance.exec.Exists(ctx)
-}
-
-type AgentPreviousValuesExecArray struct {
-	exec *prisma.Exec
-}
-
-func (instance AgentPreviousValuesExecArray) Exec(ctx context.Context) ([]AgentPreviousValues, error) {
-	var v []AgentPreviousValues
-	err := instance.exec.ExecArray(ctx, &v)
-	return v, err
-}
-
-type AgentPreviousValues struct {
-	ID              string  `json:"id"`
-	BusinessService *string `json:"businessService,omitempty"`
-	Title           *string `json:"title,omitempty"`
-	FirstName       string  `json:"firstName"`
-	LastName        *string `json:"lastName,omitempty"`
-	DisplayName     *string `json:"displayName,omitempty"`
-	Email           string  `json:"email"`
-	Password        *string `json:"password,omitempty"`
-	Mobile          *int32  `json:"mobile,omitempty"`
-	Fax             *int32  `json:"fax,omitempty"`
-	Address1        *string `json:"address1,omitempty"`
-	Address2        *string `json:"address2,omitempty"`
-	Postcode        string  `json:"postcode"`
-	Country         string  `json:"country"`
-	Website         *string `json:"website,omitempty"`
 }
 
 type AgentConnectionExec struct {
@@ -1609,6 +2432,478 @@ func (instance AgentConnectionExecArray) Exec(ctx context.Context) ([]AgentConne
 type AgentConnection struct {
 }
 
+type PropertyConnectionExec struct {
+	exec *prisma.Exec
+}
+
+func (instance *PropertyConnectionExec) PageInfo() *PageInfoExec {
+	ret := instance.exec.Client.GetOne(
+		instance.exec,
+		nil,
+		[2]string{"", "PageInfo"},
+		"pageInfo",
+		[]string{"hasNextPage", "hasPreviousPage", "startCursor", "endCursor"})
+
+	return &PageInfoExec{ret}
+}
+
+func (instance *PropertyConnectionExec) Edges() *PropertyEdgeExec {
+	ret := instance.exec.Client.GetOne(
+		instance.exec,
+		nil,
+		[2]string{"", "PropertyEdge"},
+		"edges",
+		[]string{"cursor"})
+
+	return &PropertyEdgeExec{ret}
+}
+
+func (instance *PropertyConnectionExec) Aggregate(ctx context.Context) (Aggregate, error) {
+	ret := instance.exec.Client.GetOne(
+		instance.exec,
+		nil,
+		[2]string{"", "AggregateProperty"},
+		"aggregate",
+		[]string{"count"})
+
+	var v Aggregate
+	_, err := ret.Exec(ctx, &v)
+	return v, err
+}
+
+func (instance PropertyConnectionExec) Exec(ctx context.Context) (*PropertyConnection, error) {
+	var v PropertyConnection
+	ok, err := instance.exec.Exec(ctx, &v)
+	if err != nil {
+		return nil, err
+	}
+	if !ok {
+		return nil, ErrNoResult
+	}
+	return &v, nil
+}
+
+func (instance PropertyConnectionExec) Exists(ctx context.Context) (bool, error) {
+	return instance.exec.Exists(ctx)
+}
+
+type PropertyConnectionExecArray struct {
+	exec *prisma.Exec
+}
+
+func (instance PropertyConnectionExecArray) Exec(ctx context.Context) ([]PropertyConnection, error) {
+	var v []PropertyConnection
+	err := instance.exec.ExecArray(ctx, &v)
+	return v, err
+}
+
+type PropertyConnection struct {
+}
+
+type LandlordExec struct {
+	exec *prisma.Exec
+}
+
+func (instance *LandlordExec) Agent() *AgentExec {
+	ret := instance.exec.Client.GetOne(
+		instance.exec,
+		nil,
+		[2]string{"", "Agent"},
+		"agent",
+		[]string{"id", "businessService", "title", "firstName", "lastName", "displayName", "email", "password", "mobile", "fax", "address1", "address2", "postcode", "country", "website"})
+
+	return &AgentExec{ret}
+}
+
+func (instance LandlordExec) Exec(ctx context.Context) (*Landlord, error) {
+	var v Landlord
+	ok, err := instance.exec.Exec(ctx, &v)
+	if err != nil {
+		return nil, err
+	}
+	if !ok {
+		return nil, ErrNoResult
+	}
+	return &v, nil
+}
+
+func (instance LandlordExec) Exists(ctx context.Context) (bool, error) {
+	return instance.exec.Exists(ctx)
+}
+
+type LandlordExecArray struct {
+	exec *prisma.Exec
+}
+
+func (instance LandlordExecArray) Exec(ctx context.Context) ([]Landlord, error) {
+	var v []Landlord
+	err := instance.exec.ExecArray(ctx, &v)
+	return v, err
+}
+
+type Landlord struct {
+	ID         string  `json:"id"`
+	FullName   string  `json:"fullName"`
+	Email      string  `json:"email"`
+	Password   *string `json:"password,omitempty"`
+	Mobile     *int32  `json:"mobile,omitempty"`
+	Dob        *string `json:"dob,omitempty"`
+	Occupation *string `json:"occupation,omitempty"`
+	Address1   *string `json:"address1,omitempty"`
+	Address2   *string `json:"address2,omitempty"`
+	Postcode   string  `json:"postcode"`
+	Country    string  `json:"country"`
+}
+
+type PropertyExec struct {
+	exec *prisma.Exec
+}
+
+type TenantsParamsExec struct {
+	Where   *TenantWhereInput
+	OrderBy *TenantOrderByInput
+	Skip    *int32
+	After   *string
+	Before  *string
+	First   *int32
+	Last    *int32
+}
+
+func (instance *PropertyExec) Tenants(params *TenantsParamsExec) *TenantExecArray {
+	var wparams *prisma.WhereParams
+	if params != nil {
+		wparams = &prisma.WhereParams{
+			Where:   params.Where,
+			OrderBy: (*string)(params.OrderBy),
+			Skip:    params.Skip,
+			After:   params.After,
+			Before:  params.Before,
+			First:   params.First,
+			Last:    params.Last,
+		}
+	}
+
+	ret := instance.exec.Client.GetMany(
+		instance.exec,
+		wparams,
+		[3]string{"TenantWhereInput", "TenantOrderByInput", "Tenant"},
+		"tenants",
+		[]string{"id", "firstName", "lastName", "email", "homenumber", "mobilenumber"})
+
+	return &TenantExecArray{ret}
+}
+
+type LandlordsParamsExec struct {
+	Where   *LandlordWhereInput
+	OrderBy *LandlordOrderByInput
+	Skip    *int32
+	After   *string
+	Before  *string
+	First   *int32
+	Last    *int32
+}
+
+func (instance *PropertyExec) Landlords(params *LandlordsParamsExec) *LandlordExecArray {
+	var wparams *prisma.WhereParams
+	if params != nil {
+		wparams = &prisma.WhereParams{
+			Where:   params.Where,
+			OrderBy: (*string)(params.OrderBy),
+			Skip:    params.Skip,
+			After:   params.After,
+			Before:  params.Before,
+			First:   params.First,
+			Last:    params.Last,
+		}
+	}
+
+	ret := instance.exec.Client.GetMany(
+		instance.exec,
+		wparams,
+		[3]string{"LandlordWhereInput", "LandlordOrderByInput", "Landlord"},
+		"landlords",
+		[]string{"id", "fullName", "email", "password", "mobile", "dob", "occupation", "address1", "address2", "postcode", "country"})
+
+	return &LandlordExecArray{ret}
+}
+
+func (instance PropertyExec) Exec(ctx context.Context) (*Property, error) {
+	var v Property
+	ok, err := instance.exec.Exec(ctx, &v)
+	if err != nil {
+		return nil, err
+	}
+	if !ok {
+		return nil, ErrNoResult
+	}
+	return &v, nil
+}
+
+func (instance PropertyExec) Exists(ctx context.Context) (bool, error) {
+	return instance.exec.Exists(ctx)
+}
+
+type PropertyExecArray struct {
+	exec *prisma.Exec
+}
+
+func (instance PropertyExecArray) Exec(ctx context.Context) ([]Property, error) {
+	var v []Property
+	err := instance.exec.ExecArray(ctx, &v)
+	return v, err
+}
+
+type Property struct {
+	ID                    string  `json:"id"`
+	Displayname           *string `json:"displayname,omitempty"`
+	Address1              string  `json:"address1"`
+	Address2              *string `json:"address2,omitempty"`
+	Postcode              string  `json:"postcode"`
+	City                  string  `json:"city"`
+	Country               string  `json:"country"`
+	Percentageofownership *int32  `json:"percentageofownership,omitempty"`
+	Status                string  `json:"status"`
+	Purchaseprice         *int32  `json:"purchaseprice,omitempty"`
+	Currentprice          *int32  `json:"currentprice,omitempty"`
+	Currency              *string `json:"currency,omitempty"`
+}
+
+type PropertyPreviousValuesExec struct {
+	exec *prisma.Exec
+}
+
+func (instance PropertyPreviousValuesExec) Exec(ctx context.Context) (*PropertyPreviousValues, error) {
+	var v PropertyPreviousValues
+	ok, err := instance.exec.Exec(ctx, &v)
+	if err != nil {
+		return nil, err
+	}
+	if !ok {
+		return nil, ErrNoResult
+	}
+	return &v, nil
+}
+
+func (instance PropertyPreviousValuesExec) Exists(ctx context.Context) (bool, error) {
+	return instance.exec.Exists(ctx)
+}
+
+type PropertyPreviousValuesExecArray struct {
+	exec *prisma.Exec
+}
+
+func (instance PropertyPreviousValuesExecArray) Exec(ctx context.Context) ([]PropertyPreviousValues, error) {
+	var v []PropertyPreviousValues
+	err := instance.exec.ExecArray(ctx, &v)
+	return v, err
+}
+
+type PropertyPreviousValues struct {
+	ID                    string  `json:"id"`
+	Displayname           *string `json:"displayname,omitempty"`
+	Address1              string  `json:"address1"`
+	Address2              *string `json:"address2,omitempty"`
+	Postcode              string  `json:"postcode"`
+	City                  string  `json:"city"`
+	Country               string  `json:"country"`
+	Percentageofownership *int32  `json:"percentageofownership,omitempty"`
+	Status                string  `json:"status"`
+	Purchaseprice         *int32  `json:"purchaseprice,omitempty"`
+	Currentprice          *int32  `json:"currentprice,omitempty"`
+	Currency              *string `json:"currency,omitempty"`
+}
+
+type LandlordEdgeExec struct {
+	exec *prisma.Exec
+}
+
+func (instance *LandlordEdgeExec) Node() *LandlordExec {
+	ret := instance.exec.Client.GetOne(
+		instance.exec,
+		nil,
+		[2]string{"", "Landlord"},
+		"node",
+		[]string{"id", "fullName", "email", "password", "mobile", "dob", "occupation", "address1", "address2", "postcode", "country"})
+
+	return &LandlordExec{ret}
+}
+
+func (instance LandlordEdgeExec) Exec(ctx context.Context) (*LandlordEdge, error) {
+	var v LandlordEdge
+	ok, err := instance.exec.Exec(ctx, &v)
+	if err != nil {
+		return nil, err
+	}
+	if !ok {
+		return nil, ErrNoResult
+	}
+	return &v, nil
+}
+
+func (instance LandlordEdgeExec) Exists(ctx context.Context) (bool, error) {
+	return instance.exec.Exists(ctx)
+}
+
+type LandlordEdgeExecArray struct {
+	exec *prisma.Exec
+}
+
+func (instance LandlordEdgeExecArray) Exec(ctx context.Context) ([]LandlordEdge, error) {
+	var v []LandlordEdge
+	err := instance.exec.ExecArray(ctx, &v)
+	return v, err
+}
+
+type LandlordEdge struct {
+	Cursor string `json:"cursor"`
+}
+
+type AgentSubscriptionPayloadExec struct {
+	exec *prisma.Exec
+}
+
+func (instance *AgentSubscriptionPayloadExec) Node() *AgentExec {
+	ret := instance.exec.Client.GetOne(
+		instance.exec,
+		nil,
+		[2]string{"", "Agent"},
+		"node",
+		[]string{"id", "businessService", "title", "firstName", "lastName", "displayName", "email", "password", "mobile", "fax", "address1", "address2", "postcode", "country", "website"})
+
+	return &AgentExec{ret}
+}
+
+func (instance *AgentSubscriptionPayloadExec) PreviousValues() *AgentPreviousValuesExec {
+	ret := instance.exec.Client.GetOne(
+		instance.exec,
+		nil,
+		[2]string{"", "AgentPreviousValues"},
+		"previousValues",
+		[]string{"id", "businessService", "title", "firstName", "lastName", "displayName", "email", "password", "mobile", "fax", "address1", "address2", "postcode", "country", "website"})
+
+	return &AgentPreviousValuesExec{ret}
+}
+
+func (instance AgentSubscriptionPayloadExec) Exec(ctx context.Context) (*AgentSubscriptionPayload, error) {
+	var v AgentSubscriptionPayload
+	ok, err := instance.exec.Exec(ctx, &v)
+	if err != nil {
+		return nil, err
+	}
+	if !ok {
+		return nil, ErrNoResult
+	}
+	return &v, nil
+}
+
+func (instance AgentSubscriptionPayloadExec) Exists(ctx context.Context) (bool, error) {
+	return instance.exec.Exists(ctx)
+}
+
+type AgentSubscriptionPayloadExecArray struct {
+	exec *prisma.Exec
+}
+
+func (instance AgentSubscriptionPayloadExecArray) Exec(ctx context.Context) ([]AgentSubscriptionPayload, error) {
+	var v []AgentSubscriptionPayload
+	err := instance.exec.ExecArray(ctx, &v)
+	return v, err
+}
+
+type AgentSubscriptionPayload struct {
+	Mutation      MutationType `json:"mutation"`
+	UpdatedFields []string     `json:"updatedFields,omitempty"`
+}
+
+type PropertyEdgeExec struct {
+	exec *prisma.Exec
+}
+
+func (instance *PropertyEdgeExec) Node() *PropertyExec {
+	ret := instance.exec.Client.GetOne(
+		instance.exec,
+		nil,
+		[2]string{"", "Property"},
+		"node",
+		[]string{"id", "displayname", "address1", "address2", "postcode", "city", "country", "percentageofownership", "status", "purchaseprice", "currentprice", "currency"})
+
+	return &PropertyExec{ret}
+}
+
+func (instance PropertyEdgeExec) Exec(ctx context.Context) (*PropertyEdge, error) {
+	var v PropertyEdge
+	ok, err := instance.exec.Exec(ctx, &v)
+	if err != nil {
+		return nil, err
+	}
+	if !ok {
+		return nil, ErrNoResult
+	}
+	return &v, nil
+}
+
+func (instance PropertyEdgeExec) Exists(ctx context.Context) (bool, error) {
+	return instance.exec.Exists(ctx)
+}
+
+type PropertyEdgeExecArray struct {
+	exec *prisma.Exec
+}
+
+func (instance PropertyEdgeExecArray) Exec(ctx context.Context) ([]PropertyEdge, error) {
+	var v []PropertyEdge
+	err := instance.exec.ExecArray(ctx, &v)
+	return v, err
+}
+
+type PropertyEdge struct {
+	Cursor string `json:"cursor"`
+}
+
+type LandlordPreviousValuesExec struct {
+	exec *prisma.Exec
+}
+
+func (instance LandlordPreviousValuesExec) Exec(ctx context.Context) (*LandlordPreviousValues, error) {
+	var v LandlordPreviousValues
+	ok, err := instance.exec.Exec(ctx, &v)
+	if err != nil {
+		return nil, err
+	}
+	if !ok {
+		return nil, ErrNoResult
+	}
+	return &v, nil
+}
+
+func (instance LandlordPreviousValuesExec) Exists(ctx context.Context) (bool, error) {
+	return instance.exec.Exists(ctx)
+}
+
+type LandlordPreviousValuesExecArray struct {
+	exec *prisma.Exec
+}
+
+func (instance LandlordPreviousValuesExecArray) Exec(ctx context.Context) ([]LandlordPreviousValues, error) {
+	var v []LandlordPreviousValues
+	err := instance.exec.ExecArray(ctx, &v)
+	return v, err
+}
+
+type LandlordPreviousValues struct {
+	ID         string  `json:"id"`
+	FullName   string  `json:"fullName"`
+	Email      string  `json:"email"`
+	Password   *string `json:"password,omitempty"`
+	Mobile     *int32  `json:"mobile,omitempty"`
+	Dob        *string `json:"dob,omitempty"`
+	Occupation *string `json:"occupation,omitempty"`
+	Address1   *string `json:"address1,omitempty"`
+	Address2   *string `json:"address2,omitempty"`
+	Postcode   string  `json:"postcode"`
+	Country    string  `json:"country"`
+}
+
 type LandlordSubscriptionPayloadExec struct {
 	exec *prisma.Exec
 }
@@ -1664,6 +2959,229 @@ func (instance LandlordSubscriptionPayloadExecArray) Exec(ctx context.Context) (
 type LandlordSubscriptionPayload struct {
 	Mutation      MutationType `json:"mutation"`
 	UpdatedFields []string     `json:"updatedFields,omitempty"`
+}
+
+type PropertySubscriptionPayloadExec struct {
+	exec *prisma.Exec
+}
+
+func (instance *PropertySubscriptionPayloadExec) Node() *PropertyExec {
+	ret := instance.exec.Client.GetOne(
+		instance.exec,
+		nil,
+		[2]string{"", "Property"},
+		"node",
+		[]string{"id", "displayname", "address1", "address2", "postcode", "city", "country", "percentageofownership", "status", "purchaseprice", "currentprice", "currency"})
+
+	return &PropertyExec{ret}
+}
+
+func (instance *PropertySubscriptionPayloadExec) PreviousValues() *PropertyPreviousValuesExec {
+	ret := instance.exec.Client.GetOne(
+		instance.exec,
+		nil,
+		[2]string{"", "PropertyPreviousValues"},
+		"previousValues",
+		[]string{"id", "displayname", "address1", "address2", "postcode", "city", "country", "percentageofownership", "status", "purchaseprice", "currentprice", "currency"})
+
+	return &PropertyPreviousValuesExec{ret}
+}
+
+func (instance PropertySubscriptionPayloadExec) Exec(ctx context.Context) (*PropertySubscriptionPayload, error) {
+	var v PropertySubscriptionPayload
+	ok, err := instance.exec.Exec(ctx, &v)
+	if err != nil {
+		return nil, err
+	}
+	if !ok {
+		return nil, ErrNoResult
+	}
+	return &v, nil
+}
+
+func (instance PropertySubscriptionPayloadExec) Exists(ctx context.Context) (bool, error) {
+	return instance.exec.Exists(ctx)
+}
+
+type PropertySubscriptionPayloadExecArray struct {
+	exec *prisma.Exec
+}
+
+func (instance PropertySubscriptionPayloadExecArray) Exec(ctx context.Context) ([]PropertySubscriptionPayload, error) {
+	var v []PropertySubscriptionPayload
+	err := instance.exec.ExecArray(ctx, &v)
+	return v, err
+}
+
+type PropertySubscriptionPayload struct {
+	Mutation      MutationType `json:"mutation"`
+	UpdatedFields []string     `json:"updatedFields,omitempty"`
+}
+
+type AgentPreviousValuesExec struct {
+	exec *prisma.Exec
+}
+
+func (instance AgentPreviousValuesExec) Exec(ctx context.Context) (*AgentPreviousValues, error) {
+	var v AgentPreviousValues
+	ok, err := instance.exec.Exec(ctx, &v)
+	if err != nil {
+		return nil, err
+	}
+	if !ok {
+		return nil, ErrNoResult
+	}
+	return &v, nil
+}
+
+func (instance AgentPreviousValuesExec) Exists(ctx context.Context) (bool, error) {
+	return instance.exec.Exists(ctx)
+}
+
+type AgentPreviousValuesExecArray struct {
+	exec *prisma.Exec
+}
+
+func (instance AgentPreviousValuesExecArray) Exec(ctx context.Context) ([]AgentPreviousValues, error) {
+	var v []AgentPreviousValues
+	err := instance.exec.ExecArray(ctx, &v)
+	return v, err
+}
+
+type AgentPreviousValues struct {
+	ID              string  `json:"id"`
+	BusinessService *string `json:"businessService,omitempty"`
+	Title           *string `json:"title,omitempty"`
+	FirstName       string  `json:"firstName"`
+	LastName        *string `json:"lastName,omitempty"`
+	DisplayName     *string `json:"displayName,omitempty"`
+	Email           string  `json:"email"`
+	Password        *string `json:"password,omitempty"`
+	Mobile          *int32  `json:"mobile,omitempty"`
+	Fax             *int32  `json:"fax,omitempty"`
+	Address1        *string `json:"address1,omitempty"`
+	Address2        *string `json:"address2,omitempty"`
+	Postcode        string  `json:"postcode"`
+	Country         string  `json:"country"`
+	Website         *string `json:"website,omitempty"`
+}
+
+type TenantExec struct {
+	exec *prisma.Exec
+}
+
+func (instance *TenantExec) Property() *PropertyExec {
+	ret := instance.exec.Client.GetOne(
+		instance.exec,
+		nil,
+		[2]string{"", "Property"},
+		"property",
+		[]string{"id", "displayname", "address1", "address2", "postcode", "city", "country", "percentageofownership", "status", "purchaseprice", "currentprice", "currency"})
+
+	return &PropertyExec{ret}
+}
+
+func (instance TenantExec) Exec(ctx context.Context) (*Tenant, error) {
+	var v Tenant
+	ok, err := instance.exec.Exec(ctx, &v)
+	if err != nil {
+		return nil, err
+	}
+	if !ok {
+		return nil, ErrNoResult
+	}
+	return &v, nil
+}
+
+func (instance TenantExec) Exists(ctx context.Context) (bool, error) {
+	return instance.exec.Exists(ctx)
+}
+
+type TenantExecArray struct {
+	exec *prisma.Exec
+}
+
+func (instance TenantExecArray) Exec(ctx context.Context) ([]Tenant, error) {
+	var v []Tenant
+	err := instance.exec.ExecArray(ctx, &v)
+	return v, err
+}
+
+type Tenant struct {
+	ID           string  `json:"id"`
+	FirstName    string  `json:"firstName"`
+	LastName     *string `json:"lastName,omitempty"`
+	Email        string  `json:"email"`
+	Homenumber   *int32  `json:"homenumber,omitempty"`
+	Mobilenumber *int32  `json:"mobilenumber,omitempty"`
+}
+
+type TenantConnectionExec struct {
+	exec *prisma.Exec
+}
+
+func (instance *TenantConnectionExec) PageInfo() *PageInfoExec {
+	ret := instance.exec.Client.GetOne(
+		instance.exec,
+		nil,
+		[2]string{"", "PageInfo"},
+		"pageInfo",
+		[]string{"hasNextPage", "hasPreviousPage", "startCursor", "endCursor"})
+
+	return &PageInfoExec{ret}
+}
+
+func (instance *TenantConnectionExec) Edges() *TenantEdgeExec {
+	ret := instance.exec.Client.GetOne(
+		instance.exec,
+		nil,
+		[2]string{"", "TenantEdge"},
+		"edges",
+		[]string{"cursor"})
+
+	return &TenantEdgeExec{ret}
+}
+
+func (instance *TenantConnectionExec) Aggregate(ctx context.Context) (Aggregate, error) {
+	ret := instance.exec.Client.GetOne(
+		instance.exec,
+		nil,
+		[2]string{"", "AggregateTenant"},
+		"aggregate",
+		[]string{"count"})
+
+	var v Aggregate
+	_, err := ret.Exec(ctx, &v)
+	return v, err
+}
+
+func (instance TenantConnectionExec) Exec(ctx context.Context) (*TenantConnection, error) {
+	var v TenantConnection
+	ok, err := instance.exec.Exec(ctx, &v)
+	if err != nil {
+		return nil, err
+	}
+	if !ok {
+		return nil, ErrNoResult
+	}
+	return &v, nil
+}
+
+func (instance TenantConnectionExec) Exists(ctx context.Context) (bool, error) {
+	return instance.exec.Exists(ctx)
+}
+
+type TenantConnectionExecArray struct {
+	exec *prisma.Exec
+}
+
+func (instance TenantConnectionExecArray) Exec(ctx context.Context) ([]TenantConnection, error) {
+	var v []TenantConnection
+	err := instance.exec.ExecArray(ctx, &v)
+	return v, err
+}
+
+type TenantConnection struct {
 }
 
 type LandlordConnectionExec struct {
@@ -1732,49 +3250,4 @@ func (instance LandlordConnectionExecArray) Exec(ctx context.Context) ([]Landlor
 }
 
 type LandlordConnection struct {
-}
-
-type LandlordEdgeExec struct {
-	exec *prisma.Exec
-}
-
-func (instance *LandlordEdgeExec) Node() *LandlordExec {
-	ret := instance.exec.Client.GetOne(
-		instance.exec,
-		nil,
-		[2]string{"", "Landlord"},
-		"node",
-		[]string{"id", "fullName", "email", "password", "mobile", "dob", "occupation", "address1", "address2", "postcode", "country"})
-
-	return &LandlordExec{ret}
-}
-
-func (instance LandlordEdgeExec) Exec(ctx context.Context) (*LandlordEdge, error) {
-	var v LandlordEdge
-	ok, err := instance.exec.Exec(ctx, &v)
-	if err != nil {
-		return nil, err
-	}
-	if !ok {
-		return nil, ErrNoResult
-	}
-	return &v, nil
-}
-
-func (instance LandlordEdgeExec) Exists(ctx context.Context) (bool, error) {
-	return instance.exec.Exists(ctx)
-}
-
-type LandlordEdgeExecArray struct {
-	exec *prisma.Exec
-}
-
-func (instance LandlordEdgeExecArray) Exec(ctx context.Context) ([]LandlordEdge, error) {
-	var v []LandlordEdge
-	err := instance.exec.ExecArray(ctx, &v)
-	return v, err
-}
-
-type LandlordEdge struct {
-	Cursor string `json:"cursor"`
 }

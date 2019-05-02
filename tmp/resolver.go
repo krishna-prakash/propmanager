@@ -21,8 +21,14 @@ func (r *Resolver) Landlord() main.LandlordResolver {
 func (r *Resolver) Mutation() main.MutationResolver {
 	return &mutationResolver{r}
 }
+func (r *Resolver) Property() main.PropertyResolver {
+	return &propertyResolver{r}
+}
 func (r *Resolver) Query() main.QueryResolver {
 	return &queryResolver{r}
+}
+func (r *Resolver) Tenant() main.TenantResolver {
+	return &tenantResolver{r}
 }
 
 type agentResolver struct{ *Resolver }
@@ -42,6 +48,9 @@ type mutationResolver struct{ *Resolver }
 func (r *mutationResolver) CreateLandlord(ctx context.Context, userinfo rogerapp.SignupInfo) (*prisma.Landlord, error) {
 	panic("not implemented")
 }
+func (r *mutationResolver) CreateProperty(ctx context.Context, propinfo rogerapp.PropertyInfo) (*prisma.Property, error) {
+	panic("not implemented")
+}
 func (r *mutationResolver) CreateAgent(ctx context.Context, userinfo rogerapp.SignupInfo) (*prisma.Agent, error) {
 	panic("not implemented")
 }
@@ -52,14 +61,32 @@ func (r *mutationResolver) AssignAgentToLandlord(ctx context.Context, agentID st
 	panic("not implemented")
 }
 
+type propertyResolver struct{ *Resolver }
+
+func (r *propertyResolver) Tenants(ctx context.Context, obj *prisma.Property) ([]*prisma.Tenant, error) {
+	panic("not implemented")
+}
+func (r *propertyResolver) Landlords(ctx context.Context, obj *prisma.Property) ([]*prisma.Landlord, error) {
+	panic("not implemented")
+}
+
 type queryResolver struct{ *Resolver }
 
 func (r *queryResolver) GetLandlords(ctx context.Context) ([]prisma.Landlord, error) {
+	panic("not implemented")
+}
+func (r *queryResolver) GetProperties(ctx context.Context) ([]prisma.Property, error) {
 	panic("not implemented")
 }
 func (r *queryResolver) GetAgents(ctx context.Context) ([]prisma.Agent, error) {
 	panic("not implemented")
 }
 func (r *queryResolver) GetLandlord(ctx context.Context, id string) (*prisma.Landlord, error) {
+	panic("not implemented")
+}
+
+type tenantResolver struct{ *Resolver }
+
+func (r *tenantResolver) Property(ctx context.Context, obj *prisma.Tenant) (*prisma.Property, error) {
 	panic("not implemented")
 }

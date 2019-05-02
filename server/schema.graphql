@@ -31,16 +31,45 @@ type Agent {
       clients: [Landlord!]
 }
 
+type Property {
+      id: ID!
+      displayname: String
+      address1: String!
+      address2: String
+      postcode: String!
+      city: String!
+      country: String!
+      percentageofownership: Int
+      status: String!
+      purchaseprice: Int
+      currentprice: Int
+      currency: String
+      tenants: [Tenant]
+      landlords: [Landlord]
+}
+
+type Tenant {
+      id: ID!
+      firstName: String!
+      lastName: String
+      email: String!
+      homenumber: Int
+      mobilenumber: Int
+      property: Property
+}
+
 type Query {
       getLandlords: [Landlord!]
+      getProperties: [Property!]
       getAgents: [Agent!]
       getLandlord(id: ID!): Landlord!
 }
 
 input SignupInfo {
-      name: String
-      email: String
-      password: String
+      name: String!
+      email: String!
+      mobile: Int!
+      password: String!
 }
 
 input LandlordInfo {
@@ -55,8 +84,23 @@ input LandlordInfo {
       country: String
 }
 
+input PropertyInfo {
+      displayname: String
+      address1: String!
+      address2: String
+      postcode: String!
+      city: String!
+      country: String!
+      percentageofownership: Int
+      status: String!
+      purchaseprice: Int
+      currentprice: Int
+      currency: String
+}
+
 type Mutation {
       createLandlord(userinfo: SignupInfo!): Landlord!
+      createProperty(propinfo: PropertyInfo!): Property!
       createAgent(userinfo: SignupInfo!): Agent!
       updateLandlord(id: ID!, landlordInfo: LandlordInfo!): Landlord!
       assignAgentToLandlord(agentId: ID!, landlordId: ID!): Landlord!

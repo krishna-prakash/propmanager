@@ -14,8 +14,23 @@ type LandlordInfo struct {
 	Country    *string `json:"country"`
 }
 
+type PropertyInfo struct {
+	Displayname           *string `json:"displayname"`
+	Address1              string  `json:"address1"`
+	Address2              *string `json:"address2"`
+	Postcode              string  `json:"postcode"`
+	City                  string  `json:"city"`
+	Country               string  `json:"country"`
+	Percentageofownership *int    `json:"percentageofownership"`
+	Status                string  `json:"status"`
+	Purchaseprice         *int    `json:"purchaseprice"`
+	Currentprice          *int    `json:"currentprice"`
+	Currency              *string `json:"currency"`
+}
+
 type SignupInfo struct {
-	Name     *string `json:"name"`
-	Email    *string `json:"email"`
-	Password *string `json:"password"`
+	Name     string `json:"name"`
+	Email    string `json:"email"`
+	Mobile   int    `json:"mobile"`
+	Password string `json:"password"`
 }

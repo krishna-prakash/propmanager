@@ -7,6 +7,10 @@ models:
             model: github.com/krishna/rogerapp/generated/prisma-client.Landlord
       Agent:
             model: github.com/krishna/rogerapp/generated/prisma-client.Agent
+      Property:
+            model: github.com/krishna/rogerapp/generated/prisma-client.Property
+      Tenant:
+            model: github.com/krishna/rogerapp/generated/prisma-client.Tenant
 resolver:
       filename: tmp/resolver.go
       type: Resolver

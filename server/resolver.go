@@ -4,6 +4,7 @@ import (
 	"context"
 
 	input "github.com/krishna/rogerapp"
+	"github.com/krishna/rogerapp/utils"
 	"github.com/krishna/rogerapp/auth0"
 	prisma "github.com/krishna/rogerapp/generated/prisma-client"
 )
@@ -25,10 +26,16 @@ func (r *Resolver) Landlord() LandlordResolver {
 func (r *Resolver) Mutation() MutationResolver {
 	return &mutationResolver{r}
 }
+
+func (r *Resolver) Property() PropertyResolver {
+	return &propertyResolver{r}
+}
 func (r *Resolver) Query() QueryResolver {
 	return &queryResolver{r}
 }
-
+func (r *Resolver) Tenant() TenantResolver {
+	return &tenantResolver{r}
+}
 type agentResolver struct{ *Resolver }
 
 func (r *agentResolver) Clients(ctx context.Context, obj *prisma.Agent) ([]prisma.Landlord, error) {
@@ -53,9 +60,10 @@ type mutationResolver struct{ *Resolver }
 
 func (r *mutationResolver) CreateLandlord(ctx context.Context, userinfo input.SignupInfo) (*prisma.Landlord, error) {
 	user, err := r.Prisma.CreateLandlord(prisma.LandlordCreateInput{
-		FullName: *userinfo.Name,
-		Email:    *userinfo.Email,
-		Password: userinfo.Password,
+		FullName: userinfo.Name,
+		Email:    userinfo.Email,
+		Mobile:   utils.ToInt32(&userinfo.Mobile),
+		Password: &userinfo.Password,
 	}).Exec(ctx)
 
 	if err != nil {
@@ -66,15 +74,49 @@ func (r *mutationResolver) CreateLandlord(ctx context.Context, userinfo input.Si
 	return user, err
 }
 
+type propertyResolver struct{ *Resolver }
+
+func (r *propertyResolver) Tenants(ctx context.Context, obj *prisma.Property) ([]*prisma.Tenant, error) {
+	panic("not implemented")
+}
+func (r *propertyResolver) Landlords(ctx context.Context, obj *prisma.Property) ([]*prisma.Landlord, error) {
+	panic("not implemented")
+}
+
+type tenantResolver struct{ *Resolver }
+
+func (r *tenantResolver) Property(ctx context.Context, obj *prisma.Tenant) (*prisma.Property, error) {
+	panic("not implemented")
+}
+
+func (r *mutationResolver) CreateProperty(ctx context.Context, propinfo input.PropertyInfo) (*prisma.Property, error) {
+	prop, err := r.Prisma.CreateProperty(prisma.PropertyCreateInput{
+		Displayname : propinfo.Displayname,
+		Address1: propinfo.Address1,
+		Address2: propinfo.Address2,
+		Postcode: propinfo.Postcode,
+		City: propinfo.City,
+		Country: propinfo.Country,
+		Percentageofownership: utils.ToInt32(propinfo.Percentageofownership),
+		Status: propinfo.Status,
+		Purchaseprice: utils.ToInt32(propinfo.Purchaseprice),
+		Currentprice: utils.ToInt32(propinfo.Currentprice),
+		Currency: propinfo.Currency,
+	}).Exec(ctx)
+
+	return prop, err
+}
+
 func (r *mutationResolver) UpdateLandlord(ctx context.Context, id string, landlordInfo input.LandlordInfo) (*prisma.Landlord, error) {
-	err := auth0.JwtVerification(ctx)
-	if err != nil {
-		return nil, err
-	}
+	// err := auth0.JwtVerification(ctx)
+	// if err != nil {
+	// 	return nil, err
+	// }
 	landlord, err := r.Prisma.UpdateLandlord(prisma.LandlordUpdateParams{
 		Data: prisma.LandlordUpdateInput{
 			FullName: landlordInfo.FullName,
 			Email:    landlordInfo.Email,
+			Mobile:   utils.ToInt32(landlordInfo.Mobile),
 			Address1: landlordInfo.Address1,
 			Address2: landlordInfo.Address2,
 			Country:  landlordInfo.Country,
@@ -111,9 +153,9 @@ func (r *mutationResolver) AssignAgentToLandlord(ctx context.Context, agentID st
 
 func (r *mutationResolver) CreateAgent(ctx context.Context, userinfo input.SignupInfo) (*prisma.Agent, error) {
 	user, err := r.Prisma.CreateAgent(prisma.AgentCreateInput{
-		FirstName: *userinfo.Name,
-		Email:     *userinfo.Email,
-		Password:  userinfo.Password,
+		FirstName: userinfo.Name,
+		Email:     userinfo.Email,
+		Password:  &userinfo.Password,
 	}).Exec(ctx)
 
 	if err != nil {
@@ -135,10 +177,10 @@ func (r *queryResolver) GetLandlords(ctx context.Context) ([]prisma.Landlord, er
 }
 
 func (r *queryResolver) GetLandlord(ctx context.Context, id string) (*prisma.Landlord, error) {
-	err := auth0.JwtVerification(ctx)
-	if err != nil {
-		return nil, err
-	}
+	// err := auth0.JwtVerification(ctx)
+	// if err != nil {
+	// 	return nil, err
+	// }
 	tes, err := r.Prisma.Landlord(prisma.LandlordWhereUniqueInput{
 		ID: &id,
 	}).Exec(ctx)
@@ -154,4 +196,8 @@ func (r *queryResolver) GetAgents(ctx context.Context) ([]prisma.Agent, error) {
 	agents, err := r.Prisma.Agents(nil).Exec(ctx)
 
 	return agents, err
+}
+
+func (r *queryResolver) GetProperties(ctx context.Context) ([]prisma.Property, error) {
+	panic("not implemented")
 }
