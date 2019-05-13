@@ -10,6 +10,7 @@ type Landlord {
       postcode: String!
       country: String!
       agent: Agent
+      properties: [Property!]
 }
 
 type Agent {
@@ -33,36 +34,66 @@ type Agent {
 
 type Property {
       id: ID!
-      displayname: String
       address1: String!
       address2: String
       postcode: String!
       city: String!
       country: String!
       percentageofownership: Int
-      status: String!
+      status: PropertyStatus!
+      type: PropertyType!
       purchaseprice: Int
       currentprice: Int
+      mortgageAmount: Int
+      mortgageInterestRate: Int
+      annualRentalIncome: Int
       currency: String
-      tenants: [Tenant]
-      landlords: [Landlord]
+      tenants: Tenant
+      landlords: Landlord!
 }
 
 type Tenant {
       id: ID!
+      title: String
       firstName: String!
+      middleName: String
       lastName: String
-      email: String!
+      displayName: String!
+      personalEmail: String!
+      workEmail: String!
       homenumber: Int
       mobilenumber: Int
-      property: Property
+      typeOfLet: TypeOfLet!
+      rentInterval: String!
+      day: String
+      startDate: String
+      endDate: String
+      notes: String
+      property: Property!
+}
+
+type PropertyStatus {
+      id: ID!
+      status: String!
+}
+type PropertyType {
+      id: ID!
+      type: String!
+}
+
+type TypeOfLet {
+      id: ID!
+      name: String
 }
 
 type Query {
       getLandlords: [Landlord!]
       getProperties: [Property!]
       getAgents: [Agent!]
+      getTenants: [Tenant!]
       getLandlord(id: ID!): Landlord!
+      getProperty(id: ID!): Property!
+      getTenant(id: ID!): Tenant!
 }
 
 input SignupInfo {
@@ -85,23 +116,50 @@ input LandlordInfo {
 }
 
 input PropertyInfo {
-      displayname: String
       address1: String!
       address2: String
       postcode: String!
       city: String!
       country: String!
       percentageofownership: Int
-      status: String!
+      statusID: ID
+      typeID: ID
       purchaseprice: Int
       currentprice: Int
+      mortgageAmount: Int
+      mortgageInterestRate: Int
+      annualRentalIncome: Int
       currency: String
+      tenantID: ID
+      landlordID: ID!
+}
+
+input TenantInfo {
+      title: String
+      firstName: String!
+      middleName: String
+      lastName: String
+      displayName: String!
+      personalEmail: String!
+      workEmail: String!
+      homenumber: Int
+      mobilenumber: Int
+      letID: ID
+      rentInterval: String!
+      day: String
+      startDate: String
+      endDate: String
+      notes: String
+      propertyID: ID!
 }
 
 type Mutation {
       createLandlord(userinfo: SignupInfo!): Landlord!
-      createProperty(propinfo: PropertyInfo!): Property!
-      createAgent(userinfo: SignupInfo!): Agent!
       updateLandlord(id: ID!, landlordInfo: LandlordInfo!): Landlord!
+      createProperty(propinfo: PropertyInfo!): Property!
+      updateProperty(id: ID!, propInfo: PropertyInfo!): Property!
+      createTenant(tenantInfo: TenantInfo!): Tenant!
+      updateTenant(id: ID!, tenantInfo: TenantInfo!): Tenant!
+      createAgent(userinfo: SignupInfo!): Agent!
       assignAgentToLandlord(agentId: ID!, landlordId: ID!): Landlord!
 }

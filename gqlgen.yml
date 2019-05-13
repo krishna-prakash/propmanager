@@ -11,6 +11,12 @@ models:
             model: github.com/krishna/rogerapp/generated/prisma-client.Property
       Tenant:
             model: github.com/krishna/rogerapp/generated/prisma-client.Tenant
+      PropertyStatus:
+            model: github.com/krishna/rogerapp/generated/prisma-client.PropertyStatus
+      PropertyType:
+            model: github.com/krishna/rogerapp/generated/prisma-client.PropertyType
+      TypeOfLet:
+            model: github.com/krishna/rogerapp/generated/prisma-client.TypeOfLet
 resolver:
       filename: tmp/resolver.go
       type: Resolver

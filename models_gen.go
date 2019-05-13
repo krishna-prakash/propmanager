@@ -15,17 +15,22 @@ type LandlordInfo struct {
 }
 
 type PropertyInfo struct {
-	Displayname           *string `json:"displayname"`
 	Address1              string  `json:"address1"`
 	Address2              *string `json:"address2"`
 	Postcode              string  `json:"postcode"`
 	City                  string  `json:"city"`
 	Country               string  `json:"country"`
 	Percentageofownership *int    `json:"percentageofownership"`
-	Status                string  `json:"status"`
+	StatusID              *string `json:"statusID"`
+	TypeID                *string `json:"typeID"`
 	Purchaseprice         *int    `json:"purchaseprice"`
 	Currentprice          *int    `json:"currentprice"`
+	MortgageAmount        *int    `json:"mortgageAmount"`
+	MortgageInterestRate  *int    `json:"mortgageInterestRate"`
+	AnnualRentalIncome    *int    `json:"annualRentalIncome"`
 	Currency              *string `json:"currency"`
+	TenantID              *string `json:"tenantID"`
+	LandlordID            string  `json:"landlordID"`
 }
 
 type SignupInfo struct {
@@ -33,4 +38,23 @@ type SignupInfo struct {
 	Email    string `json:"email"`
 	Mobile   int    `json:"mobile"`
 	Password string `json:"password"`
+}
+
+type TenantInfo struct {
+	Title         *string `json:"title"`
+	FirstName     string  `json:"firstName"`
+	MiddleName    *string `json:"middleName"`
+	LastName      *string `json:"lastName"`
+	DisplayName   string  `json:"displayName"`
+	PersonalEmail string  `json:"personalEmail"`
+	WorkEmail     string  `json:"workEmail"`
+	Homenumber    *int    `json:"homenumber"`
+	Mobilenumber  *int    `json:"mobilenumber"`
+	LetID         *string `json:"letID"`
+	RentInterval  string  `json:"rentInterval"`
+	Day           *string `json:"day"`
+	StartDate     *string `json:"startDate"`
+	EndDate       *string `json:"endDate"`
+	Notes         *string `json:"notes"`
+	PropertyID    string  `json:"propertyID"`
 }

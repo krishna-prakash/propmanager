@@ -11,6 +11,7 @@ type Landlord {
       postcode: String!
       country: String!
       agent: Agent
+      properties: [Property!]
 }
 
 type Agent {
@@ -34,27 +35,54 @@ type Agent {
 
 type Property {
       id: ID! @unique
-      displayname: String
       address1: String!
       address2: String
       postcode: String!
       city: String!
       country: String!
       percentageofownership: Int
-      status: String!
+      status: PropertyStatus!
+      type: PropertyType!
       purchaseprice: Int
       currentprice: Int
+      mortgageAmount: Int
+      mortgageInterestRate: Int
+      annualRentalIncome: Int
       currency: String
-      tenants: [Tenant]
-      landlords: [Landlord]
+      tenants: Tenant
+      landlords: Landlord
 }
 
 type Tenant {
       id: ID! @unique
+      title: String
       firstName: String!
+      middleName: String
       lastName: String
-      email: String! @unique
+      displayName: String!
+      personalEmail: String! @unique
+      workEmail: String! @unique
       homenumber: Int
       mobilenumber: Int
+      typeOfLet: TypeOfLet!
+      rentInterval: String!
+      day: String
+      startDate: DateTime
+      endDate: DateTime
+      notes: String
       property: Property
+}
+
+type PropertyStatus {
+      id: ID! @unique
+      status: String!
+}
+type PropertyType {
+      id: ID! @unique
+      type: String!
+}
+
+type TypeOfLet {
+      id: ID! @unique
+      name: String
 }
