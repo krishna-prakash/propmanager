@@ -91,6 +91,7 @@ type Query {
       getProperties: [Property!]
       getAgents: [Agent!]
       getTenants: [Tenant!]
+      getPropertTypes: [PropertyType!]
       getLandlord(id: ID!): Landlord!
       getProperty(id: ID!): Property!
       getTenant(id: ID!): Tenant!

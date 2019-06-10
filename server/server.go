@@ -7,6 +7,7 @@ import (
 
 	"github.com/99designs/gqlgen/handler"
 	"github.com/go-chi/chi"
+	"github.com/go-chi/cors"
 	"github.com/krishna/rogerapp/auth"
 	prisma "github.com/krishna/rogerapp/generated/prisma-client"
 )
@@ -26,6 +27,11 @@ func main() {
 
 	router := chi.NewRouter()
 
+	cors := cors.New(cors.Options{
+		AllowOriginFunc:  AllowOriginFunc,
+	})
+	router.Use(cors.Handler)
+
 	router.Use(auth.Middleware())
 
 	router.Handle("/", handler.Playground("GraphQL Playground", "/query"))
@@ -36,4 +42,12 @@ func main() {
 	if err != nil {
 		log.Fatal(err)
 	}
+}
+
+func AllowOriginFunc(r *http.Request, origin string) bool {
+	if origin == "http://localhost:3000" {
+		return true
+	}
+
+	return false
 }

@@ -306,6 +306,10 @@ func (r *queryResolver) GetProperties(ctx context.Context) ([]prisma.Property, e
 	return r.Prisma.Properties(nil).Exec(ctx)
 }
 
+func (r *queryResolver) GetPropertTypes(ctx context.Context) ([]prisma.PropertyType, error) {
+	return r.Prisma.PropertyTypes(nil).Exec(ctx)
+}
+
 func (r *queryResolver) GetProperty(ctx context.Context, id string) (*prisma.Property, error) {
 	tes, err := r.Prisma.Property(prisma.PropertyWhereUniqueInput{
 		ID: &id,
