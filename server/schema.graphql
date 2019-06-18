@@ -11,6 +11,7 @@ type Landlord {
       country: String!
       agent: Agent
       properties: [Property!]
+      updatedAt: String
 }
 
 type Agent {
@@ -92,6 +93,7 @@ type Query {
       getAgents: [Agent!]
       getTenants: [Tenant!]
       getPropertTypes: [PropertyType!]
+      getPropertStatus: [PropertyStatus!]
       getLandlord(id: ID!): Landlord!
       getProperty(id: ID!): Property!
       getTenant(id: ID!): Tenant!

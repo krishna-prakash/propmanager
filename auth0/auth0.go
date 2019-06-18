@@ -31,6 +31,11 @@ type user struct {
 	Password      string `json:"password"`
 	Name          string `json:"name"`
 	EmailVerified bool   `json:"email_verified"`
+	UserMetadata userMetadata `json:"user_metadata"`
+}
+
+type userMetadata struct {
+	PropBooksID  string `json:"propbooks_id"`
 }
 
 type response struct {
@@ -73,7 +78,7 @@ func GetAuth0Token() string {
 
 }
 
-func CreateUser(userInput *input.SignupInfo) {
+func CreateUser(userInput *input.SignupInfo, id string) {
 	url := "https://epnweb.auth0.com/api/v2/users"
 
 	payload := user{
@@ -82,6 +87,7 @@ func CreateUser(userInput *input.SignupInfo) {
 		Password:      userInput.Password,
 		Name:          userInput.Name,
 		EmailVerified: false,
+		UserMetadata: userMetadata{ PropBooksID: id },
 	}
 	payloadJSON, err := json.Marshal(payload)
 

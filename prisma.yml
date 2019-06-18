@@ -1,4 +1,5 @@
 endpoint: http://localhost:4466
+# endpoint: http://propb-Publi-14HYEFWZN47WR-596465616.eu-west-1.elb.amazonaws.com
 datamodel: datamodel.prisma
 
 generate:

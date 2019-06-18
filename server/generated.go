@@ -79,6 +79,7 @@ type ComplexityRoot struct {
 		Country    func(childComplexity int) int
 		Agent      func(childComplexity int) int
 		Properties func(childComplexity int) int
+		UpdatedAt  func(childComplexity int) int
 	}
 
 	Mutation struct {
@@ -123,14 +124,15 @@ type ComplexityRoot struct {
 	}
 
 	Query struct {
-		GetLandlords    func(childComplexity int) int
-		GetProperties   func(childComplexity int) int
-		GetAgents       func(childComplexity int) int
-		GetTenants      func(childComplexity int) int
-		GetPropertTypes func(childComplexity int) int
-		GetLandlord     func(childComplexity int, id string) int
-		GetProperty     func(childComplexity int, id string) int
-		GetTenant       func(childComplexity int, id string) int
+		GetLandlords     func(childComplexity int) int
+		GetProperties    func(childComplexity int) int
+		GetAgents        func(childComplexity int) int
+		GetTenants       func(childComplexity int) int
+		GetPropertTypes  func(childComplexity int) int
+		GetPropertStatus func(childComplexity int) int
+		GetLandlord      func(childComplexity int, id string) int
+		GetProperty      func(childComplexity int, id string) int
+		GetTenant        func(childComplexity int, id string) int
 	}
 
 	Tenant struct {
@@ -189,6 +191,7 @@ type QueryResolver interface {
 	GetAgents(ctx context.Context) ([]prisma.Agent, error)
 	GetTenants(ctx context.Context) ([]prisma.Tenant, error)
 	GetPropertTypes(ctx context.Context) ([]prisma.PropertyType, error)
+	GetPropertStatus(ctx context.Context) ([]prisma.PropertyStatus, error)
 	GetLandlord(ctx context.Context, id string) (*prisma.Landlord, error)
 	GetProperty(ctx context.Context, id string) (*prisma.Property, error)
 	GetTenant(ctx context.Context, id string) (*prisma.Tenant, error)
@@ -409,6 +412,13 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 		}
 
 		return e.complexity.Landlord.Properties(childComplexity), true
+
+	case "Landlord.UpdatedAt":
+		if e.complexity.Landlord.UpdatedAt == nil {
+			break
+		}
+
+		return e.complexity.Landlord.UpdatedAt(childComplexity), true
 
 	case "Mutation.CreateLandlord":
 		if e.complexity.Mutation.CreateLandlord == nil {
@@ -688,6 +698,13 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 
 		return e.complexity.Query.GetPropertTypes(childComplexity), true
 
+	case "Query.GetPropertStatus":
+		if e.complexity.Query.GetPropertStatus == nil {
+			break
+		}
+
+		return e.complexity.Query.GetPropertStatus(childComplexity), true
+
 	case "Query.GetLandlord":
 		if e.complexity.Query.GetLandlord == nil {
 			break
@@ -947,6 +964,7 @@ var parsedSchema = gqlparser.MustLoadSchema(
       country: String!
       agent: Agent
       properties: [Property!]
+      updatedAt: String
 }
 
 type Agent {
@@ -1028,6 +1046,7 @@ type Query {
       getAgents: [Agent!]
       getTenants: [Tenant!]
       getPropertTypes: [PropertyType!]
+      getPropertStatus: [PropertyStatus!]
       getLandlord(id: ID!): Landlord!
       getProperty(id: ID!): Property!
       getTenant(id: ID!): Tenant!
@@ -2013,6 +2032,29 @@ func (ec *executionContext) _Landlord_properties(ctx context.Context, field grap
 	return ec.marshalOProperty2ᚕgithubᚗcomᚋkrishnaᚋrogerappᚋgeneratedᚋprismaᚑclientᚐProperty(ctx, field.Selections, res)
 }
 
+func (ec *executionContext) _Landlord_updatedAt(ctx context.Context, field graphql.CollectedField, obj *prisma.Landlord) graphql.Marshaler {
+	ctx = ec.Tracer.StartFieldExecution(ctx, field)
+	defer func() { ec.Tracer.EndFieldExecution(ctx) }()
+	rctx := &graphql.ResolverContext{
+		Object: "Landlord",
+		Field:  field,
+		Args:   nil,
+	}
+	ctx = graphql.WithResolverContext(ctx, rctx)
+	ctx = ec.Tracer.StartFieldResolverExecution(ctx, rctx)
+	resTmp := ec.FieldMiddleware(ctx, obj, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.UpdatedAt, nil
+	})
+	if resTmp == nil {
+		return graphql.Null
+	}
+	res := resTmp.(string)
+	rctx.Result = res
+	ctx = ec.Tracer.StartFieldChildExecution(ctx)
+	return ec.marshalOString2string(ctx, field.Selections, res)
+}
+
 func (ec *executionContext) _Mutation_createLandlord(ctx context.Context, field graphql.CollectedField) graphql.Marshaler {
 	ctx = ec.Tracer.StartFieldExecution(ctx, field)
 	defer func() { ec.Tracer.EndFieldExecution(ctx) }()
@@ -2909,6 +2951,29 @@ func (ec *executionContext) _Query_getPropertTypes(ctx context.Context, field gr
 	rctx.Result = res
 	ctx = ec.Tracer.StartFieldChildExecution(ctx)
 	return ec.marshalOPropertyType2ᚕgithubᚗcomᚋkrishnaᚋrogerappᚋgeneratedᚋprismaᚑclientᚐPropertyType(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _Query_getPropertStatus(ctx context.Context, field graphql.CollectedField) graphql.Marshaler {
+	ctx = ec.Tracer.StartFieldExecution(ctx, field)
+	defer func() { ec.Tracer.EndFieldExecution(ctx) }()
+	rctx := &graphql.ResolverContext{
+		Object: "Query",
+		Field:  field,
+		Args:   nil,
+	}
+	ctx = graphql.WithResolverContext(ctx, rctx)
+	ctx = ec.Tracer.StartFieldResolverExecution(ctx, rctx)
+	resTmp := ec.FieldMiddleware(ctx, nil, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return ec.resolvers.Query().GetPropertStatus(rctx)
+	})
+	if resTmp == nil {
+		return graphql.Null
+	}
+	res := resTmp.([]prisma.PropertyStatus)
+	rctx.Result = res
+	ctx = ec.Tracer.StartFieldChildExecution(ctx)
+	return ec.marshalOPropertyStatus2ᚕgithubᚗcomᚋkrishnaᚋrogerappᚋgeneratedᚋprismaᚑclientᚐPropertyStatus(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) _Query_getLandlord(ctx context.Context, field graphql.CollectedField) graphql.Marshaler {
@@ -4798,6 +4863,8 @@ func (ec *executionContext) _Landlord(ctx context.Context, sel ast.SelectionSet,
 				res = ec._Landlord_properties(ctx, field, obj)
 				return res
 			})
+		case "updatedAt":
+			out.Values[i] = ec._Landlord_updatedAt(ctx, field, obj)
 		default:
 			panic("unknown field " + strconv.Quote(field.Name))
 		}
@@ -5123,6 +5190,17 @@ func (ec *executionContext) _Query(ctx context.Context, sel ast.SelectionSet) gr
 					}
 				}()
 				res = ec._Query_getPropertTypes(ctx, field)
+				return res
+			})
+		case "getPropertStatus":
+			field := field
+			out.Concurrently(i, func() (res graphql.Marshaler) {
+				defer func() {
+					if r := recover(); r != nil {
+						ec.Error(ctx, ec.Recover(ctx, r))
+					}
+				}()
+				res = ec._Query_getPropertStatus(ctx, field)
 				return res
 			})
 		case "getLandlord":
@@ -6116,6 +6194,43 @@ func (ec *executionContext) marshalOProperty2ᚕgithubᚗcomᚋkrishnaᚋrogerap
 				defer wg.Done()
 			}
 			ret[i] = ec.marshalNProperty2githubᚗcomᚋkrishnaᚋrogerappᚋgeneratedᚋprismaᚑclientᚐProperty(ctx, sel, v[i])
+		}
+		if isLen1 {
+			f(i)
+		} else {
+			go f(i)
+		}
+
+	}
+	wg.Wait()
+	return ret
+}
+
+func (ec *executionContext) marshalOPropertyStatus2ᚕgithubᚗcomᚋkrishnaᚋrogerappᚋgeneratedᚋprismaᚑclientᚐPropertyStatus(ctx context.Context, sel ast.SelectionSet, v []prisma.PropertyStatus) graphql.Marshaler {
+	ret := make(graphql.Array, len(v))
+	var wg sync.WaitGroup
+	isLen1 := len(v) == 1
+	if !isLen1 {
+		wg.Add(len(v))
+	}
+	for i := range v {
+		i := i
+		rctx := &graphql.ResolverContext{
+			Index:  &i,
+			Result: &v[i],
+		}
+		ctx := graphql.WithResolverContext(ctx, rctx)
+		f := func(i int) {
+			defer func() {
+				if r := recover(); r != nil {
+					ec.Error(ctx, ec.Recover(ctx, r))
+					ret = nil
+				}
+			}()
+			if !isLen1 {
+				defer wg.Done()
+			}
+			ret[i] = ec.marshalNPropertyStatus2githubᚗcomᚋkrishnaᚋrogerappᚋgeneratedᚋprismaᚑclientᚐPropertyStatus(ctx, sel, v[i])
 		}
 		if isLen1 {
 			f(i)

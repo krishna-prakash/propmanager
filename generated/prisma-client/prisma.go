@@ -68,7 +68,7 @@ func (client *Client) Agent(params AgentWhereUniqueInput) *AgentExec {
 		params,
 		[2]string{"AgentWhereUniqueInput!", "Agent"},
 		"agent",
-		[]string{"id", "businessService", "title", "firstName", "lastName", "displayName", "email", "password", "mobile", "fax", "address1", "address2", "postcode", "country", "website"})
+		[]string{"id", "businessService", "title", "firstName", "lastName", "displayName", "email", "password", "mobile", "fax", "address1", "address2", "postcode", "country", "website", "updatedAt", "createdAt"})
 
 	return &AgentExec{ret}
 }
@@ -102,7 +102,7 @@ func (client *Client) Agents(params *AgentsParams) *AgentExecArray {
 		wparams,
 		[3]string{"AgentWhereInput", "AgentOrderByInput", "Agent"},
 		"agents",
-		[]string{"id", "businessService", "title", "firstName", "lastName", "displayName", "email", "password", "mobile", "fax", "address1", "address2", "postcode", "country", "website"})
+		[]string{"id", "businessService", "title", "firstName", "lastName", "displayName", "email", "password", "mobile", "fax", "address1", "address2", "postcode", "country", "website", "updatedAt", "createdAt"})
 
 	return &AgentExecArray{ret}
 }
@@ -127,7 +127,7 @@ func (client *Client) Landlord(params LandlordWhereUniqueInput) *LandlordExec {
 		params,
 		[2]string{"LandlordWhereUniqueInput!", "Landlord"},
 		"landlord",
-		[]string{"id", "fullName", "email", "password", "mobile", "dob", "occupation", "address1", "address2", "postcode", "country"})
+		[]string{"id", "fullName", "email", "password", "mobile", "dob", "occupation", "address1", "address2", "postcode", "country", "updatedAt", "createdAt"})
 
 	return &LandlordExec{ret}
 }
@@ -161,7 +161,7 @@ func (client *Client) Landlords(params *LandlordsParams) *LandlordExecArray {
 		wparams,
 		[3]string{"LandlordWhereInput", "LandlordOrderByInput", "Landlord"},
 		"landlords",
-		[]string{"id", "fullName", "email", "password", "mobile", "dob", "occupation", "address1", "address2", "postcode", "country"})
+		[]string{"id", "fullName", "email", "password", "mobile", "dob", "occupation", "address1", "address2", "postcode", "country", "updatedAt", "createdAt"})
 
 	return &LandlordExecArray{ret}
 }
@@ -186,7 +186,7 @@ func (client *Client) Property(params PropertyWhereUniqueInput) *PropertyExec {
 		params,
 		[2]string{"PropertyWhereUniqueInput!", "Property"},
 		"property",
-		[]string{"id", "address1", "address2", "postcode", "city", "country", "percentageofownership", "purchaseprice", "currentprice", "mortgageAmount", "mortgageInterestRate", "annualRentalIncome", "currency"})
+		[]string{"id", "address1", "address2", "postcode", "city", "country", "percentageofownership", "purchaseprice", "currentprice", "mortgageAmount", "mortgageInterestRate", "annualRentalIncome", "currency", "updatedAt", "createdAt"})
 
 	return &PropertyExec{ret}
 }
@@ -220,7 +220,7 @@ func (client *Client) Properties(params *PropertiesParams) *PropertyExecArray {
 		wparams,
 		[3]string{"PropertyWhereInput", "PropertyOrderByInput", "Property"},
 		"properties",
-		[]string{"id", "address1", "address2", "postcode", "city", "country", "percentageofownership", "purchaseprice", "currentprice", "mortgageAmount", "mortgageInterestRate", "annualRentalIncome", "currency"})
+		[]string{"id", "address1", "address2", "postcode", "city", "country", "percentageofownership", "purchaseprice", "currentprice", "mortgageAmount", "mortgageInterestRate", "annualRentalIncome", "currency", "updatedAt", "createdAt"})
 
 	return &PropertyExecArray{ret}
 }
@@ -245,7 +245,7 @@ func (client *Client) PropertyStatus(params PropertyStatusWhereUniqueInput) *Pro
 		params,
 		[2]string{"PropertyStatusWhereUniqueInput!", "PropertyStatus"},
 		"propertyStatus",
-		[]string{"id", "status"})
+		[]string{"id", "status", "updatedAt", "createdAt"})
 
 	return &PropertyStatusExec{ret}
 }
@@ -279,7 +279,7 @@ func (client *Client) PropertyStatuses(params *PropertyStatusesParams) *Property
 		wparams,
 		[3]string{"PropertyStatusWhereInput", "PropertyStatusOrderByInput", "PropertyStatus"},
 		"propertyStatuses",
-		[]string{"id", "status"})
+		[]string{"id", "status", "updatedAt", "createdAt"})
 
 	return &PropertyStatusExecArray{ret}
 }
@@ -304,7 +304,7 @@ func (client *Client) PropertyType(params PropertyTypeWhereUniqueInput) *Propert
 		params,
 		[2]string{"PropertyTypeWhereUniqueInput!", "PropertyType"},
 		"propertyType",
-		[]string{"id", "type"})
+		[]string{"id", "type", "updatedAt", "createdAt"})
 
 	return &PropertyTypeExec{ret}
 }
@@ -338,7 +338,7 @@ func (client *Client) PropertyTypes(params *PropertyTypesParams) *PropertyTypeEx
 		wparams,
 		[3]string{"PropertyTypeWhereInput", "PropertyTypeOrderByInput", "PropertyType"},
 		"propertyTypes",
-		[]string{"id", "type"})
+		[]string{"id", "type", "updatedAt", "createdAt"})
 
 	return &PropertyTypeExecArray{ret}
 }
@@ -363,7 +363,7 @@ func (client *Client) Tenant(params TenantWhereUniqueInput) *TenantExec {
 		params,
 		[2]string{"TenantWhereUniqueInput!", "Tenant"},
 		"tenant",
-		[]string{"id", "title", "firstName", "middleName", "lastName", "displayName", "personalEmail", "workEmail", "homenumber", "mobilenumber", "rentInterval", "day", "startDate", "endDate", "notes"})
+		[]string{"id", "title", "firstName", "middleName", "lastName", "displayName", "personalEmail", "workEmail", "homenumber", "mobilenumber", "rentInterval", "day", "startDate", "endDate", "notes", "updatedAt", "createdAt"})
 
 	return &TenantExec{ret}
 }
@@ -397,7 +397,7 @@ func (client *Client) Tenants(params *TenantsParams) *TenantExecArray {
 		wparams,
 		[3]string{"TenantWhereInput", "TenantOrderByInput", "Tenant"},
 		"tenants",
-		[]string{"id", "title", "firstName", "middleName", "lastName", "displayName", "personalEmail", "workEmail", "homenumber", "mobilenumber", "rentInterval", "day", "startDate", "endDate", "notes"})
+		[]string{"id", "title", "firstName", "middleName", "lastName", "displayName", "personalEmail", "workEmail", "homenumber", "mobilenumber", "rentInterval", "day", "startDate", "endDate", "notes", "updatedAt", "createdAt"})
 
 	return &TenantExecArray{ret}
 }
@@ -422,7 +422,7 @@ func (client *Client) TypeOfLet(params TypeOfLetWhereUniqueInput) *TypeOfLetExec
 		params,
 		[2]string{"TypeOfLetWhereUniqueInput!", "TypeOfLet"},
 		"typeOfLet",
-		[]string{"id", "name"})
+		[]string{"id", "name", "updatedAt", "createdAt"})
 
 	return &TypeOfLetExec{ret}
 }
@@ -456,7 +456,7 @@ func (client *Client) TypeOfLets(params *TypeOfLetsParams) *TypeOfLetExecArray {
 		wparams,
 		[3]string{"TypeOfLetWhereInput", "TypeOfLetOrderByInput", "TypeOfLet"},
 		"typeOfLets",
-		[]string{"id", "name"})
+		[]string{"id", "name", "updatedAt", "createdAt"})
 
 	return &TypeOfLetExecArray{ret}
 }
@@ -480,7 +480,7 @@ func (client *Client) CreateAgent(params AgentCreateInput) *AgentExec {
 		params,
 		[2]string{"AgentCreateInput!", "Agent"},
 		"createAgent",
-		[]string{"id", "businessService", "title", "firstName", "lastName", "displayName", "email", "password", "mobile", "fax", "address1", "address2", "postcode", "country", "website"})
+		[]string{"id", "businessService", "title", "firstName", "lastName", "displayName", "email", "password", "mobile", "fax", "address1", "address2", "postcode", "country", "website", "updatedAt", "createdAt"})
 
 	return &AgentExec{ret}
 }
@@ -498,7 +498,7 @@ func (client *Client) UpdateAgent(params AgentUpdateParams) *AgentExec {
 		},
 		[3]string{"AgentUpdateInput!", "AgentWhereUniqueInput!", "Agent"},
 		"updateAgent",
-		[]string{"id", "businessService", "title", "firstName", "lastName", "displayName", "email", "password", "mobile", "fax", "address1", "address2", "postcode", "country", "website"})
+		[]string{"id", "businessService", "title", "firstName", "lastName", "displayName", "email", "password", "mobile", "fax", "address1", "address2", "postcode", "country", "website", "updatedAt", "createdAt"})
 
 	return &AgentExec{ret}
 }
@@ -535,7 +535,7 @@ func (client *Client) UpsertAgent(params AgentUpsertParams) *AgentExec {
 		uparams,
 		[4]string{"AgentWhereUniqueInput!", "AgentCreateInput!", "AgentUpdateInput!", "Agent"},
 		"upsertAgent",
-		[]string{"id", "businessService", "title", "firstName", "lastName", "displayName", "email", "password", "mobile", "fax", "address1", "address2", "postcode", "country", "website"})
+		[]string{"id", "businessService", "title", "firstName", "lastName", "displayName", "email", "password", "mobile", "fax", "address1", "address2", "postcode", "country", "website", "updatedAt", "createdAt"})
 
 	return &AgentExec{ret}
 }
@@ -545,7 +545,7 @@ func (client *Client) DeleteAgent(params AgentWhereUniqueInput) *AgentExec {
 		params,
 		[2]string{"AgentWhereUniqueInput!", "Agent"},
 		"deleteAgent",
-		[]string{"id", "businessService", "title", "firstName", "lastName", "displayName", "email", "password", "mobile", "fax", "address1", "address2", "postcode", "country", "website"})
+		[]string{"id", "businessService", "title", "firstName", "lastName", "displayName", "email", "password", "mobile", "fax", "address1", "address2", "postcode", "country", "website", "updatedAt", "createdAt"})
 
 	return &AgentExec{ret}
 }
@@ -560,7 +560,7 @@ func (client *Client) CreateLandlord(params LandlordCreateInput) *LandlordExec {
 		params,
 		[2]string{"LandlordCreateInput!", "Landlord"},
 		"createLandlord",
-		[]string{"id", "fullName", "email", "password", "mobile", "dob", "occupation", "address1", "address2", "postcode", "country"})
+		[]string{"id", "fullName", "email", "password", "mobile", "dob", "occupation", "address1", "address2", "postcode", "country", "updatedAt", "createdAt"})
 
 	return &LandlordExec{ret}
 }
@@ -578,7 +578,7 @@ func (client *Client) UpdateLandlord(params LandlordUpdateParams) *LandlordExec 
 		},
 		[3]string{"LandlordUpdateInput!", "LandlordWhereUniqueInput!", "Landlord"},
 		"updateLandlord",
-		[]string{"id", "fullName", "email", "password", "mobile", "dob", "occupation", "address1", "address2", "postcode", "country"})
+		[]string{"id", "fullName", "email", "password", "mobile", "dob", "occupation", "address1", "address2", "postcode", "country", "updatedAt", "createdAt"})
 
 	return &LandlordExec{ret}
 }
@@ -615,7 +615,7 @@ func (client *Client) UpsertLandlord(params LandlordUpsertParams) *LandlordExec 
 		uparams,
 		[4]string{"LandlordWhereUniqueInput!", "LandlordCreateInput!", "LandlordUpdateInput!", "Landlord"},
 		"upsertLandlord",
-		[]string{"id", "fullName", "email", "password", "mobile", "dob", "occupation", "address1", "address2", "postcode", "country"})
+		[]string{"id", "fullName", "email", "password", "mobile", "dob", "occupation", "address1", "address2", "postcode", "country", "updatedAt", "createdAt"})
 
 	return &LandlordExec{ret}
 }
@@ -625,7 +625,7 @@ func (client *Client) DeleteLandlord(params LandlordWhereUniqueInput) *LandlordE
 		params,
 		[2]string{"LandlordWhereUniqueInput!", "Landlord"},
 		"deleteLandlord",
-		[]string{"id", "fullName", "email", "password", "mobile", "dob", "occupation", "address1", "address2", "postcode", "country"})
+		[]string{"id", "fullName", "email", "password", "mobile", "dob", "occupation", "address1", "address2", "postcode", "country", "updatedAt", "createdAt"})
 
 	return &LandlordExec{ret}
 }
@@ -640,7 +640,7 @@ func (client *Client) CreateProperty(params PropertyCreateInput) *PropertyExec {
 		params,
 		[2]string{"PropertyCreateInput!", "Property"},
 		"createProperty",
-		[]string{"id", "address1", "address2", "postcode", "city", "country", "percentageofownership", "purchaseprice", "currentprice", "mortgageAmount", "mortgageInterestRate", "annualRentalIncome", "currency"})
+		[]string{"id", "address1", "address2", "postcode", "city", "country", "percentageofownership", "purchaseprice", "currentprice", "mortgageAmount", "mortgageInterestRate", "annualRentalIncome", "currency", "updatedAt", "createdAt"})
 
 	return &PropertyExec{ret}
 }
@@ -658,7 +658,7 @@ func (client *Client) UpdateProperty(params PropertyUpdateParams) *PropertyExec 
 		},
 		[3]string{"PropertyUpdateInput!", "PropertyWhereUniqueInput!", "Property"},
 		"updateProperty",
-		[]string{"id", "address1", "address2", "postcode", "city", "country", "percentageofownership", "purchaseprice", "currentprice", "mortgageAmount", "mortgageInterestRate", "annualRentalIncome", "currency"})
+		[]string{"id", "address1", "address2", "postcode", "city", "country", "percentageofownership", "purchaseprice", "currentprice", "mortgageAmount", "mortgageInterestRate", "annualRentalIncome", "currency", "updatedAt", "createdAt"})
 
 	return &PropertyExec{ret}
 }
@@ -695,7 +695,7 @@ func (client *Client) UpsertProperty(params PropertyUpsertParams) *PropertyExec 
 		uparams,
 		[4]string{"PropertyWhereUniqueInput!", "PropertyCreateInput!", "PropertyUpdateInput!", "Property"},
 		"upsertProperty",
-		[]string{"id", "address1", "address2", "postcode", "city", "country", "percentageofownership", "purchaseprice", "currentprice", "mortgageAmount", "mortgageInterestRate", "annualRentalIncome", "currency"})
+		[]string{"id", "address1", "address2", "postcode", "city", "country", "percentageofownership", "purchaseprice", "currentprice", "mortgageAmount", "mortgageInterestRate", "annualRentalIncome", "currency", "updatedAt", "createdAt"})
 
 	return &PropertyExec{ret}
 }
@@ -705,7 +705,7 @@ func (client *Client) DeleteProperty(params PropertyWhereUniqueInput) *PropertyE
 		params,
 		[2]string{"PropertyWhereUniqueInput!", "Property"},
 		"deleteProperty",
-		[]string{"id", "address1", "address2", "postcode", "city", "country", "percentageofownership", "purchaseprice", "currentprice", "mortgageAmount", "mortgageInterestRate", "annualRentalIncome", "currency"})
+		[]string{"id", "address1", "address2", "postcode", "city", "country", "percentageofownership", "purchaseprice", "currentprice", "mortgageAmount", "mortgageInterestRate", "annualRentalIncome", "currency", "updatedAt", "createdAt"})
 
 	return &PropertyExec{ret}
 }
@@ -720,7 +720,7 @@ func (client *Client) CreatePropertyStatus(params PropertyStatusCreateInput) *Pr
 		params,
 		[2]string{"PropertyStatusCreateInput!", "PropertyStatus"},
 		"createPropertyStatus",
-		[]string{"id", "status"})
+		[]string{"id", "status", "updatedAt", "createdAt"})
 
 	return &PropertyStatusExec{ret}
 }
@@ -738,7 +738,7 @@ func (client *Client) UpdatePropertyStatus(params PropertyStatusUpdateParams) *P
 		},
 		[3]string{"PropertyStatusUpdateInput!", "PropertyStatusWhereUniqueInput!", "PropertyStatus"},
 		"updatePropertyStatus",
-		[]string{"id", "status"})
+		[]string{"id", "status", "updatedAt", "createdAt"})
 
 	return &PropertyStatusExec{ret}
 }
@@ -775,7 +775,7 @@ func (client *Client) UpsertPropertyStatus(params PropertyStatusUpsertParams) *P
 		uparams,
 		[4]string{"PropertyStatusWhereUniqueInput!", "PropertyStatusCreateInput!", "PropertyStatusUpdateInput!", "PropertyStatus"},
 		"upsertPropertyStatus",
-		[]string{"id", "status"})
+		[]string{"id", "status", "updatedAt", "createdAt"})
 
 	return &PropertyStatusExec{ret}
 }
@@ -785,7 +785,7 @@ func (client *Client) DeletePropertyStatus(params PropertyStatusWhereUniqueInput
 		params,
 		[2]string{"PropertyStatusWhereUniqueInput!", "PropertyStatus"},
 		"deletePropertyStatus",
-		[]string{"id", "status"})
+		[]string{"id", "status", "updatedAt", "createdAt"})
 
 	return &PropertyStatusExec{ret}
 }
@@ -800,7 +800,7 @@ func (client *Client) CreatePropertyType(params PropertyTypeCreateInput) *Proper
 		params,
 		[2]string{"PropertyTypeCreateInput!", "PropertyType"},
 		"createPropertyType",
-		[]string{"id", "type"})
+		[]string{"id", "type", "updatedAt", "createdAt"})
 
 	return &PropertyTypeExec{ret}
 }
@@ -818,7 +818,7 @@ func (client *Client) UpdatePropertyType(params PropertyTypeUpdateParams) *Prope
 		},
 		[3]string{"PropertyTypeUpdateInput!", "PropertyTypeWhereUniqueInput!", "PropertyType"},
 		"updatePropertyType",
-		[]string{"id", "type"})
+		[]string{"id", "type", "updatedAt", "createdAt"})
 
 	return &PropertyTypeExec{ret}
 }
@@ -855,7 +855,7 @@ func (client *Client) UpsertPropertyType(params PropertyTypeUpsertParams) *Prope
 		uparams,
 		[4]string{"PropertyTypeWhereUniqueInput!", "PropertyTypeCreateInput!", "PropertyTypeUpdateInput!", "PropertyType"},
 		"upsertPropertyType",
-		[]string{"id", "type"})
+		[]string{"id", "type", "updatedAt", "createdAt"})
 
 	return &PropertyTypeExec{ret}
 }
@@ -865,7 +865,7 @@ func (client *Client) DeletePropertyType(params PropertyTypeWhereUniqueInput) *P
 		params,
 		[2]string{"PropertyTypeWhereUniqueInput!", "PropertyType"},
 		"deletePropertyType",
-		[]string{"id", "type"})
+		[]string{"id", "type", "updatedAt", "createdAt"})
 
 	return &PropertyTypeExec{ret}
 }
@@ -880,7 +880,7 @@ func (client *Client) CreateTenant(params TenantCreateInput) *TenantExec {
 		params,
 		[2]string{"TenantCreateInput!", "Tenant"},
 		"createTenant",
-		[]string{"id", "title", "firstName", "middleName", "lastName", "displayName", "personalEmail", "workEmail", "homenumber", "mobilenumber", "rentInterval", "day", "startDate", "endDate", "notes"})
+		[]string{"id", "title", "firstName", "middleName", "lastName", "displayName", "personalEmail", "workEmail", "homenumber", "mobilenumber", "rentInterval", "day", "startDate", "endDate", "notes", "updatedAt", "createdAt"})
 
 	return &TenantExec{ret}
 }
@@ -898,7 +898,7 @@ func (client *Client) UpdateTenant(params TenantUpdateParams) *TenantExec {
 		},
 		[3]string{"TenantUpdateInput!", "TenantWhereUniqueInput!", "Tenant"},
 		"updateTenant",
-		[]string{"id", "title", "firstName", "middleName", "lastName", "displayName", "personalEmail", "workEmail", "homenumber", "mobilenumber", "rentInterval", "day", "startDate", "endDate", "notes"})
+		[]string{"id", "title", "firstName", "middleName", "lastName", "displayName", "personalEmail", "workEmail", "homenumber", "mobilenumber", "rentInterval", "day", "startDate", "endDate", "notes", "updatedAt", "createdAt"})
 
 	return &TenantExec{ret}
 }
@@ -935,7 +935,7 @@ func (client *Client) UpsertTenant(params TenantUpsertParams) *TenantExec {
 		uparams,
 		[4]string{"TenantWhereUniqueInput!", "TenantCreateInput!", "TenantUpdateInput!", "Tenant"},
 		"upsertTenant",
-		[]string{"id", "title", "firstName", "middleName", "lastName", "displayName", "personalEmail", "workEmail", "homenumber", "mobilenumber", "rentInterval", "day", "startDate", "endDate", "notes"})
+		[]string{"id", "title", "firstName", "middleName", "lastName", "displayName", "personalEmail", "workEmail", "homenumber", "mobilenumber", "rentInterval", "day", "startDate", "endDate", "notes", "updatedAt", "createdAt"})
 
 	return &TenantExec{ret}
 }
@@ -945,7 +945,7 @@ func (client *Client) DeleteTenant(params TenantWhereUniqueInput) *TenantExec {
 		params,
 		[2]string{"TenantWhereUniqueInput!", "Tenant"},
 		"deleteTenant",
-		[]string{"id", "title", "firstName", "middleName", "lastName", "displayName", "personalEmail", "workEmail", "homenumber", "mobilenumber", "rentInterval", "day", "startDate", "endDate", "notes"})
+		[]string{"id", "title", "firstName", "middleName", "lastName", "displayName", "personalEmail", "workEmail", "homenumber", "mobilenumber", "rentInterval", "day", "startDate", "endDate", "notes", "updatedAt", "createdAt"})
 
 	return &TenantExec{ret}
 }
@@ -960,7 +960,7 @@ func (client *Client) CreateTypeOfLet(params TypeOfLetCreateInput) *TypeOfLetExe
 		params,
 		[2]string{"TypeOfLetCreateInput!", "TypeOfLet"},
 		"createTypeOfLet",
-		[]string{"id", "name"})
+		[]string{"id", "name", "updatedAt", "createdAt"})
 
 	return &TypeOfLetExec{ret}
 }
@@ -978,7 +978,7 @@ func (client *Client) UpdateTypeOfLet(params TypeOfLetUpdateParams) *TypeOfLetEx
 		},
 		[3]string{"TypeOfLetUpdateInput!", "TypeOfLetWhereUniqueInput!", "TypeOfLet"},
 		"updateTypeOfLet",
-		[]string{"id", "name"})
+		[]string{"id", "name", "updatedAt", "createdAt"})
 
 	return &TypeOfLetExec{ret}
 }
@@ -1015,7 +1015,7 @@ func (client *Client) UpsertTypeOfLet(params TypeOfLetUpsertParams) *TypeOfLetEx
 		uparams,
 		[4]string{"TypeOfLetWhereUniqueInput!", "TypeOfLetCreateInput!", "TypeOfLetUpdateInput!", "TypeOfLet"},
 		"upsertTypeOfLet",
-		[]string{"id", "name"})
+		[]string{"id", "name", "updatedAt", "createdAt"})
 
 	return &TypeOfLetExec{ret}
 }
@@ -1025,7 +1025,7 @@ func (client *Client) DeleteTypeOfLet(params TypeOfLetWhereUniqueInput) *TypeOfL
 		params,
 		[2]string{"TypeOfLetWhereUniqueInput!", "TypeOfLet"},
 		"deleteTypeOfLet",
-		[]string{"id", "name"})
+		[]string{"id", "name", "updatedAt", "createdAt"})
 
 	return &TypeOfLetExec{ret}
 }
@@ -1060,6 +1060,10 @@ const (
 	LandlordOrderByInputPostcodeDesc   LandlordOrderByInput = "postcode_DESC"
 	LandlordOrderByInputCountryAsc     LandlordOrderByInput = "country_ASC"
 	LandlordOrderByInputCountryDesc    LandlordOrderByInput = "country_DESC"
+	LandlordOrderByInputUpdatedAtAsc   LandlordOrderByInput = "updatedAt_ASC"
+	LandlordOrderByInputUpdatedAtDesc  LandlordOrderByInput = "updatedAt_DESC"
+	LandlordOrderByInputCreatedAtAsc   LandlordOrderByInput = "createdAt_ASC"
+	LandlordOrderByInputCreatedAtDesc  LandlordOrderByInput = "createdAt_DESC"
 )
 
 type PropertyOrderByInput string
@@ -1091,6 +1095,10 @@ const (
 	PropertyOrderByInputAnnualRentalIncomeDesc    PropertyOrderByInput = "annualRentalIncome_DESC"
 	PropertyOrderByInputCurrencyAsc               PropertyOrderByInput = "currency_ASC"
 	PropertyOrderByInputCurrencyDesc              PropertyOrderByInput = "currency_DESC"
+	PropertyOrderByInputUpdatedAtAsc              PropertyOrderByInput = "updatedAt_ASC"
+	PropertyOrderByInputUpdatedAtDesc             PropertyOrderByInput = "updatedAt_DESC"
+	PropertyOrderByInputCreatedAtAsc              PropertyOrderByInput = "createdAt_ASC"
+	PropertyOrderByInputCreatedAtDesc             PropertyOrderByInput = "createdAt_DESC"
 )
 
 type AgentOrderByInput string
@@ -1126,24 +1134,36 @@ const (
 	AgentOrderByInputCountryDesc         AgentOrderByInput = "country_DESC"
 	AgentOrderByInputWebsiteAsc          AgentOrderByInput = "website_ASC"
 	AgentOrderByInputWebsiteDesc         AgentOrderByInput = "website_DESC"
+	AgentOrderByInputUpdatedAtAsc        AgentOrderByInput = "updatedAt_ASC"
+	AgentOrderByInputUpdatedAtDesc       AgentOrderByInput = "updatedAt_DESC"
+	AgentOrderByInputCreatedAtAsc        AgentOrderByInput = "createdAt_ASC"
+	AgentOrderByInputCreatedAtDesc       AgentOrderByInput = "createdAt_DESC"
 )
 
 type PropertyStatusOrderByInput string
 
 const (
-	PropertyStatusOrderByInputIDAsc      PropertyStatusOrderByInput = "id_ASC"
-	PropertyStatusOrderByInputIDDesc     PropertyStatusOrderByInput = "id_DESC"
-	PropertyStatusOrderByInputStatusAsc  PropertyStatusOrderByInput = "status_ASC"
-	PropertyStatusOrderByInputStatusDesc PropertyStatusOrderByInput = "status_DESC"
+	PropertyStatusOrderByInputIDAsc         PropertyStatusOrderByInput = "id_ASC"
+	PropertyStatusOrderByInputIDDesc        PropertyStatusOrderByInput = "id_DESC"
+	PropertyStatusOrderByInputStatusAsc     PropertyStatusOrderByInput = "status_ASC"
+	PropertyStatusOrderByInputStatusDesc    PropertyStatusOrderByInput = "status_DESC"
+	PropertyStatusOrderByInputUpdatedAtAsc  PropertyStatusOrderByInput = "updatedAt_ASC"
+	PropertyStatusOrderByInputUpdatedAtDesc PropertyStatusOrderByInput = "updatedAt_DESC"
+	PropertyStatusOrderByInputCreatedAtAsc  PropertyStatusOrderByInput = "createdAt_ASC"
+	PropertyStatusOrderByInputCreatedAtDesc PropertyStatusOrderByInput = "createdAt_DESC"
 )
 
 type PropertyTypeOrderByInput string
 
 const (
-	PropertyTypeOrderByInputIDAsc    PropertyTypeOrderByInput = "id_ASC"
-	PropertyTypeOrderByInputIDDesc   PropertyTypeOrderByInput = "id_DESC"
-	PropertyTypeOrderByInputTypeAsc  PropertyTypeOrderByInput = "type_ASC"
-	PropertyTypeOrderByInputTypeDesc PropertyTypeOrderByInput = "type_DESC"
+	PropertyTypeOrderByInputIDAsc         PropertyTypeOrderByInput = "id_ASC"
+	PropertyTypeOrderByInputIDDesc        PropertyTypeOrderByInput = "id_DESC"
+	PropertyTypeOrderByInputTypeAsc       PropertyTypeOrderByInput = "type_ASC"
+	PropertyTypeOrderByInputTypeDesc      PropertyTypeOrderByInput = "type_DESC"
+	PropertyTypeOrderByInputUpdatedAtAsc  PropertyTypeOrderByInput = "updatedAt_ASC"
+	PropertyTypeOrderByInputUpdatedAtDesc PropertyTypeOrderByInput = "updatedAt_DESC"
+	PropertyTypeOrderByInputCreatedAtAsc  PropertyTypeOrderByInput = "createdAt_ASC"
+	PropertyTypeOrderByInputCreatedAtDesc PropertyTypeOrderByInput = "createdAt_DESC"
 )
 
 type TenantOrderByInput string
@@ -1179,15 +1199,23 @@ const (
 	TenantOrderByInputEndDateDesc       TenantOrderByInput = "endDate_DESC"
 	TenantOrderByInputNotesAsc          TenantOrderByInput = "notes_ASC"
 	TenantOrderByInputNotesDesc         TenantOrderByInput = "notes_DESC"
+	TenantOrderByInputUpdatedAtAsc      TenantOrderByInput = "updatedAt_ASC"
+	TenantOrderByInputUpdatedAtDesc     TenantOrderByInput = "updatedAt_DESC"
+	TenantOrderByInputCreatedAtAsc      TenantOrderByInput = "createdAt_ASC"
+	TenantOrderByInputCreatedAtDesc     TenantOrderByInput = "createdAt_DESC"
 )
 
 type TypeOfLetOrderByInput string
 
 const (
-	TypeOfLetOrderByInputIDAsc    TypeOfLetOrderByInput = "id_ASC"
-	TypeOfLetOrderByInputIDDesc   TypeOfLetOrderByInput = "id_DESC"
-	TypeOfLetOrderByInputNameAsc  TypeOfLetOrderByInput = "name_ASC"
-	TypeOfLetOrderByInputNameDesc TypeOfLetOrderByInput = "name_DESC"
+	TypeOfLetOrderByInputIDAsc         TypeOfLetOrderByInput = "id_ASC"
+	TypeOfLetOrderByInputIDDesc        TypeOfLetOrderByInput = "id_DESC"
+	TypeOfLetOrderByInputNameAsc       TypeOfLetOrderByInput = "name_ASC"
+	TypeOfLetOrderByInputNameDesc      TypeOfLetOrderByInput = "name_DESC"
+	TypeOfLetOrderByInputUpdatedAtAsc  TypeOfLetOrderByInput = "updatedAt_ASC"
+	TypeOfLetOrderByInputUpdatedAtDesc TypeOfLetOrderByInput = "updatedAt_DESC"
+	TypeOfLetOrderByInputCreatedAtAsc  TypeOfLetOrderByInput = "createdAt_ASC"
+	TypeOfLetOrderByInputCreatedAtDesc TypeOfLetOrderByInput = "createdAt_DESC"
 )
 
 type MutationType string
@@ -1254,6 +1282,22 @@ type PropertyTypeWhereInput struct {
 	TypeNotStartsWith *string                  `json:"type_not_starts_with,omitempty"`
 	TypeEndsWith      *string                  `json:"type_ends_with,omitempty"`
 	TypeNotEndsWith   *string                  `json:"type_not_ends_with,omitempty"`
+	UpdatedAt         *string                  `json:"updatedAt,omitempty"`
+	UpdatedAtNot      *string                  `json:"updatedAt_not,omitempty"`
+	UpdatedAtIn       []string                 `json:"updatedAt_in,omitempty"`
+	UpdatedAtNotIn    []string                 `json:"updatedAt_not_in,omitempty"`
+	UpdatedAtLt       *string                  `json:"updatedAt_lt,omitempty"`
+	UpdatedAtLte      *string                  `json:"updatedAt_lte,omitempty"`
+	UpdatedAtGt       *string                  `json:"updatedAt_gt,omitempty"`
+	UpdatedAtGte      *string                  `json:"updatedAt_gte,omitempty"`
+	CreatedAt         *string                  `json:"createdAt,omitempty"`
+	CreatedAtNot      *string                  `json:"createdAt_not,omitempty"`
+	CreatedAtIn       []string                 `json:"createdAt_in,omitempty"`
+	CreatedAtNotIn    []string                 `json:"createdAt_not_in,omitempty"`
+	CreatedAtLt       *string                  `json:"createdAt_lt,omitempty"`
+	CreatedAtLte      *string                  `json:"createdAt_lte,omitempty"`
+	CreatedAtGt       *string                  `json:"createdAt_gt,omitempty"`
+	CreatedAtGte      *string                  `json:"createdAt_gte,omitempty"`
 	And               []PropertyTypeWhereInput `json:"AND,omitempty"`
 	Or                []PropertyTypeWhereInput `json:"OR,omitempty"`
 	Not               []PropertyTypeWhereInput `json:"NOT,omitempty"`
@@ -1293,12 +1337,29 @@ type TypeOfLetWhereInput struct {
 	NameNotStartsWith *string               `json:"name_not_starts_with,omitempty"`
 	NameEndsWith      *string               `json:"name_ends_with,omitempty"`
 	NameNotEndsWith   *string               `json:"name_not_ends_with,omitempty"`
+	UpdatedAt         *string               `json:"updatedAt,omitempty"`
+	UpdatedAtNot      *string               `json:"updatedAt_not,omitempty"`
+	UpdatedAtIn       []string              `json:"updatedAt_in,omitempty"`
+	UpdatedAtNotIn    []string              `json:"updatedAt_not_in,omitempty"`
+	UpdatedAtLt       *string               `json:"updatedAt_lt,omitempty"`
+	UpdatedAtLte      *string               `json:"updatedAt_lte,omitempty"`
+	UpdatedAtGt       *string               `json:"updatedAt_gt,omitempty"`
+	UpdatedAtGte      *string               `json:"updatedAt_gte,omitempty"`
+	CreatedAt         *string               `json:"createdAt,omitempty"`
+	CreatedAtNot      *string               `json:"createdAt_not,omitempty"`
+	CreatedAtIn       []string              `json:"createdAt_in,omitempty"`
+	CreatedAtNotIn    []string              `json:"createdAt_not_in,omitempty"`
+	CreatedAtLt       *string               `json:"createdAt_lt,omitempty"`
+	CreatedAtLte      *string               `json:"createdAt_lte,omitempty"`
+	CreatedAtGt       *string               `json:"createdAt_gt,omitempty"`
+	CreatedAtGte      *string               `json:"createdAt_gte,omitempty"`
 	And               []TypeOfLetWhereInput `json:"AND,omitempty"`
 	Or                []TypeOfLetWhereInput `json:"OR,omitempty"`
 	Not               []TypeOfLetWhereInput `json:"NOT,omitempty"`
 }
 
 type LandlordCreateWithoutAgentInput struct {
+	ID         *string                                  `json:"id,omitempty"`
 	FullName   string                                   `json:"fullName"`
 	Email      string                                   `json:"email"`
 	Password   *string                                  `json:"password,omitempty"`
@@ -1313,6 +1374,7 @@ type LandlordCreateWithoutAgentInput struct {
 }
 
 type AgentCreateWithoutClientsInput struct {
+	ID              *string `json:"id,omitempty"`
 	BusinessService *string `json:"businessService,omitempty"`
 	Title           *string `json:"title,omitempty"`
 	FirstName       string  `json:"firstName"`
@@ -1344,6 +1406,7 @@ type TenantUpdateOneWithoutPropertyInput struct {
 }
 
 type PropertyCreateWithoutLandlordsInput struct {
+	ID                    *string                              `json:"id,omitempty"`
 	Address1              string                               `json:"address1"`
 	Address2              *string                              `json:"address2,omitempty"`
 	Postcode              string                               `json:"postcode"`
@@ -1389,7 +1452,8 @@ type PropertyStatusSubscriptionWhereInput struct {
 }
 
 type PropertyStatusCreateInput struct {
-	Status string `json:"status"`
+	ID     *string `json:"id,omitempty"`
+	Status string  `json:"status"`
 }
 
 type AgentWhereInput struct {
@@ -1594,6 +1658,22 @@ type AgentWhereInput struct {
 	ClientsEvery                 *LandlordWhereInput `json:"clients_every,omitempty"`
 	ClientsSome                  *LandlordWhereInput `json:"clients_some,omitempty"`
 	ClientsNone                  *LandlordWhereInput `json:"clients_none,omitempty"`
+	UpdatedAt                    *string             `json:"updatedAt,omitempty"`
+	UpdatedAtNot                 *string             `json:"updatedAt_not,omitempty"`
+	UpdatedAtIn                  []string            `json:"updatedAt_in,omitempty"`
+	UpdatedAtNotIn               []string            `json:"updatedAt_not_in,omitempty"`
+	UpdatedAtLt                  *string             `json:"updatedAt_lt,omitempty"`
+	UpdatedAtLte                 *string             `json:"updatedAt_lte,omitempty"`
+	UpdatedAtGt                  *string             `json:"updatedAt_gt,omitempty"`
+	UpdatedAtGte                 *string             `json:"updatedAt_gte,omitempty"`
+	CreatedAt                    *string             `json:"createdAt,omitempty"`
+	CreatedAtNot                 *string             `json:"createdAt_not,omitempty"`
+	CreatedAtIn                  []string            `json:"createdAt_in,omitempty"`
+	CreatedAtNotIn               []string            `json:"createdAt_not_in,omitempty"`
+	CreatedAtLt                  *string             `json:"createdAt_lt,omitempty"`
+	CreatedAtLte                 *string             `json:"createdAt_lte,omitempty"`
+	CreatedAtGt                  *string             `json:"createdAt_gt,omitempty"`
+	CreatedAtGte                 *string             `json:"createdAt_gte,omitempty"`
 	And                          []AgentWhereInput   `json:"AND,omitempty"`
 	Or                           []AgentWhereInput   `json:"OR,omitempty"`
 	Not                          []AgentWhereInput   `json:"NOT,omitempty"`
@@ -1616,7 +1696,8 @@ type AgentSubscriptionWhereInput struct {
 }
 
 type PropertyTypeCreateInput struct {
-	Type string `json:"type"`
+	ID   *string `json:"id,omitempty"`
+	Type string  `json:"type"`
 }
 
 type TypeOfLetUpdateInput struct {
@@ -1634,6 +1715,7 @@ type LandlordWhereUniqueInput struct {
 }
 
 type TenantCreateWithoutPropertyInput struct {
+	ID            *string                 `json:"id,omitempty"`
 	Title         *string                 `json:"title,omitempty"`
 	FirstName     string                  `json:"firstName"`
 	MiddleName    *string                 `json:"middleName,omitempty"`
@@ -1679,10 +1761,12 @@ type PropertyWhereUniqueInput struct {
 }
 
 type TypeOfLetCreateInput struct {
+	ID   *string `json:"id,omitempty"`
 	Name *string `json:"name,omitempty"`
 }
 
 type PropertyCreateWithoutTenantsInput struct {
+	ID                    *string                                  `json:"id,omitempty"`
 	Address1              string                                   `json:"address1"`
 	Address2              *string                                  `json:"address2,omitempty"`
 	Postcode              string                                   `json:"postcode"`
@@ -1908,6 +1992,22 @@ type LandlordWhereInput struct {
 	PropertiesEvery         *PropertyWhereInput  `json:"properties_every,omitempty"`
 	PropertiesSome          *PropertyWhereInput  `json:"properties_some,omitempty"`
 	PropertiesNone          *PropertyWhereInput  `json:"properties_none,omitempty"`
+	UpdatedAt               *string              `json:"updatedAt,omitempty"`
+	UpdatedAtNot            *string              `json:"updatedAt_not,omitempty"`
+	UpdatedAtIn             []string             `json:"updatedAt_in,omitempty"`
+	UpdatedAtNotIn          []string             `json:"updatedAt_not_in,omitempty"`
+	UpdatedAtLt             *string              `json:"updatedAt_lt,omitempty"`
+	UpdatedAtLte            *string              `json:"updatedAt_lte,omitempty"`
+	UpdatedAtGt             *string              `json:"updatedAt_gt,omitempty"`
+	UpdatedAtGte            *string              `json:"updatedAt_gte,omitempty"`
+	CreatedAt               *string              `json:"createdAt,omitempty"`
+	CreatedAtNot            *string              `json:"createdAt_not,omitempty"`
+	CreatedAtIn             []string             `json:"createdAt_in,omitempty"`
+	CreatedAtNotIn          []string             `json:"createdAt_not_in,omitempty"`
+	CreatedAtLt             *string              `json:"createdAt_lt,omitempty"`
+	CreatedAtLte            *string              `json:"createdAt_lte,omitempty"`
+	CreatedAtGt             *string              `json:"createdAt_gt,omitempty"`
+	CreatedAtGte            *string              `json:"createdAt_gte,omitempty"`
 	And                     []LandlordWhereInput `json:"AND,omitempty"`
 	Or                      []LandlordWhereInput `json:"OR,omitempty"`
 	Not                     []LandlordWhereInput `json:"NOT,omitempty"`
@@ -1985,6 +2085,7 @@ type PropertyStatusUpdateOneRequiredInput struct {
 }
 
 type LandlordCreateWithoutPropertiesInput struct {
+	ID         *string                            `json:"id,omitempty"`
 	FullName   string                             `json:"fullName"`
 	Email      string                             `json:"email"`
 	Password   *string                            `json:"password,omitempty"`
@@ -2226,6 +2327,22 @@ type TenantWhereInput struct {
 	NotesEndsWith              *string              `json:"notes_ends_with,omitempty"`
 	NotesNotEndsWith           *string              `json:"notes_not_ends_with,omitempty"`
 	Property                   *PropertyWhereInput  `json:"property,omitempty"`
+	UpdatedAt                  *string              `json:"updatedAt,omitempty"`
+	UpdatedAtNot               *string              `json:"updatedAt_not,omitempty"`
+	UpdatedAtIn                []string             `json:"updatedAt_in,omitempty"`
+	UpdatedAtNotIn             []string             `json:"updatedAt_not_in,omitempty"`
+	UpdatedAtLt                *string              `json:"updatedAt_lt,omitempty"`
+	UpdatedAtLte               *string              `json:"updatedAt_lte,omitempty"`
+	UpdatedAtGt                *string              `json:"updatedAt_gt,omitempty"`
+	UpdatedAtGte               *string              `json:"updatedAt_gte,omitempty"`
+	CreatedAt                  *string              `json:"createdAt,omitempty"`
+	CreatedAtNot               *string              `json:"createdAt_not,omitempty"`
+	CreatedAtIn                []string             `json:"createdAt_in,omitempty"`
+	CreatedAtNotIn             []string             `json:"createdAt_not_in,omitempty"`
+	CreatedAtLt                *string              `json:"createdAt_lt,omitempty"`
+	CreatedAtLte               *string              `json:"createdAt_lte,omitempty"`
+	CreatedAtGt                *string              `json:"createdAt_gt,omitempty"`
+	CreatedAtGte               *string              `json:"createdAt_gte,omitempty"`
 	And                        []TenantWhereInput   `json:"AND,omitempty"`
 	Or                         []TenantWhereInput   `json:"OR,omitempty"`
 	Not                        []TenantWhereInput   `json:"NOT,omitempty"`
@@ -2271,6 +2388,22 @@ type PropertyStatusWhereInput struct {
 	StatusNotStartsWith *string                    `json:"status_not_starts_with,omitempty"`
 	StatusEndsWith      *string                    `json:"status_ends_with,omitempty"`
 	StatusNotEndsWith   *string                    `json:"status_not_ends_with,omitempty"`
+	UpdatedAt           *string                    `json:"updatedAt,omitempty"`
+	UpdatedAtNot        *string                    `json:"updatedAt_not,omitempty"`
+	UpdatedAtIn         []string                   `json:"updatedAt_in,omitempty"`
+	UpdatedAtNotIn      []string                   `json:"updatedAt_not_in,omitempty"`
+	UpdatedAtLt         *string                    `json:"updatedAt_lt,omitempty"`
+	UpdatedAtLte        *string                    `json:"updatedAt_lte,omitempty"`
+	UpdatedAtGt         *string                    `json:"updatedAt_gt,omitempty"`
+	UpdatedAtGte        *string                    `json:"updatedAt_gte,omitempty"`
+	CreatedAt           *string                    `json:"createdAt,omitempty"`
+	CreatedAtNot        *string                    `json:"createdAt_not,omitempty"`
+	CreatedAtIn         []string                   `json:"createdAt_in,omitempty"`
+	CreatedAtNotIn      []string                   `json:"createdAt_not_in,omitempty"`
+	CreatedAtLt         *string                    `json:"createdAt_lt,omitempty"`
+	CreatedAtLte        *string                    `json:"createdAt_lte,omitempty"`
+	CreatedAtGt         *string                    `json:"createdAt_gt,omitempty"`
+	CreatedAtGte        *string                    `json:"createdAt_gte,omitempty"`
 	And                 []PropertyStatusWhereInput `json:"AND,omitempty"`
 	Or                  []PropertyStatusWhereInput `json:"OR,omitempty"`
 	Not                 []PropertyStatusWhereInput `json:"NOT,omitempty"`
@@ -2438,6 +2571,22 @@ type PropertyWhereInput struct {
 	CurrencyNotEndsWith        *string                   `json:"currency_not_ends_with,omitempty"`
 	Tenants                    *TenantWhereInput         `json:"tenants,omitempty"`
 	Landlords                  *LandlordWhereInput       `json:"landlords,omitempty"`
+	UpdatedAt                  *string                   `json:"updatedAt,omitempty"`
+	UpdatedAtNot               *string                   `json:"updatedAt_not,omitempty"`
+	UpdatedAtIn                []string                  `json:"updatedAt_in,omitempty"`
+	UpdatedAtNotIn             []string                  `json:"updatedAt_not_in,omitempty"`
+	UpdatedAtLt                *string                   `json:"updatedAt_lt,omitempty"`
+	UpdatedAtLte               *string                   `json:"updatedAt_lte,omitempty"`
+	UpdatedAtGt                *string                   `json:"updatedAt_gt,omitempty"`
+	UpdatedAtGte               *string                   `json:"updatedAt_gte,omitempty"`
+	CreatedAt                  *string                   `json:"createdAt,omitempty"`
+	CreatedAtNot               *string                   `json:"createdAt_not,omitempty"`
+	CreatedAtIn                []string                  `json:"createdAt_in,omitempty"`
+	CreatedAtNotIn             []string                  `json:"createdAt_not_in,omitempty"`
+	CreatedAtLt                *string                   `json:"createdAt_lt,omitempty"`
+	CreatedAtLte               *string                   `json:"createdAt_lte,omitempty"`
+	CreatedAtGt                *string                   `json:"createdAt_gt,omitempty"`
+	CreatedAtGte               *string                   `json:"createdAt_gte,omitempty"`
 	And                        []PropertyWhereInput      `json:"AND,omitempty"`
 	Or                         []PropertyWhereInput      `json:"OR,omitempty"`
 	Not                        []PropertyWhereInput      `json:"NOT,omitempty"`
@@ -2692,6 +2841,22 @@ type PropertyScalarWhereInput struct {
 	CurrencyNotStartsWith      *string                    `json:"currency_not_starts_with,omitempty"`
 	CurrencyEndsWith           *string                    `json:"currency_ends_with,omitempty"`
 	CurrencyNotEndsWith        *string                    `json:"currency_not_ends_with,omitempty"`
+	UpdatedAt                  *string                    `json:"updatedAt,omitempty"`
+	UpdatedAtNot               *string                    `json:"updatedAt_not,omitempty"`
+	UpdatedAtIn                []string                   `json:"updatedAt_in,omitempty"`
+	UpdatedAtNotIn             []string                   `json:"updatedAt_not_in,omitempty"`
+	UpdatedAtLt                *string                    `json:"updatedAt_lt,omitempty"`
+	UpdatedAtLte               *string                    `json:"updatedAt_lte,omitempty"`
+	UpdatedAtGt                *string                    `json:"updatedAt_gt,omitempty"`
+	UpdatedAtGte               *string                    `json:"updatedAt_gte,omitempty"`
+	CreatedAt                  *string                    `json:"createdAt,omitempty"`
+	CreatedAtNot               *string                    `json:"createdAt_not,omitempty"`
+	CreatedAtIn                []string                   `json:"createdAt_in,omitempty"`
+	CreatedAtNotIn             []string                   `json:"createdAt_not_in,omitempty"`
+	CreatedAtLt                *string                    `json:"createdAt_lt,omitempty"`
+	CreatedAtLte               *string                    `json:"createdAt_lte,omitempty"`
+	CreatedAtGt                *string                    `json:"createdAt_gt,omitempty"`
+	CreatedAtGte               *string                    `json:"createdAt_gte,omitempty"`
 	And                        []PropertyScalarWhereInput `json:"AND,omitempty"`
 	Or                         []PropertyScalarWhereInput `json:"OR,omitempty"`
 	Not                        []PropertyScalarWhereInput `json:"NOT,omitempty"`
@@ -2905,6 +3070,22 @@ type LandlordScalarWhereInput struct {
 	CountryNotStartsWith    *string                    `json:"country_not_starts_with,omitempty"`
 	CountryEndsWith         *string                    `json:"country_ends_with,omitempty"`
 	CountryNotEndsWith      *string                    `json:"country_not_ends_with,omitempty"`
+	UpdatedAt               *string                    `json:"updatedAt,omitempty"`
+	UpdatedAtNot            *string                    `json:"updatedAt_not,omitempty"`
+	UpdatedAtIn             []string                   `json:"updatedAt_in,omitempty"`
+	UpdatedAtNotIn          []string                   `json:"updatedAt_not_in,omitempty"`
+	UpdatedAtLt             *string                    `json:"updatedAt_lt,omitempty"`
+	UpdatedAtLte            *string                    `json:"updatedAt_lte,omitempty"`
+	UpdatedAtGt             *string                    `json:"updatedAt_gt,omitempty"`
+	UpdatedAtGte            *string                    `json:"updatedAt_gte,omitempty"`
+	CreatedAt               *string                    `json:"createdAt,omitempty"`
+	CreatedAtNot            *string                    `json:"createdAt_not,omitempty"`
+	CreatedAtIn             []string                   `json:"createdAt_in,omitempty"`
+	CreatedAtNotIn          []string                   `json:"createdAt_not_in,omitempty"`
+	CreatedAtLt             *string                    `json:"createdAt_lt,omitempty"`
+	CreatedAtLte            *string                    `json:"createdAt_lte,omitempty"`
+	CreatedAtGt             *string                    `json:"createdAt_gt,omitempty"`
+	CreatedAtGte            *string                    `json:"createdAt_gte,omitempty"`
 	And                     []LandlordScalarWhereInput `json:"AND,omitempty"`
 	Or                      []LandlordScalarWhereInput `json:"OR,omitempty"`
 	Not                     []LandlordScalarWhereInput `json:"NOT,omitempty"`
@@ -2952,6 +3133,7 @@ type LandlordUpdateManyDataInput struct {
 }
 
 type AgentCreateInput struct {
+	ID              *string                              `json:"id,omitempty"`
 	BusinessService *string                              `json:"businessService,omitempty"`
 	Title           *string                              `json:"title,omitempty"`
 	FirstName       string                               `json:"firstName"`
@@ -2997,6 +3179,7 @@ type AgentCreateOneWithoutClientsInput struct {
 }
 
 type LandlordCreateInput struct {
+	ID         *string                                  `json:"id,omitempty"`
 	FullName   string                                   `json:"fullName"`
 	Email      string                                   `json:"email"`
 	Password   *string                                  `json:"password,omitempty"`
@@ -3036,6 +3219,7 @@ type AgentUpdateOneWithoutClientsInput struct {
 }
 
 type TenantCreateInput struct {
+	ID            *string                               `json:"id,omitempty"`
 	Title         *string                               `json:"title,omitempty"`
 	FirstName     string                                `json:"firstName"`
 	MiddleName    *string                               `json:"middleName,omitempty"`
@@ -3066,6 +3250,7 @@ type PropertySubscriptionWhereInput struct {
 }
 
 type PropertyCreateInput struct {
+	ID                    *string                                  `json:"id,omitempty"`
 	Address1              string                                   `json:"address1"`
 	Address2              *string                                  `json:"address2,omitempty"`
 	Postcode              string                                   `json:"postcode"`
@@ -3120,8 +3305,10 @@ func (instance TypeOfLetPreviousValuesExecArray) Exec(ctx context.Context) ([]Ty
 }
 
 type TypeOfLetPreviousValues struct {
-	ID   string  `json:"id"`
-	Name *string `json:"name,omitempty"`
+	ID        string  `json:"id"`
+	Name      *string `json:"name,omitempty"`
+	UpdatedAt *string `json:"updatedAt,omitempty"`
+	CreatedAt *string `json:"createdAt,omitempty"`
 }
 
 type LandlordExec struct {
@@ -3134,7 +3321,7 @@ func (instance *LandlordExec) Agent() *AgentExec {
 		nil,
 		[2]string{"", "Agent"},
 		"agent",
-		[]string{"id", "businessService", "title", "firstName", "lastName", "displayName", "email", "password", "mobile", "fax", "address1", "address2", "postcode", "country", "website"})
+		[]string{"id", "businessService", "title", "firstName", "lastName", "displayName", "email", "password", "mobile", "fax", "address1", "address2", "postcode", "country", "website", "updatedAt", "createdAt"})
 
 	return &AgentExec{ret}
 }
@@ -3168,7 +3355,7 @@ func (instance *LandlordExec) Properties(params *PropertiesParamsExec) *Property
 		wparams,
 		[3]string{"PropertyWhereInput", "PropertyOrderByInput", "Property"},
 		"properties",
-		[]string{"id", "address1", "address2", "postcode", "city", "country", "percentageofownership", "purchaseprice", "currentprice", "mortgageAmount", "mortgageInterestRate", "annualRentalIncome", "currency"})
+		[]string{"id", "address1", "address2", "postcode", "city", "country", "percentageofownership", "purchaseprice", "currentprice", "mortgageAmount", "mortgageInterestRate", "annualRentalIncome", "currency", "updatedAt", "createdAt"})
 
 	return &PropertyExecArray{ret}
 }
@@ -3211,6 +3398,8 @@ type Landlord struct {
 	Address2   *string `json:"address2,omitempty"`
 	Postcode   string  `json:"postcode"`
 	Country    string  `json:"country"`
+	UpdatedAt  *string `json:"updatedAt,omitempty"`
+	CreatedAt  *string `json:"createdAt,omitempty"`
 }
 
 type LandlordConnectionExec struct {
@@ -3312,8 +3501,10 @@ func (instance PropertyStatusExecArray) Exec(ctx context.Context) ([]PropertySta
 }
 
 type PropertyStatus struct {
-	ID     string `json:"id"`
-	Status string `json:"status"`
+	ID        string  `json:"id"`
+	Status    string  `json:"status"`
+	UpdatedAt *string `json:"updatedAt,omitempty"`
+	CreatedAt *string `json:"createdAt,omitempty"`
 }
 
 type AgentEdgeExec struct {
@@ -3326,7 +3517,7 @@ func (instance *AgentEdgeExec) Node() *AgentExec {
 		nil,
 		[2]string{"", "Agent"},
 		"node",
-		[]string{"id", "businessService", "title", "firstName", "lastName", "displayName", "email", "password", "mobile", "fax", "address1", "address2", "postcode", "country", "website"})
+		[]string{"id", "businessService", "title", "firstName", "lastName", "displayName", "email", "password", "mobile", "fax", "address1", "address2", "postcode", "country", "website", "updatedAt", "createdAt"})
 
 	return &AgentExec{ret}
 }
@@ -3475,6 +3666,8 @@ type TenantPreviousValues struct {
 	StartDate     *string `json:"startDate,omitempty"`
 	EndDate       *string `json:"endDate,omitempty"`
 	Notes         *string `json:"notes,omitempty"`
+	UpdatedAt     *string `json:"updatedAt,omitempty"`
+	CreatedAt     *string `json:"createdAt,omitempty"`
 }
 
 type PageInfoExec struct {
@@ -3592,7 +3785,7 @@ func (instance *TenantSubscriptionPayloadExec) Node() *TenantExec {
 		nil,
 		[2]string{"", "Tenant"},
 		"node",
-		[]string{"id", "title", "firstName", "middleName", "lastName", "displayName", "personalEmail", "workEmail", "homenumber", "mobilenumber", "rentInterval", "day", "startDate", "endDate", "notes"})
+		[]string{"id", "title", "firstName", "middleName", "lastName", "displayName", "personalEmail", "workEmail", "homenumber", "mobilenumber", "rentInterval", "day", "startDate", "endDate", "notes", "updatedAt", "createdAt"})
 
 	return &TenantExec{ret}
 }
@@ -3603,7 +3796,7 @@ func (instance *TenantSubscriptionPayloadExec) PreviousValues() *TenantPreviousV
 		nil,
 		[2]string{"", "TenantPreviousValues"},
 		"previousValues",
-		[]string{"id", "title", "firstName", "middleName", "lastName", "displayName", "personalEmail", "workEmail", "homenumber", "mobilenumber", "rentInterval", "day", "startDate", "endDate", "notes"})
+		[]string{"id", "title", "firstName", "middleName", "lastName", "displayName", "personalEmail", "workEmail", "homenumber", "mobilenumber", "rentInterval", "day", "startDate", "endDate", "notes", "updatedAt", "createdAt"})
 
 	return &TenantPreviousValuesExec{ret}
 }
@@ -3649,7 +3842,7 @@ func (instance *AgentSubscriptionPayloadExec) Node() *AgentExec {
 		nil,
 		[2]string{"", "Agent"},
 		"node",
-		[]string{"id", "businessService", "title", "firstName", "lastName", "displayName", "email", "password", "mobile", "fax", "address1", "address2", "postcode", "country", "website"})
+		[]string{"id", "businessService", "title", "firstName", "lastName", "displayName", "email", "password", "mobile", "fax", "address1", "address2", "postcode", "country", "website", "updatedAt", "createdAt"})
 
 	return &AgentExec{ret}
 }
@@ -3660,7 +3853,7 @@ func (instance *AgentSubscriptionPayloadExec) PreviousValues() *AgentPreviousVal
 		nil,
 		[2]string{"", "AgentPreviousValues"},
 		"previousValues",
-		[]string{"id", "businessService", "title", "firstName", "lastName", "displayName", "email", "password", "mobile", "fax", "address1", "address2", "postcode", "country", "website"})
+		[]string{"id", "businessService", "title", "firstName", "lastName", "displayName", "email", "password", "mobile", "fax", "address1", "address2", "postcode", "country", "website", "updatedAt", "createdAt"})
 
 	return &AgentPreviousValuesExec{ret}
 }
@@ -3810,6 +4003,8 @@ type AgentPreviousValues struct {
 	Postcode        string  `json:"postcode"`
 	Country         string  `json:"country"`
 	Website         *string `json:"website,omitempty"`
+	UpdatedAt       *string `json:"updatedAt,omitempty"`
+	CreatedAt       *string `json:"createdAt,omitempty"`
 }
 
 type PropertyStatusEdgeExec struct {
@@ -3822,7 +4017,7 @@ func (instance *PropertyStatusEdgeExec) Node() *PropertyStatusExec {
 		nil,
 		[2]string{"", "PropertyStatus"},
 		"node",
-		[]string{"id", "status"})
+		[]string{"id", "status", "updatedAt", "createdAt"})
 
 	return &PropertyStatusExec{ret}
 }
@@ -3935,7 +4130,7 @@ func (instance *PropertyExec) Status() *PropertyStatusExec {
 		nil,
 		[2]string{"", "PropertyStatus"},
 		"status",
-		[]string{"id", "status"})
+		[]string{"id", "status", "updatedAt", "createdAt"})
 
 	return &PropertyStatusExec{ret}
 }
@@ -3946,7 +4141,7 @@ func (instance *PropertyExec) Type() *PropertyTypeExec {
 		nil,
 		[2]string{"", "PropertyType"},
 		"type",
-		[]string{"id", "type"})
+		[]string{"id", "type", "updatedAt", "createdAt"})
 
 	return &PropertyTypeExec{ret}
 }
@@ -3957,7 +4152,7 @@ func (instance *PropertyExec) Tenants() *TenantExec {
 		nil,
 		[2]string{"", "Tenant"},
 		"tenants",
-		[]string{"id", "title", "firstName", "middleName", "lastName", "displayName", "personalEmail", "workEmail", "homenumber", "mobilenumber", "rentInterval", "day", "startDate", "endDate", "notes"})
+		[]string{"id", "title", "firstName", "middleName", "lastName", "displayName", "personalEmail", "workEmail", "homenumber", "mobilenumber", "rentInterval", "day", "startDate", "endDate", "notes", "updatedAt", "createdAt"})
 
 	return &TenantExec{ret}
 }
@@ -3968,7 +4163,7 @@ func (instance *PropertyExec) Landlords() *LandlordExec {
 		nil,
 		[2]string{"", "Landlord"},
 		"landlords",
-		[]string{"id", "fullName", "email", "password", "mobile", "dob", "occupation", "address1", "address2", "postcode", "country"})
+		[]string{"id", "fullName", "email", "password", "mobile", "dob", "occupation", "address1", "address2", "postcode", "country", "updatedAt", "createdAt"})
 
 	return &LandlordExec{ret}
 }
@@ -4013,6 +4208,8 @@ type Property struct {
 	MortgageInterestRate  *int32  `json:"mortgageInterestRate,omitempty"`
 	AnnualRentalIncome    *int32  `json:"annualRentalIncome,omitempty"`
 	Currency              *string `json:"currency,omitempty"`
+	UpdatedAt             *string `json:"updatedAt,omitempty"`
+	CreatedAt             *string `json:"createdAt,omitempty"`
 }
 
 type LandlordSubscriptionPayloadExec struct {
@@ -4025,7 +4222,7 @@ func (instance *LandlordSubscriptionPayloadExec) Node() *LandlordExec {
 		nil,
 		[2]string{"", "Landlord"},
 		"node",
-		[]string{"id", "fullName", "email", "password", "mobile", "dob", "occupation", "address1", "address2", "postcode", "country"})
+		[]string{"id", "fullName", "email", "password", "mobile", "dob", "occupation", "address1", "address2", "postcode", "country", "updatedAt", "createdAt"})
 
 	return &LandlordExec{ret}
 }
@@ -4036,7 +4233,7 @@ func (instance *LandlordSubscriptionPayloadExec) PreviousValues() *LandlordPrevi
 		nil,
 		[2]string{"", "LandlordPreviousValues"},
 		"previousValues",
-		[]string{"id", "fullName", "email", "password", "mobile", "dob", "occupation", "address1", "address2", "postcode", "country"})
+		[]string{"id", "fullName", "email", "password", "mobile", "dob", "occupation", "address1", "address2", "postcode", "country", "updatedAt", "createdAt"})
 
 	return &LandlordPreviousValuesExec{ret}
 }
@@ -4082,7 +4279,7 @@ func (instance *PropertyEdgeExec) Node() *PropertyExec {
 		nil,
 		[2]string{"", "Property"},
 		"node",
-		[]string{"id", "address1", "address2", "postcode", "city", "country", "percentageofownership", "purchaseprice", "currentprice", "mortgageAmount", "mortgageInterestRate", "annualRentalIncome", "currency"})
+		[]string{"id", "address1", "address2", "postcode", "city", "country", "percentageofownership", "purchaseprice", "currentprice", "mortgageAmount", "mortgageInterestRate", "annualRentalIncome", "currency", "updatedAt", "createdAt"})
 
 	return &PropertyExec{ret}
 }
@@ -4159,6 +4356,8 @@ type LandlordPreviousValues struct {
 	Address2   *string `json:"address2,omitempty"`
 	Postcode   string  `json:"postcode"`
 	Country    string  `json:"country"`
+	UpdatedAt  *string `json:"updatedAt,omitempty"`
+	CreatedAt  *string `json:"createdAt,omitempty"`
 }
 
 type TypeOfLetExec struct {
@@ -4192,8 +4391,10 @@ func (instance TypeOfLetExecArray) Exec(ctx context.Context) ([]TypeOfLet, error
 }
 
 type TypeOfLet struct {
-	ID   string  `json:"id"`
-	Name *string `json:"name,omitempty"`
+	ID        string  `json:"id"`
+	Name      *string `json:"name,omitempty"`
+	UpdatedAt *string `json:"updatedAt,omitempty"`
+	CreatedAt *string `json:"createdAt,omitempty"`
 }
 
 type TypeOfLetEdgeExec struct {
@@ -4206,7 +4407,7 @@ func (instance *TypeOfLetEdgeExec) Node() *TypeOfLetExec {
 		nil,
 		[2]string{"", "TypeOfLet"},
 		"node",
-		[]string{"id", "name"})
+		[]string{"id", "name", "updatedAt", "createdAt"})
 
 	return &TypeOfLetExec{ret}
 }
@@ -4251,7 +4452,7 @@ func (instance *PropertySubscriptionPayloadExec) Node() *PropertyExec {
 		nil,
 		[2]string{"", "Property"},
 		"node",
-		[]string{"id", "address1", "address2", "postcode", "city", "country", "percentageofownership", "purchaseprice", "currentprice", "mortgageAmount", "mortgageInterestRate", "annualRentalIncome", "currency"})
+		[]string{"id", "address1", "address2", "postcode", "city", "country", "percentageofownership", "purchaseprice", "currentprice", "mortgageAmount", "mortgageInterestRate", "annualRentalIncome", "currency", "updatedAt", "createdAt"})
 
 	return &PropertyExec{ret}
 }
@@ -4262,7 +4463,7 @@ func (instance *PropertySubscriptionPayloadExec) PreviousValues() *PropertyPrevi
 		nil,
 		[2]string{"", "PropertyPreviousValues"},
 		"previousValues",
-		[]string{"id", "address1", "address2", "postcode", "city", "country", "percentageofownership", "purchaseprice", "currentprice", "mortgageAmount", "mortgageInterestRate", "annualRentalIncome", "currency"})
+		[]string{"id", "address1", "address2", "postcode", "city", "country", "percentageofownership", "purchaseprice", "currentprice", "mortgageAmount", "mortgageInterestRate", "annualRentalIncome", "currency", "updatedAt", "createdAt"})
 
 	return &PropertyPreviousValuesExec{ret}
 }
@@ -4308,7 +4509,7 @@ func (instance *TenantEdgeExec) Node() *TenantExec {
 		nil,
 		[2]string{"", "Tenant"},
 		"node",
-		[]string{"id", "title", "firstName", "middleName", "lastName", "displayName", "personalEmail", "workEmail", "homenumber", "mobilenumber", "rentInterval", "day", "startDate", "endDate", "notes"})
+		[]string{"id", "title", "firstName", "middleName", "lastName", "displayName", "personalEmail", "workEmail", "homenumber", "mobilenumber", "rentInterval", "day", "startDate", "endDate", "notes", "updatedAt", "createdAt"})
 
 	return &TenantExec{ret}
 }
@@ -4387,6 +4588,8 @@ type PropertyPreviousValues struct {
 	MortgageInterestRate  *int32  `json:"mortgageInterestRate,omitempty"`
 	AnnualRentalIncome    *int32  `json:"annualRentalIncome,omitempty"`
 	Currency              *string `json:"currency,omitempty"`
+	UpdatedAt             *string `json:"updatedAt,omitempty"`
+	CreatedAt             *string `json:"createdAt,omitempty"`
 }
 
 type PropertyTypeEdgeExec struct {
@@ -4399,7 +4602,7 @@ func (instance *PropertyTypeEdgeExec) Node() *PropertyTypeExec {
 		nil,
 		[2]string{"", "PropertyType"},
 		"node",
-		[]string{"id", "type"})
+		[]string{"id", "type", "updatedAt", "createdAt"})
 
 	return &PropertyTypeExec{ret}
 }
@@ -4444,7 +4647,7 @@ func (instance *TenantExec) TypeOfLet() *TypeOfLetExec {
 		nil,
 		[2]string{"", "TypeOfLet"},
 		"typeOfLet",
-		[]string{"id", "name"})
+		[]string{"id", "name", "updatedAt", "createdAt"})
 
 	return &TypeOfLetExec{ret}
 }
@@ -4455,7 +4658,7 @@ func (instance *TenantExec) Property() *PropertyExec {
 		nil,
 		[2]string{"", "Property"},
 		"property",
-		[]string{"id", "address1", "address2", "postcode", "city", "country", "percentageofownership", "purchaseprice", "currentprice", "mortgageAmount", "mortgageInterestRate", "annualRentalIncome", "currency"})
+		[]string{"id", "address1", "address2", "postcode", "city", "country", "percentageofownership", "purchaseprice", "currentprice", "mortgageAmount", "mortgageInterestRate", "annualRentalIncome", "currency", "updatedAt", "createdAt"})
 
 	return &PropertyExec{ret}
 }
@@ -4502,6 +4705,8 @@ type Tenant struct {
 	StartDate     *string `json:"startDate,omitempty"`
 	EndDate       *string `json:"endDate,omitempty"`
 	Notes         *string `json:"notes,omitempty"`
+	UpdatedAt     *string `json:"updatedAt,omitempty"`
+	CreatedAt     *string `json:"createdAt,omitempty"`
 }
 
 type PropertyStatusConnectionExec struct {
@@ -4582,7 +4787,7 @@ func (instance *PropertyStatusSubscriptionPayloadExec) Node() *PropertyStatusExe
 		nil,
 		[2]string{"", "PropertyStatus"},
 		"node",
-		[]string{"id", "status"})
+		[]string{"id", "status", "updatedAt", "createdAt"})
 
 	return &PropertyStatusExec{ret}
 }
@@ -4593,7 +4798,7 @@ func (instance *PropertyStatusSubscriptionPayloadExec) PreviousValues() *Propert
 		nil,
 		[2]string{"", "PropertyStatusPreviousValues"},
 		"previousValues",
-		[]string{"id", "status"})
+		[]string{"id", "status", "updatedAt", "createdAt"})
 
 	return &PropertyStatusPreviousValuesExec{ret}
 }
@@ -4730,7 +4935,7 @@ func (instance *AgentExec) Clients(params *ClientsParamsExec) *LandlordExecArray
 		wparams,
 		[3]string{"LandlordWhereInput", "LandlordOrderByInput", "Landlord"},
 		"clients",
-		[]string{"id", "fullName", "email", "password", "mobile", "dob", "occupation", "address1", "address2", "postcode", "country"})
+		[]string{"id", "fullName", "email", "password", "mobile", "dob", "occupation", "address1", "address2", "postcode", "country", "updatedAt", "createdAt"})
 
 	return &LandlordExecArray{ret}
 }
@@ -4777,6 +4982,8 @@ type Agent struct {
 	Postcode        string  `json:"postcode"`
 	Country         string  `json:"country"`
 	Website         *string `json:"website,omitempty"`
+	UpdatedAt       *string `json:"updatedAt,omitempty"`
+	CreatedAt       *string `json:"createdAt,omitempty"`
 }
 
 type PropertyTypePreviousValuesExec struct {
@@ -4810,8 +5017,10 @@ func (instance PropertyTypePreviousValuesExecArray) Exec(ctx context.Context) ([
 }
 
 type PropertyTypePreviousValues struct {
-	ID   string `json:"id"`
-	Type string `json:"type"`
+	ID        string  `json:"id"`
+	Type      string  `json:"type"`
+	UpdatedAt *string `json:"updatedAt,omitempty"`
+	CreatedAt *string `json:"createdAt,omitempty"`
 }
 
 type PropertyTypeSubscriptionPayloadExec struct {
@@ -4824,7 +5033,7 @@ func (instance *PropertyTypeSubscriptionPayloadExec) Node() *PropertyTypeExec {
 		nil,
 		[2]string{"", "PropertyType"},
 		"node",
-		[]string{"id", "type"})
+		[]string{"id", "type", "updatedAt", "createdAt"})
 
 	return &PropertyTypeExec{ret}
 }
@@ -4835,7 +5044,7 @@ func (instance *PropertyTypeSubscriptionPayloadExec) PreviousValues() *PropertyT
 		nil,
 		[2]string{"", "PropertyTypePreviousValues"},
 		"previousValues",
-		[]string{"id", "type"})
+		[]string{"id", "type", "updatedAt", "createdAt"})
 
 	return &PropertyTypePreviousValuesExec{ret}
 }
@@ -4902,8 +5111,10 @@ func (instance PropertyTypeExecArray) Exec(ctx context.Context) ([]PropertyType,
 }
 
 type PropertyType struct {
-	ID   string `json:"id"`
-	Type string `json:"type"`
+	ID        string  `json:"id"`
+	Type      string  `json:"type"`
+	UpdatedAt *string `json:"updatedAt,omitempty"`
+	CreatedAt *string `json:"createdAt,omitempty"`
 }
 
 type PropertyStatusPreviousValuesExec struct {
@@ -4937,8 +5148,10 @@ func (instance PropertyStatusPreviousValuesExecArray) Exec(ctx context.Context) 
 }
 
 type PropertyStatusPreviousValues struct {
-	ID     string `json:"id"`
-	Status string `json:"status"`
+	ID        string  `json:"id"`
+	Status    string  `json:"status"`
+	UpdatedAt *string `json:"updatedAt,omitempty"`
+	CreatedAt *string `json:"createdAt,omitempty"`
 }
 
 type TypeOfLetSubscriptionPayloadExec struct {
@@ -4951,7 +5164,7 @@ func (instance *TypeOfLetSubscriptionPayloadExec) Node() *TypeOfLetExec {
 		nil,
 		[2]string{"", "TypeOfLet"},
 		"node",
-		[]string{"id", "name"})
+		[]string{"id", "name", "updatedAt", "createdAt"})
 
 	return &TypeOfLetExec{ret}
 }
@@ -4962,7 +5175,7 @@ func (instance *TypeOfLetSubscriptionPayloadExec) PreviousValues() *TypeOfLetPre
 		nil,
 		[2]string{"", "TypeOfLetPreviousValues"},
 		"previousValues",
-		[]string{"id", "name"})
+		[]string{"id", "name", "updatedAt", "createdAt"})
 
 	return &TypeOfLetPreviousValuesExec{ret}
 }
@@ -5008,7 +5221,7 @@ func (instance *LandlordEdgeExec) Node() *LandlordExec {
 		nil,
 		[2]string{"", "Landlord"},
 		"node",
-		[]string{"id", "fullName", "email", "password", "mobile", "dob", "occupation", "address1", "address2", "postcode", "country"})
+		[]string{"id", "fullName", "email", "password", "mobile", "dob", "occupation", "address1", "address2", "postcode", "country", "updatedAt", "createdAt"})
 
 	return &LandlordExec{ret}
 }

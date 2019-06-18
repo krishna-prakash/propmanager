@@ -1,5 +1,5 @@
 type Landlord {
-      id: ID! @unique
+      id: ID! @id
       fullName: String!
       email: String! @unique
       password: String
@@ -12,10 +12,12 @@ type Landlord {
       country: String!
       agent: Agent
       properties: [Property!]
+      updatedAt: DateTime @updatedAt
+      createdAt: DateTime @createdAt
 }
 
 type Agent {
-      id: ID! @unique
+      id: ID! @id
       businessService: String
       title: String
       firstName: String!
@@ -31,10 +33,12 @@ type Agent {
       country: String!
       website: String
       clients: [Landlord]
+      updatedAt: DateTime @updatedAt
+      createdAt: DateTime @createdAt
 }
 
 type Property {
-      id: ID! @unique
+      id: ID! @id
       address1: String!
       address2: String
       postcode: String!
@@ -49,12 +53,14 @@ type Property {
       mortgageInterestRate: Int
       annualRentalIncome: Int
       currency: String
-      tenants: Tenant
+      tenants: Tenant @relation(link: INLINE)
       landlords: Landlord
+      updatedAt: DateTime @updatedAt
+      createdAt: DateTime @createdAt
 }
 
 type Tenant {
-      id: ID! @unique
+      id: ID! @id
       title: String
       firstName: String!
       middleName: String
@@ -71,18 +77,26 @@ type Tenant {
       endDate: DateTime
       notes: String
       property: Property
+      updatedAt: DateTime @updatedAt
+      createdAt: DateTime @createdAt
 }
 
 type PropertyStatus {
-      id: ID! @unique
+      id: ID! @id
       status: String!
+      updatedAt: DateTime @updatedAt
+      createdAt: DateTime @createdAt
 }
 type PropertyType {
-      id: ID! @unique
+      id: ID! @id
       type: String!
+      updatedAt: DateTime @updatedAt
+      createdAt: DateTime @createdAt
 }
 
 type TypeOfLet {
-      id: ID! @unique
+      id: ID! @id
       name: String
+      updatedAt: DateTime @updatedAt
+      createdAt: DateTime @createdAt
 }

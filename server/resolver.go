@@ -2,7 +2,7 @@ package main
 
 import (
 	"context"
-
+	"fmt"
 	input "github.com/krishna/rogerapp"
 	"github.com/krishna/rogerapp/utils"
 	"github.com/krishna/rogerapp/auth0"
@@ -77,12 +77,13 @@ func (r *mutationResolver) CreateLandlord(ctx context.Context, userinfo input.Si
 	if err != nil {
 		panic(err)
 	}
-
-	auth0.CreateUser(&userinfo)
+	fmt.Println(user)
+	auth0.CreateUser(&userinfo, user.ID)
 	return user, err
 }
 
 func (r *mutationResolver) CreateProperty(ctx context.Context, propinfo input.PropertyInfo) (*prisma.Property, error) {
+	fmt.Println(propinfo)
 	prop, err := r.Prisma.CreateProperty(prisma.PropertyCreateInput{
 		Address1: propinfo.Address1,
 		Address2: propinfo.Address2,
@@ -266,7 +267,7 @@ func (r *mutationResolver) CreateAgent(ctx context.Context, userinfo input.Signu
 		panic(err)
 	}
 
-	auth0.CreateUser(&userinfo)
+	auth0.CreateUser(&userinfo, user.ID)
 	return user, err
 }
 
@@ -308,6 +309,10 @@ func (r *queryResolver) GetProperties(ctx context.Context) ([]prisma.Property, e
 
 func (r *queryResolver) GetPropertTypes(ctx context.Context) ([]prisma.PropertyType, error) {
 	return r.Prisma.PropertyTypes(nil).Exec(ctx)
+}
+
+func (r *queryResolver) GetPropertStatus(ctx context.Context) ([]prisma.PropertyStatus, error) {
+	return r.Prisma.PropertyStatuses(nil).Exec(ctx)
 }
 
 func (r *queryResolver) GetProperty(ctx context.Context, id string) (*prisma.Property, error) {

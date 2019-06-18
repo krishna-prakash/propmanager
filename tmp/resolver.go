@@ -105,6 +105,9 @@ func (r *queryResolver) GetTenants(ctx context.Context) ([]prisma.Tenant, error)
 func (r *queryResolver) GetPropertTypes(ctx context.Context) ([]prisma.PropertyType, error) {
 	panic("not implemented")
 }
+func (r *queryResolver) GetPropertStatus(ctx context.Context) ([]prisma.PropertyStatus, error) {
+	panic("not implemented")
+}
 func (r *queryResolver) GetLandlord(ctx context.Context, id string) (*prisma.Landlord, error) {
 	panic("not implemented")
 }
