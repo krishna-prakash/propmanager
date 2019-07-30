@@ -100,3 +100,64 @@ type TypeOfLet {
       updatedAt: DateTime @updatedAt
       createdAt: DateTime @createdAt
 }
+
+type Type {
+      id: ID! @id
+      name: String
+      categories: [Category!]
+      updatedAt: DateTime @updatedAt
+      createdAt: DateTime @createdAt
+}
+
+type Category{
+      id: ID! @id
+      name: String
+      description: String
+      type: Type
+      updatedAt: DateTime @updatedAt
+      createdAt: DateTime @createdAt
+}
+
+type UserCategory{
+      id: ID! @id
+      userCategoryName: String
+      description: String
+      Category: Category
+      Landlord: Landlord
+      Agent: Agent
+      updatedAt: DateTime @updatedAt
+      createdAt: DateTime @createdAt
+}
+
+type Transaction{
+      id: ID! @id
+      amount: Int
+      currency: String
+      transactionDate: String
+      type: Type
+      category: Category
+      property: Property
+      supplier: Supplier
+      updatedAt: DateTime @updatedAt
+      createdAt: DateTime @createdAt
+}
+
+type Supplier{
+      id: ID! @id
+      title: String
+      firstName: String
+      lastName: String
+      company: String
+      address1: String
+      address2: String
+      town: String
+      country: String
+      postcode: String
+      email: String
+      phone: Int
+      mobile: Int
+      updatedAt: DateTime @updatedAt
+      createdAt: DateTime @createdAt
+}
+
+

@@ -7,7 +7,6 @@ services:
                   - '4466:4466'
             environment:
                   PRISMA_CONFIG: |
-                        # managementApiSecret: propbooks-key-007
                         port: 4466
                         databases:
                           default:

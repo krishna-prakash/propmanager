@@ -23,6 +23,10 @@ func (r *Resolver) Landlord() LandlordResolver {
 	return &landlordResolver{r}
 }
 
+func (r *Resolver) Category() CategoryResolver {
+	return &categoryResolver{r}
+}
+
 func (r *Resolver) Mutation() MutationResolver {
 	return &mutationResolver{r}
 }
@@ -36,6 +40,16 @@ func (r *Resolver) Query() QueryResolver {
 func (r *Resolver) Tenant() TenantResolver {
 	return &tenantResolver{r}
 }
+func (r *Resolver) Transaction() TransactionResolver {
+	return &transactionResolver{r}
+}
+func (r *Resolver) Type() TypeResolver {
+	return &typeResolver{r}
+}
+func (r *Resolver) UserCategory() UserCategoryResolver {
+	return &userCategoryResolver{r}
+}
+
 type agentResolver struct{ *Resolver }
 
 func (r *agentResolver) Clients(ctx context.Context, obj *prisma.Agent) ([]prisma.Landlord, error) {
@@ -83,7 +97,6 @@ func (r *mutationResolver) CreateLandlord(ctx context.Context, userinfo input.Si
 }
 
 func (r *mutationResolver) CreateProperty(ctx context.Context, propinfo input.PropertyInfo) (*prisma.Property, error) {
-	fmt.Println(propinfo)
 	prop, err := r.Prisma.CreateProperty(prisma.PropertyCreateInput{
 		Address1: propinfo.Address1,
 		Address2: propinfo.Address2,
@@ -271,6 +284,73 @@ func (r *mutationResolver) CreateAgent(ctx context.Context, userinfo input.Signu
 	return user, err
 }
 
+func (r *mutationResolver) CreateCategory(ctx context.Context, categoryInfo input.CategoryInfo) (*prisma.Category, error) {
+	category, err := r.Prisma.CreateCategory(prisma.CategoryCreateInput{
+		Name: &categoryInfo.Name,
+		Description: categoryInfo.Description,
+		Type: &prisma.TypeCreateOneWithoutCategoriesInput{
+			Connect: &prisma.TypeWhereUniqueInput{
+					ID: categoryInfo.TypeID,
+				},
+		},
+	}).Exec(ctx)
+
+	return category, err
+}
+
+func (r *mutationResolver) CreateUserCategory(ctx context.Context, userCategoryInfo input.UserCategoryInfo) (*prisma.UserCategory, error) {
+	userCategory, err := r.Prisma.CreateUserCategory(prisma.UserCategoryCreateInput{
+		UserCategoryName: &userCategoryInfo.Name,
+		Category: &prisma.CategoryCreateOneInput{
+			Connect: &prisma.CategoryWhereUniqueInput{
+					ID: &userCategoryInfo.CategoryID,
+				},
+		},
+		Landlord: &prisma.LandlordCreateOneInput{
+			Connect: &prisma.LandlordWhereUniqueInput{
+					ID: userCategoryInfo.LandlordID,
+				},
+		},
+		// Agent: &prisma.AgentCreateOneInput{
+		// 	Connect: &prisma.AgentWhereUniqueInput{
+		// 			ID: userCategoryInfo.AgentID,
+		// 		},
+		// },
+	}).Exec(ctx)
+
+	return userCategory, err
+}
+
+func (r *mutationResolver) CreateTransaction(ctx context.Context, transactionInfo input.TransactionInfo) (*prisma.Transaction, error) {
+	userCategory, err := r.Prisma.CreateTransaction(prisma.TransactionCreateInput{
+		Amount: utils.ToInt32(&transactionInfo.Amount),
+		Currency: transactionInfo.Currency,
+		TransactionDate: &transactionInfo.TransactionDate,
+		Category: &prisma.CategoryCreateOneInput{
+			Connect: &prisma.CategoryWhereUniqueInput{
+					ID: &transactionInfo.CategoryID,
+				},
+		},
+		Type: &prisma.TypeCreateOneInput{
+			Connect: &prisma.TypeWhereUniqueInput{
+					ID: &transactionInfo.TypeID,
+				},
+		},
+		Property: &prisma.PropertyCreateOneInput{
+			Connect: &prisma.PropertyWhereUniqueInput{
+					ID: &transactionInfo.PropertyID,
+				},
+		},
+		// Agent: &prisma.AgentCreateOneInput{
+		// 	Connect: &prisma.AgentWhereUniqueInput{
+		// 			ID: userCategoryInfo.AgentID,
+		// 		},
+		// },
+	}).Exec(ctx)
+
+	return userCategory, err
+}
+
 type queryResolver struct{ *Resolver }
 
 func (r *queryResolver) GetLandlords(ctx context.Context) ([]prisma.Landlord, error) {
@@ -307,6 +387,18 @@ func (r *queryResolver) GetProperties(ctx context.Context) ([]prisma.Property, e
 	return r.Prisma.Properties(nil).Exec(ctx)
 }
 
+func (r *queryResolver) GetTypes(ctx context.Context) ([]prisma.Type, error) {
+	return r.Prisma.Types(nil).Exec(ctx)
+}
+
+func (r *queryResolver) GetCategories(ctx context.Context) ([]prisma.Category, error) {
+	return r.Prisma.Categories(nil).Exec(ctx)
+}
+
+func (r *queryResolver) GetUserCategories(ctx context.Context) ([]prisma.UserCategory, error) {
+	return r.Prisma.UserCategories(nil).Exec(ctx)
+}
+
 func (r *queryResolver) GetPropertTypes(ctx context.Context) ([]prisma.PropertyType, error) {
 	return r.Prisma.PropertyTypes(nil).Exec(ctx)
 }
@@ -333,6 +425,21 @@ func (r *queryResolver) GetTenant(ctx context.Context, id string) (*prisma.Tenan
 	}).Exec(ctx)
 
 	return tes, err
+}
+
+func (r *queryResolver) GetTransactionByType(ctx context.Context, typeID string) ([]prisma.Transaction, error) {
+	tes, err := r.Prisma.Transactions(&prisma.TransactionsParams{
+		Where: &prisma.TransactionWhereInput{
+			Type: &prisma.TypeWhereInput{
+				ID: &typeID,
+			},
+	},  
+	}).Exec(ctx)
+
+	return tes, err
+}
+func (r *queryResolver) GetTransactionByCategory(ctx context.Context, categoryID string) ([]prisma.Transaction, error) {
+	panic("not implemented")
 }
 
 type propertyResolver struct{ *Resolver }
@@ -385,4 +492,76 @@ func (r *tenantResolver) Property(ctx context.Context, obj *prisma.Tenant) (*pri
 	}).Property().Exec(ctx)
 
 	return prop, err
+}
+
+type categoryResolver struct{ *Resolver }
+
+func (r *categoryResolver) Type(ctx context.Context, obj *prisma.Category) (*prisma.Type, error) {
+	let, err := r.Prisma.Category(prisma.CategoryWhereUniqueInput{
+		ID: &obj.ID,
+	}).Type().Exec(ctx)
+
+	return let, err
+}
+
+type typeResolver struct{ *Resolver }
+
+func (r *typeResolver) Categories(ctx context.Context, obj *prisma.Type) ([]prisma.Category, error) {
+	let, err := r.Prisma.Type(prisma.TypeWhereUniqueInput{
+		ID: &obj.ID,
+	}).Categories(nil).Exec(ctx)
+
+	return let, err
+}
+
+type userCategoryResolver struct{ *Resolver }
+
+func (r *userCategoryResolver) Category(ctx context.Context, obj *prisma.UserCategory) (*prisma.Category, error) {
+	let, err := r.Prisma.UserCategory(prisma.UserCategoryWhereUniqueInput{
+		ID: &obj.ID,
+	}).Category().Exec(ctx)
+
+	return let, err
+}
+func (r *userCategoryResolver) Landlord(ctx context.Context, obj *prisma.UserCategory) (*prisma.Landlord, error) {
+	let, err := r.Prisma.UserCategory(prisma.UserCategoryWhereUniqueInput{
+		ID: &obj.ID,
+	}).Landlord().Exec(ctx)
+
+	return let, err
+}
+func (r *userCategoryResolver) Agent(ctx context.Context, obj *prisma.UserCategory) (*prisma.Agent, error) {
+	let, err := r.Prisma.UserCategory(prisma.UserCategoryWhereUniqueInput{
+		ID: &obj.ID,
+	}).Agent().Exec(ctx)
+
+	return let, err
+}
+
+
+type transactionResolver struct{ *Resolver }
+
+func (r *transactionResolver) Type(ctx context.Context, obj *prisma.Transaction) (*prisma.Type, error) {
+	let, err := r.Prisma.Transaction(prisma.TransactionWhereUniqueInput{
+		ID: &obj.ID,
+	}).Type().Exec(ctx)
+
+	return let, err
+}
+func (r *transactionResolver) Category(ctx context.Context, obj *prisma.Transaction) (*prisma.Category, error) {
+	let, err := r.Prisma.Transaction(prisma.TransactionWhereUniqueInput{
+		ID: &obj.ID,
+	}).Category().Exec(ctx)
+
+	return let, err
+}
+func (r *transactionResolver) Property(ctx context.Context, obj *prisma.Transaction) (*prisma.Property, error) {
+	let, err := r.Prisma.Transaction(prisma.TransactionWhereUniqueInput{
+		ID: &obj.ID,
+	}).Property().Exec(ctx)
+
+	return let, err
+}
+func (r *transactionResolver) Supplier(ctx context.Context, obj *prisma.Transaction) (*prisma.Supplier, error) {
+	panic("not implemented")
 }

@@ -17,6 +17,16 @@ models:
             model: github.com/krishna/rogerapp/generated/prisma-client.PropertyType
       TypeOfLet:
             model: github.com/krishna/rogerapp/generated/prisma-client.TypeOfLet
+      Type:
+            model: github.com/krishna/rogerapp/generated/prisma-client.Type
+      Category:
+            model: github.com/krishna/rogerapp/generated/prisma-client.Category
+      UserCategory:
+            model: github.com/krishna/rogerapp/generated/prisma-client.UserCategory
+      Transaction:
+            model: github.com/krishna/rogerapp/generated/prisma-client.Transaction
+      Supplier:
+            model: github.com/krishna/rogerapp/generated/prisma-client.Supplier
 resolver:
       filename: tmp/resolver.go
       type: Resolver

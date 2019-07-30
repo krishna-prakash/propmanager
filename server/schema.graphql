@@ -87,16 +87,69 @@ type TypeOfLet {
       name: String
 }
 
+type Type {
+      id: ID!
+      name: String
+      categories: [Category!]
+}
+
+type Category {
+      id: ID!
+      name: String!
+      description: String
+      type: Type
+}
+
+type UserCategory {
+      id: ID!
+      userCategoryName: String
+      Category: Category
+      Landlord: Landlord
+      Agent: Agent
+}
+
+type Transaction {
+      id: ID!
+      amount: Int!
+      currency: String
+      transactionDate: String!
+      type: Type!
+      category: Category!
+      property: Property!
+      supplier: Supplier
+}
+
+type Supplier {
+      id: ID!
+      title: String
+      firstName: String
+      lastName: String
+      company: String
+      address1: String
+      address2: String
+      town: String
+      country: String
+      postcode: String
+      email: String
+      phone: Int
+      mobile: Int
+}
+
 type Query {
       getLandlords: [Landlord!]
       getProperties: [Property!]
       getAgents: [Agent!]
       getTenants: [Tenant!]
+      getTypes: [Type!]
+      getCategories: [Category!]
+      getUserCategories: [UserCategory!]
       getPropertTypes: [PropertyType!]
       getPropertStatus: [PropertyStatus!]
       getLandlord(id: ID!): Landlord!
       getProperty(id: ID!): Property!
       getTenant(id: ID!): Tenant!
+      getTransactionByType(typeID: ID!): [Transaction!]
+      getTransactionByCategory(categoryID: ID!): [Transaction!]
 }
 
 input SignupInfo {
@@ -104,6 +157,19 @@ input SignupInfo {
       email: String!
       mobile: Int!
       password: String!
+}
+
+input CategoryInfo {
+      name: String!
+      description: String
+      typeID: ID
+}
+
+input UserCategoryInfo {
+      name: String!
+      categoryID: ID!
+      landlordID: ID
+      agentID: ID
 }
 
 input LandlordInfo {
@@ -156,6 +222,16 @@ input TenantInfo {
       propertyID: ID!
 }
 
+input TransactionInfo {
+      amount: Int!
+      currency: String
+      transactionDate: String!
+      typeID: ID!
+      categoryID: ID!
+      propertyID: ID!
+      supplierID: ID
+}
+
 type Mutation {
       createLandlord(userinfo: SignupInfo!): Landlord!
       updateLandlord(id: ID!, landlordInfo: LandlordInfo!): Landlord!
@@ -165,4 +241,7 @@ type Mutation {
       updateTenant(id: ID!, tenantInfo: TenantInfo!): Tenant!
       createAgent(userinfo: SignupInfo!): Agent!
       assignAgentToLandlord(agentId: ID!, landlordId: ID!): Landlord!
+      createCategory(CategoryInfo: CategoryInfo!): Category!
+      createUserCategory(CategoryInfo: UserCategoryInfo!): UserCategory!
+      createTransaction(transactionInfo: TransactionInfo!): Transaction!
 }

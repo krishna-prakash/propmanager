@@ -2,6 +2,12 @@
 
 package rogerapp
 
+type CategoryInfo struct {
+	Name        string  `json:"name"`
+	Description *string `json:"description"`
+	TypeID      *string `json:"typeID"`
+}
+
 type LandlordInfo struct {
 	FullName   *string `json:"fullName"`
 	Email      *string `json:"email"`
@@ -57,4 +63,21 @@ type TenantInfo struct {
 	EndDate       *string `json:"endDate"`
 	Notes         *string `json:"notes"`
 	PropertyID    string  `json:"propertyID"`
+}
+
+type TransactionInfo struct {
+	Amount          int     `json:"amount"`
+	Currency        *string `json:"currency"`
+	TransactionDate string  `json:"transactionDate"`
+	TypeID          string  `json:"typeID"`
+	CategoryID      string  `json:"categoryID"`
+	PropertyID      string  `json:"propertyID"`
+	SupplierID      *string `json:"supplierID"`
+}
+
+type UserCategoryInfo struct {
+	Name       string  `json:"name"`
+	CategoryID string  `json:"categoryID"`
+	LandlordID *string `json:"landlordID"`
+	AgentID    *string `json:"agentID"`
 }

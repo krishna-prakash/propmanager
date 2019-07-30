@@ -12,7 +12,7 @@ import (
 	prisma "github.com/krishna/rogerapp/generated/prisma-client"
 )
 
-const defaultPort = "4000"
+const defaultPort = "5000"
 
 func main() {
 	port := os.Getenv("PORT")
@@ -45,7 +45,7 @@ func main() {
 }
 
 func AllowOriginFunc(r *http.Request, origin string) bool {
-	if origin == "http://localhost:3000" {
+	if origin == "http://localhost:3000" || origin == "http://propbooks.s3-website-eu-west-1.amazonaws.com" {
 		return true
 	}
 
