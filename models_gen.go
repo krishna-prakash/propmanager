@@ -20,6 +20,17 @@ type LandlordInfo struct {
 	Country    *string `json:"country"`
 }
 
+type MileInfo struct {
+	Amount          int     `json:"amount"`
+	Currency        *string `json:"currency"`
+	TransactionDate string  `json:"transactionDate"`
+	Description     *string `json:"description"`
+	VehicleID       string  `json:"vehicleID"`
+	PropertyID      string  `json:"propertyID"`
+	LandlordID      string  `json:"landlordID"`
+	SupplierID      *string `json:"supplierID"`
+}
+
 type PropertyInfo struct {
 	Address1              string  `json:"address1"`
 	Address2              *string `json:"address2"`
@@ -69,9 +80,11 @@ type TransactionInfo struct {
 	Amount          int     `json:"amount"`
 	Currency        *string `json:"currency"`
 	TransactionDate string  `json:"transactionDate"`
+	Description     *string `json:"description"`
 	TypeID          string  `json:"typeID"`
 	CategoryID      string  `json:"categoryID"`
 	PropertyID      string  `json:"propertyID"`
+	LandlordID      string  `json:"landlordID"`
 	SupplierID      *string `json:"supplierID"`
 }
 

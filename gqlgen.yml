@@ -27,6 +27,8 @@ models:
             model: github.com/krishna/rogerapp/generated/prisma-client.Transaction
       Supplier:
             model: github.com/krishna/rogerapp/generated/prisma-client.Supplier
+      VehicleType:
+            model: github.com/krishna/rogerapp/generated/prisma-client.VehicleType
 resolver:
       filename: tmp/resolver.go
       type: Resolver

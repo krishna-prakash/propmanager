@@ -108,13 +108,22 @@ type UserCategory {
       Agent: Agent
 }
 
+type VehicleType {
+      id: ID!
+      vehicleType: String!
+      description: String
+}
+
 type Transaction {
       id: ID!
       amount: Int!
       currency: String
       transactionDate: String!
-      type: Type!
-      category: Category!
+      description: String
+      type: Type
+      category: Category
+      vehicle: VehicleType
+      Landlord: Landlord!
       property: Property!
       supplier: Supplier
 }
@@ -148,6 +157,7 @@ type Query {
       getLandlord(id: ID!): Landlord!
       getProperty(id: ID!): Property!
       getTenant(id: ID!): Tenant!
+      getTransactions(landlordID: ID!): [Transaction!]
       getTransactionByType(typeID: ID!): [Transaction!]
       getTransactionByCategory(categoryID: ID!): [Transaction!]
 }
@@ -226,9 +236,22 @@ input TransactionInfo {
       amount: Int!
       currency: String
       transactionDate: String!
+      description: String
       typeID: ID!
       categoryID: ID!
       propertyID: ID!
+      landlordID: ID!
+      supplierID: ID
+}
+
+input MileInfo {
+      amount: Int!
+      currency: String
+      transactionDate: String!
+      description: String
+      vehicleID: ID!
+      propertyID: ID!
+      landlordID: ID!
       supplierID: ID
 }
 
@@ -244,4 +267,6 @@ type Mutation {
       createCategory(CategoryInfo: CategoryInfo!): Category!
       createUserCategory(CategoryInfo: UserCategoryInfo!): UserCategory!
       createTransaction(transactionInfo: TransactionInfo!): Transaction!
+      createMileTransaction(transactionInfo: MileInfo!): Transaction!
+      editTransaction(transactionID: ID!, transactionInfo: TransactionInfo!): Transaction!
 }

@@ -109,6 +109,14 @@ type Type {
       createdAt: DateTime @createdAt
 }
 
+type VehicleType {
+      id: ID! @id
+      vehicleType: String!
+      description: String
+      updatedAt: DateTime @updatedAt
+      createdAt: DateTime @createdAt
+}
+
 type Category{
       id: ID! @id
       name: String
@@ -133,10 +141,13 @@ type Transaction{
       id: ID! @id
       amount: Int
       currency: String
-      transactionDate: String
+      transactionDate: DateTime
+      description: String
       type: Type
+      vehicle: VehicleType
       category: Category
       property: Property
+      Landlord: Landlord
       supplier: Supplier
       updatedAt: DateTime @updatedAt
       createdAt: DateTime @createdAt

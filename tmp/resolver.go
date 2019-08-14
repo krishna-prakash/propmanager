@@ -99,6 +99,12 @@ func (r *mutationResolver) CreateUserCategory(ctx context.Context, categoryInfo 
 func (r *mutationResolver) CreateTransaction(ctx context.Context, transactionInfo rogerapp.TransactionInfo) (*prisma.Transaction, error) {
 	panic("not implemented")
 }
+func (r *mutationResolver) CreateMileTransaction(ctx context.Context, transactionInfo rogerapp.MileInfo) (*prisma.Transaction, error) {
+	panic("not implemented")
+}
+func (r *mutationResolver) EditTransaction(ctx context.Context, transactionID string, transactionInfo rogerapp.TransactionInfo) (*prisma.Transaction, error) {
+	panic("not implemented")
+}
 
 type propertyResolver struct{ *Resolver }
 
@@ -153,6 +159,9 @@ func (r *queryResolver) GetProperty(ctx context.Context, id string) (*prisma.Pro
 func (r *queryResolver) GetTenant(ctx context.Context, id string) (*prisma.Tenant, error) {
 	panic("not implemented")
 }
+func (r *queryResolver) GetTransactions(ctx context.Context, landlordID string) ([]prisma.Transaction, error) {
+	panic("not implemented")
+}
 func (r *queryResolver) GetTransactionByType(ctx context.Context, typeID string) ([]prisma.Transaction, error) {
 	panic("not implemented")
 }
@@ -175,6 +184,12 @@ func (r *transactionResolver) Type(ctx context.Context, obj *prisma.Transaction)
 	panic("not implemented")
 }
 func (r *transactionResolver) Category(ctx context.Context, obj *prisma.Transaction) (*prisma.Category, error) {
+	panic("not implemented")
+}
+func (r *transactionResolver) Vehicle(ctx context.Context, obj *prisma.Transaction) (*prisma.VehicleType, error) {
+	panic("not implemented")
+}
+func (r *transactionResolver) Landlord(ctx context.Context, obj *prisma.Transaction) (*prisma.Landlord, error) {
 	panic("not implemented")
 }
 func (r *transactionResolver) Property(ctx context.Context, obj *prisma.Transaction) (*prisma.Property, error) {

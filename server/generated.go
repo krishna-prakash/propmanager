@@ -105,6 +105,8 @@ type ComplexityRoot struct {
 		CreateCategory        func(childComplexity int, categoryInfo rogerapp.CategoryInfo) int
 		CreateUserCategory    func(childComplexity int, categoryInfo rogerapp.UserCategoryInfo) int
 		CreateTransaction     func(childComplexity int, transactionInfo rogerapp.TransactionInfo) int
+		CreateMileTransaction func(childComplexity int, transactionInfo rogerapp.MileInfo) int
+		EditTransaction       func(childComplexity int, transactionID string, transactionInfo rogerapp.TransactionInfo) int
 	}
 
 	Property struct {
@@ -150,6 +152,7 @@ type ComplexityRoot struct {
 		GetLandlord              func(childComplexity int, id string) int
 		GetProperty              func(childComplexity int, id string) int
 		GetTenant                func(childComplexity int, id string) int
+		GetTransactions          func(childComplexity int, landlordID string) int
 		GetTransactionByType     func(childComplexity int, typeID string) int
 		GetTransactionByCategory func(childComplexity int, categoryID string) int
 	}
@@ -195,8 +198,11 @@ type ComplexityRoot struct {
 		Amount          func(childComplexity int) int
 		Currency        func(childComplexity int) int
 		TransactionDate func(childComplexity int) int
+		Description     func(childComplexity int) int
 		Type            func(childComplexity int) int
 		Category        func(childComplexity int) int
+		Vehicle         func(childComplexity int) int
+		Landlord        func(childComplexity int) int
 		Property        func(childComplexity int) int
 		Supplier        func(childComplexity int) int
 	}
@@ -218,6 +224,12 @@ type ComplexityRoot struct {
 		Category         func(childComplexity int) int
 		Landlord         func(childComplexity int) int
 		Agent            func(childComplexity int) int
+	}
+
+	VehicleType struct {
+		ID          func(childComplexity int) int
+		VehicleType func(childComplexity int) int
+		Description func(childComplexity int) int
 	}
 }
 
@@ -243,6 +255,8 @@ type MutationResolver interface {
 	CreateCategory(ctx context.Context, categoryInfo rogerapp.CategoryInfo) (*prisma.Category, error)
 	CreateUserCategory(ctx context.Context, categoryInfo rogerapp.UserCategoryInfo) (*prisma.UserCategory, error)
 	CreateTransaction(ctx context.Context, transactionInfo rogerapp.TransactionInfo) (*prisma.Transaction, error)
+	CreateMileTransaction(ctx context.Context, transactionInfo rogerapp.MileInfo) (*prisma.Transaction, error)
+	EditTransaction(ctx context.Context, transactionID string, transactionInfo rogerapp.TransactionInfo) (*prisma.Transaction, error)
 }
 type PropertyResolver interface {
 	Status(ctx context.Context, obj *prisma.Property) (*prisma.PropertyStatus, error)
@@ -264,6 +278,7 @@ type QueryResolver interface {
 	GetLandlord(ctx context.Context, id string) (*prisma.Landlord, error)
 	GetProperty(ctx context.Context, id string) (*prisma.Property, error)
 	GetTenant(ctx context.Context, id string) (*prisma.Tenant, error)
+	GetTransactions(ctx context.Context, landlordID string) ([]prisma.Transaction, error)
 	GetTransactionByType(ctx context.Context, typeID string) ([]prisma.Transaction, error)
 	GetTransactionByCategory(ctx context.Context, categoryID string) ([]prisma.Transaction, error)
 }
@@ -275,6 +290,8 @@ type TenantResolver interface {
 type TransactionResolver interface {
 	Type(ctx context.Context, obj *prisma.Transaction) (*prisma.Type, error)
 	Category(ctx context.Context, obj *prisma.Transaction) (*prisma.Category, error)
+	Vehicle(ctx context.Context, obj *prisma.Transaction) (*prisma.VehicleType, error)
+	Landlord(ctx context.Context, obj *prisma.Transaction) (*prisma.Landlord, error)
 	Property(ctx context.Context, obj *prisma.Transaction) (*prisma.Property, error)
 	Supplier(ctx context.Context, obj *prisma.Transaction) (*prisma.Supplier, error)
 }
@@ -665,6 +682,30 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 
 		return e.complexity.Mutation.CreateTransaction(childComplexity, args["transactionInfo"].(rogerapp.TransactionInfo)), true
 
+	case "Mutation.CreateMileTransaction":
+		if e.complexity.Mutation.CreateMileTransaction == nil {
+			break
+		}
+
+		args, err := ec.field_Mutation_createMileTransaction_args(context.TODO(), rawArgs)
+		if err != nil {
+			return 0, false
+		}
+
+		return e.complexity.Mutation.CreateMileTransaction(childComplexity, args["transactionInfo"].(rogerapp.MileInfo)), true
+
+	case "Mutation.EditTransaction":
+		if e.complexity.Mutation.EditTransaction == nil {
+			break
+		}
+
+		args, err := ec.field_Mutation_editTransaction_args(context.TODO(), rawArgs)
+		if err != nil {
+			return 0, false
+		}
+
+		return e.complexity.Mutation.EditTransaction(childComplexity, args["transactionID"].(string), args["transactionInfo"].(rogerapp.TransactionInfo)), true
+
 	case "Property.ID":
 		if e.complexity.Property.ID == nil {
 			break
@@ -910,6 +951,18 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 		}
 
 		return e.complexity.Query.GetTenant(childComplexity, args["id"].(string)), true
+
+	case "Query.GetTransactions":
+		if e.complexity.Query.GetTransactions == nil {
+			break
+		}
+
+		args, err := ec.field_Query_getTransactions_args(context.TODO(), rawArgs)
+		if err != nil {
+			return 0, false
+		}
+
+		return e.complexity.Query.GetTransactions(childComplexity, args["landlordID"].(string)), true
 
 	case "Query.GetTransactionByType":
 		if e.complexity.Query.GetTransactionByType == nil {
@@ -1173,6 +1226,13 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 
 		return e.complexity.Transaction.TransactionDate(childComplexity), true
 
+	case "Transaction.Description":
+		if e.complexity.Transaction.Description == nil {
+			break
+		}
+
+		return e.complexity.Transaction.Description(childComplexity), true
+
 	case "Transaction.Type":
 		if e.complexity.Transaction.Type == nil {
 			break
@@ -1186,6 +1246,20 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 		}
 
 		return e.complexity.Transaction.Category(childComplexity), true
+
+	case "Transaction.Vehicle":
+		if e.complexity.Transaction.Vehicle == nil {
+			break
+		}
+
+		return e.complexity.Transaction.Vehicle(childComplexity), true
+
+	case "Transaction.Landlord":
+		if e.complexity.Transaction.Landlord == nil {
+			break
+		}
+
+		return e.complexity.Transaction.Landlord(childComplexity), true
 
 	case "Transaction.Property":
 		if e.complexity.Transaction.Property == nil {
@@ -1270,6 +1344,27 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 		}
 
 		return e.complexity.UserCategory.Agent(childComplexity), true
+
+	case "VehicleType.ID":
+		if e.complexity.VehicleType.ID == nil {
+			break
+		}
+
+		return e.complexity.VehicleType.ID(childComplexity), true
+
+	case "VehicleType.VehicleType":
+		if e.complexity.VehicleType.VehicleType == nil {
+			break
+		}
+
+		return e.complexity.VehicleType.VehicleType(childComplexity), true
+
+	case "VehicleType.Description":
+		if e.complexity.VehicleType.Description == nil {
+			break
+		}
+
+		return e.complexity.VehicleType.Description(childComplexity), true
 
 	}
 	return 0, false
@@ -1458,13 +1553,22 @@ type UserCategory {
       Agent: Agent
 }
 
+type VehicleType {
+      id: ID!
+      vehicleType: String!
+      description: String
+}
+
 type Transaction {
       id: ID!
       amount: Int!
       currency: String
       transactionDate: String!
-      type: Type!
-      category: Category!
+      description: String
+      type: Type
+      category: Category
+      vehicle: VehicleType
+      Landlord: Landlord!
       property: Property!
       supplier: Supplier
 }
@@ -1498,6 +1602,7 @@ type Query {
       getLandlord(id: ID!): Landlord!
       getProperty(id: ID!): Property!
       getTenant(id: ID!): Tenant!
+      getTransactions(landlordID: ID!): [Transaction!]
       getTransactionByType(typeID: ID!): [Transaction!]
       getTransactionByCategory(categoryID: ID!): [Transaction!]
 }
@@ -1576,9 +1681,22 @@ input TransactionInfo {
       amount: Int!
       currency: String
       transactionDate: String!
+      description: String
       typeID: ID!
       categoryID: ID!
       propertyID: ID!
+      landlordID: ID!
+      supplierID: ID
+}
+
+input MileInfo {
+      amount: Int!
+      currency: String
+      transactionDate: String!
+      description: String
+      vehicleID: ID!
+      propertyID: ID!
+      landlordID: ID!
       supplierID: ID
 }
 
@@ -1594,6 +1712,8 @@ type Mutation {
       createCategory(CategoryInfo: CategoryInfo!): Category!
       createUserCategory(CategoryInfo: UserCategoryInfo!): UserCategory!
       createTransaction(transactionInfo: TransactionInfo!): Transaction!
+      createMileTransaction(transactionInfo: MileInfo!): Transaction!
+      editTransaction(transactionID: ID!, transactionInfo: TransactionInfo!): Transaction!
 }
 `},
 )
@@ -1666,6 +1786,20 @@ func (ec *executionContext) field_Mutation_createLandlord_args(ctx context.Conte
 	return args, nil
 }
 
+func (ec *executionContext) field_Mutation_createMileTransaction_args(ctx context.Context, rawArgs map[string]interface{}) (map[string]interface{}, error) {
+	var err error
+	args := map[string]interface{}{}
+	var arg0 rogerapp.MileInfo
+	if tmp, ok := rawArgs["transactionInfo"]; ok {
+		arg0, err = ec.unmarshalNMileInfo2githubᚗcomᚋkrishnaᚋrogerappᚐMileInfo(ctx, tmp)
+		if err != nil {
+			return nil, err
+		}
+	}
+	args["transactionInfo"] = arg0
+	return args, nil
+}
+
 func (ec *executionContext) field_Mutation_createProperty_args(ctx context.Context, rawArgs map[string]interface{}) (map[string]interface{}, error) {
 	var err error
 	args := map[string]interface{}{}
@@ -1719,6 +1853,28 @@ func (ec *executionContext) field_Mutation_createUserCategory_args(ctx context.C
 		}
 	}
 	args["CategoryInfo"] = arg0
+	return args, nil
+}
+
+func (ec *executionContext) field_Mutation_editTransaction_args(ctx context.Context, rawArgs map[string]interface{}) (map[string]interface{}, error) {
+	var err error
+	args := map[string]interface{}{}
+	var arg0 string
+	if tmp, ok := rawArgs["transactionID"]; ok {
+		arg0, err = ec.unmarshalNID2string(ctx, tmp)
+		if err != nil {
+			return nil, err
+		}
+	}
+	args["transactionID"] = arg0
+	var arg1 rogerapp.TransactionInfo
+	if tmp, ok := rawArgs["transactionInfo"]; ok {
+		arg1, err = ec.unmarshalNTransactionInfo2githubᚗcomᚋkrishnaᚋrogerappᚐTransactionInfo(ctx, tmp)
+		if err != nil {
+			return nil, err
+		}
+	}
+	args["transactionInfo"] = arg1
 	return args, nil
 }
 
@@ -1869,6 +2025,20 @@ func (ec *executionContext) field_Query_getTransactionByType_args(ctx context.Co
 		}
 	}
 	args["typeID"] = arg0
+	return args, nil
+}
+
+func (ec *executionContext) field_Query_getTransactions_args(ctx context.Context, rawArgs map[string]interface{}) (map[string]interface{}, error) {
+	var err error
+	args := map[string]interface{}{}
+	var arg0 string
+	if tmp, ok := rawArgs["landlordID"]; ok {
+		arg0, err = ec.unmarshalNID2string(ctx, tmp)
+		if err != nil {
+			return nil, err
+		}
+	}
+	args["landlordID"] = arg0
 	return args, nil
 }
 
@@ -3062,6 +3232,72 @@ func (ec *executionContext) _Mutation_createTransaction(ctx context.Context, fie
 	return ec.marshalNTransaction2ᚖgithubᚗcomᚋkrishnaᚋrogerappᚋgeneratedᚋprismaᚑclientᚐTransaction(ctx, field.Selections, res)
 }
 
+func (ec *executionContext) _Mutation_createMileTransaction(ctx context.Context, field graphql.CollectedField) graphql.Marshaler {
+	ctx = ec.Tracer.StartFieldExecution(ctx, field)
+	defer func() { ec.Tracer.EndFieldExecution(ctx) }()
+	rctx := &graphql.ResolverContext{
+		Object: "Mutation",
+		Field:  field,
+		Args:   nil,
+	}
+	ctx = graphql.WithResolverContext(ctx, rctx)
+	rawArgs := field.ArgumentMap(ec.Variables)
+	args, err := ec.field_Mutation_createMileTransaction_args(ctx, rawArgs)
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	rctx.Args = args
+	ctx = ec.Tracer.StartFieldResolverExecution(ctx, rctx)
+	resTmp := ec.FieldMiddleware(ctx, nil, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return ec.resolvers.Mutation().CreateMileTransaction(rctx, args["transactionInfo"].(rogerapp.MileInfo))
+	})
+	if resTmp == nil {
+		if !ec.HasError(rctx) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(*prisma.Transaction)
+	rctx.Result = res
+	ctx = ec.Tracer.StartFieldChildExecution(ctx)
+	return ec.marshalNTransaction2ᚖgithubᚗcomᚋkrishnaᚋrogerappᚋgeneratedᚋprismaᚑclientᚐTransaction(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _Mutation_editTransaction(ctx context.Context, field graphql.CollectedField) graphql.Marshaler {
+	ctx = ec.Tracer.StartFieldExecution(ctx, field)
+	defer func() { ec.Tracer.EndFieldExecution(ctx) }()
+	rctx := &graphql.ResolverContext{
+		Object: "Mutation",
+		Field:  field,
+		Args:   nil,
+	}
+	ctx = graphql.WithResolverContext(ctx, rctx)
+	rawArgs := field.ArgumentMap(ec.Variables)
+	args, err := ec.field_Mutation_editTransaction_args(ctx, rawArgs)
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	rctx.Args = args
+	ctx = ec.Tracer.StartFieldResolverExecution(ctx, rctx)
+	resTmp := ec.FieldMiddleware(ctx, nil, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return ec.resolvers.Mutation().EditTransaction(rctx, args["transactionID"].(string), args["transactionInfo"].(rogerapp.TransactionInfo))
+	})
+	if resTmp == nil {
+		if !ec.HasError(rctx) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(*prisma.Transaction)
+	rctx.Result = res
+	ctx = ec.Tracer.StartFieldChildExecution(ctx)
+	return ec.marshalNTransaction2ᚖgithubᚗcomᚋkrishnaᚋrogerappᚋgeneratedᚋprismaᚑclientᚐTransaction(ctx, field.Selections, res)
+}
+
 func (ec *executionContext) _Property_id(ctx context.Context, field graphql.CollectedField, obj *prisma.Property) graphql.Marshaler {
 	ctx = ec.Tracer.StartFieldExecution(ctx, field)
 	defer func() { ec.Tracer.EndFieldExecution(ctx) }()
@@ -3885,6 +4121,36 @@ func (ec *executionContext) _Query_getTenant(ctx context.Context, field graphql.
 	rctx.Result = res
 	ctx = ec.Tracer.StartFieldChildExecution(ctx)
 	return ec.marshalNTenant2ᚖgithubᚗcomᚋkrishnaᚋrogerappᚋgeneratedᚋprismaᚑclientᚐTenant(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _Query_getTransactions(ctx context.Context, field graphql.CollectedField) graphql.Marshaler {
+	ctx = ec.Tracer.StartFieldExecution(ctx, field)
+	defer func() { ec.Tracer.EndFieldExecution(ctx) }()
+	rctx := &graphql.ResolverContext{
+		Object: "Query",
+		Field:  field,
+		Args:   nil,
+	}
+	ctx = graphql.WithResolverContext(ctx, rctx)
+	rawArgs := field.ArgumentMap(ec.Variables)
+	args, err := ec.field_Query_getTransactions_args(ctx, rawArgs)
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	rctx.Args = args
+	ctx = ec.Tracer.StartFieldResolverExecution(ctx, rctx)
+	resTmp := ec.FieldMiddleware(ctx, nil, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return ec.resolvers.Query().GetTransactions(rctx, args["landlordID"].(string))
+	})
+	if resTmp == nil {
+		return graphql.Null
+	}
+	res := resTmp.([]prisma.Transaction)
+	rctx.Result = res
+	ctx = ec.Tracer.StartFieldChildExecution(ctx)
+	return ec.marshalOTransaction2ᚕgithubᚗcomᚋkrishnaᚋrogerappᚋgeneratedᚋprismaᚑclientᚐTransaction(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) _Query_getTransactionByType(ctx context.Context, field graphql.CollectedField) graphql.Marshaler {
@@ -4818,6 +5084,29 @@ func (ec *executionContext) _Transaction_transactionDate(ctx context.Context, fi
 	return ec.marshalNString2ᚖstring(ctx, field.Selections, res)
 }
 
+func (ec *executionContext) _Transaction_description(ctx context.Context, field graphql.CollectedField, obj *prisma.Transaction) graphql.Marshaler {
+	ctx = ec.Tracer.StartFieldExecution(ctx, field)
+	defer func() { ec.Tracer.EndFieldExecution(ctx) }()
+	rctx := &graphql.ResolverContext{
+		Object: "Transaction",
+		Field:  field,
+		Args:   nil,
+	}
+	ctx = graphql.WithResolverContext(ctx, rctx)
+	ctx = ec.Tracer.StartFieldResolverExecution(ctx, rctx)
+	resTmp := ec.FieldMiddleware(ctx, obj, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.Description, nil
+	})
+	if resTmp == nil {
+		return graphql.Null
+	}
+	res := resTmp.(*string)
+	rctx.Result = res
+	ctx = ec.Tracer.StartFieldChildExecution(ctx)
+	return ec.marshalOString2ᚖstring(ctx, field.Selections, res)
+}
+
 func (ec *executionContext) _Transaction_type(ctx context.Context, field graphql.CollectedField, obj *prisma.Transaction) graphql.Marshaler {
 	ctx = ec.Tracer.StartFieldExecution(ctx, field)
 	defer func() { ec.Tracer.EndFieldExecution(ctx) }()
@@ -4833,15 +5122,12 @@ func (ec *executionContext) _Transaction_type(ctx context.Context, field graphql
 		return ec.resolvers.Transaction().Type(rctx, obj)
 	})
 	if resTmp == nil {
-		if !ec.HasError(rctx) {
-			ec.Errorf(ctx, "must not be null")
-		}
 		return graphql.Null
 	}
 	res := resTmp.(*prisma.Type)
 	rctx.Result = res
 	ctx = ec.Tracer.StartFieldChildExecution(ctx)
-	return ec.marshalNType2ᚖgithubᚗcomᚋkrishnaᚋrogerappᚋgeneratedᚋprismaᚑclientᚐType(ctx, field.Selections, res)
+	return ec.marshalOType2ᚖgithubᚗcomᚋkrishnaᚋrogerappᚋgeneratedᚋprismaᚑclientᚐType(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) _Transaction_category(ctx context.Context, field graphql.CollectedField, obj *prisma.Transaction) graphql.Marshaler {
@@ -4859,15 +5145,61 @@ func (ec *executionContext) _Transaction_category(ctx context.Context, field gra
 		return ec.resolvers.Transaction().Category(rctx, obj)
 	})
 	if resTmp == nil {
-		if !ec.HasError(rctx) {
-			ec.Errorf(ctx, "must not be null")
-		}
 		return graphql.Null
 	}
 	res := resTmp.(*prisma.Category)
 	rctx.Result = res
 	ctx = ec.Tracer.StartFieldChildExecution(ctx)
-	return ec.marshalNCategory2ᚖgithubᚗcomᚋkrishnaᚋrogerappᚋgeneratedᚋprismaᚑclientᚐCategory(ctx, field.Selections, res)
+	return ec.marshalOCategory2ᚖgithubᚗcomᚋkrishnaᚋrogerappᚋgeneratedᚋprismaᚑclientᚐCategory(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _Transaction_vehicle(ctx context.Context, field graphql.CollectedField, obj *prisma.Transaction) graphql.Marshaler {
+	ctx = ec.Tracer.StartFieldExecution(ctx, field)
+	defer func() { ec.Tracer.EndFieldExecution(ctx) }()
+	rctx := &graphql.ResolverContext{
+		Object: "Transaction",
+		Field:  field,
+		Args:   nil,
+	}
+	ctx = graphql.WithResolverContext(ctx, rctx)
+	ctx = ec.Tracer.StartFieldResolverExecution(ctx, rctx)
+	resTmp := ec.FieldMiddleware(ctx, obj, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return ec.resolvers.Transaction().Vehicle(rctx, obj)
+	})
+	if resTmp == nil {
+		return graphql.Null
+	}
+	res := resTmp.(*prisma.VehicleType)
+	rctx.Result = res
+	ctx = ec.Tracer.StartFieldChildExecution(ctx)
+	return ec.marshalOVehicleType2ᚖgithubᚗcomᚋkrishnaᚋrogerappᚋgeneratedᚋprismaᚑclientᚐVehicleType(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _Transaction_Landlord(ctx context.Context, field graphql.CollectedField, obj *prisma.Transaction) graphql.Marshaler {
+	ctx = ec.Tracer.StartFieldExecution(ctx, field)
+	defer func() { ec.Tracer.EndFieldExecution(ctx) }()
+	rctx := &graphql.ResolverContext{
+		Object: "Transaction",
+		Field:  field,
+		Args:   nil,
+	}
+	ctx = graphql.WithResolverContext(ctx, rctx)
+	ctx = ec.Tracer.StartFieldResolverExecution(ctx, rctx)
+	resTmp := ec.FieldMiddleware(ctx, obj, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return ec.resolvers.Transaction().Landlord(rctx, obj)
+	})
+	if resTmp == nil {
+		if !ec.HasError(rctx) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(*prisma.Landlord)
+	rctx.Result = res
+	ctx = ec.Tracer.StartFieldChildExecution(ctx)
+	return ec.marshalNLandlord2ᚖgithubᚗcomᚋkrishnaᚋrogerappᚋgeneratedᚋprismaᚑclientᚐLandlord(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) _Transaction_property(ctx context.Context, field graphql.CollectedField, obj *prisma.Transaction) graphql.Marshaler {
@@ -5156,6 +5488,81 @@ func (ec *executionContext) _UserCategory_Agent(ctx context.Context, field graph
 	rctx.Result = res
 	ctx = ec.Tracer.StartFieldChildExecution(ctx)
 	return ec.marshalOAgent2ᚖgithubᚗcomᚋkrishnaᚋrogerappᚋgeneratedᚋprismaᚑclientᚐAgent(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _VehicleType_id(ctx context.Context, field graphql.CollectedField, obj *prisma.VehicleType) graphql.Marshaler {
+	ctx = ec.Tracer.StartFieldExecution(ctx, field)
+	defer func() { ec.Tracer.EndFieldExecution(ctx) }()
+	rctx := &graphql.ResolverContext{
+		Object: "VehicleType",
+		Field:  field,
+		Args:   nil,
+	}
+	ctx = graphql.WithResolverContext(ctx, rctx)
+	ctx = ec.Tracer.StartFieldResolverExecution(ctx, rctx)
+	resTmp := ec.FieldMiddleware(ctx, obj, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.ID, nil
+	})
+	if resTmp == nil {
+		if !ec.HasError(rctx) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(string)
+	rctx.Result = res
+	ctx = ec.Tracer.StartFieldChildExecution(ctx)
+	return ec.marshalNID2string(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _VehicleType_vehicleType(ctx context.Context, field graphql.CollectedField, obj *prisma.VehicleType) graphql.Marshaler {
+	ctx = ec.Tracer.StartFieldExecution(ctx, field)
+	defer func() { ec.Tracer.EndFieldExecution(ctx) }()
+	rctx := &graphql.ResolverContext{
+		Object: "VehicleType",
+		Field:  field,
+		Args:   nil,
+	}
+	ctx = graphql.WithResolverContext(ctx, rctx)
+	ctx = ec.Tracer.StartFieldResolverExecution(ctx, rctx)
+	resTmp := ec.FieldMiddleware(ctx, obj, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.VehicleType, nil
+	})
+	if resTmp == nil {
+		if !ec.HasError(rctx) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(string)
+	rctx.Result = res
+	ctx = ec.Tracer.StartFieldChildExecution(ctx)
+	return ec.marshalNString2string(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _VehicleType_description(ctx context.Context, field graphql.CollectedField, obj *prisma.VehicleType) graphql.Marshaler {
+	ctx = ec.Tracer.StartFieldExecution(ctx, field)
+	defer func() { ec.Tracer.EndFieldExecution(ctx) }()
+	rctx := &graphql.ResolverContext{
+		Object: "VehicleType",
+		Field:  field,
+		Args:   nil,
+	}
+	ctx = graphql.WithResolverContext(ctx, rctx)
+	ctx = ec.Tracer.StartFieldResolverExecution(ctx, rctx)
+	resTmp := ec.FieldMiddleware(ctx, obj, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.Description, nil
+	})
+	if resTmp == nil {
+		return graphql.Null
+	}
+	res := resTmp.(*string)
+	rctx.Result = res
+	ctx = ec.Tracer.StartFieldChildExecution(ctx)
+	return ec.marshalOString2ᚖstring(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) ___Directive_name(ctx context.Context, field graphql.CollectedField, obj *introspection.Directive) graphql.Marshaler {
@@ -6053,6 +6460,66 @@ func (ec *executionContext) unmarshalInputLandlordInfo(ctx context.Context, v in
 	return it, nil
 }
 
+func (ec *executionContext) unmarshalInputMileInfo(ctx context.Context, v interface{}) (rogerapp.MileInfo, error) {
+	var it rogerapp.MileInfo
+	var asMap = v.(map[string]interface{})
+
+	for k, v := range asMap {
+		switch k {
+		case "amount":
+			var err error
+			it.Amount, err = ec.unmarshalNInt2int(ctx, v)
+			if err != nil {
+				return it, err
+			}
+		case "currency":
+			var err error
+			it.Currency, err = ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+		case "transactionDate":
+			var err error
+			it.TransactionDate, err = ec.unmarshalNString2string(ctx, v)
+			if err != nil {
+				return it, err
+			}
+		case "description":
+			var err error
+			it.Description, err = ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+		case "vehicleID":
+			var err error
+			it.VehicleID, err = ec.unmarshalNID2string(ctx, v)
+			if err != nil {
+				return it, err
+			}
+		case "propertyID":
+			var err error
+			it.PropertyID, err = ec.unmarshalNID2string(ctx, v)
+			if err != nil {
+				return it, err
+			}
+		case "landlordID":
+			var err error
+			it.LandlordID, err = ec.unmarshalNID2string(ctx, v)
+			if err != nil {
+				return it, err
+			}
+		case "supplierID":
+			var err error
+			it.SupplierID, err = ec.unmarshalOID2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+		}
+	}
+
+	return it, nil
+}
+
 func (ec *executionContext) unmarshalInputPropertyInfo(ctx context.Context, v interface{}) (rogerapp.PropertyInfo, error) {
 	var it rogerapp.PropertyInfo
 	var asMap = v.(map[string]interface{})
@@ -6329,6 +6796,12 @@ func (ec *executionContext) unmarshalInputTransactionInfo(ctx context.Context, v
 			if err != nil {
 				return it, err
 			}
+		case "description":
+			var err error
+			it.Description, err = ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
 		case "typeID":
 			var err error
 			it.TypeID, err = ec.unmarshalNID2string(ctx, v)
@@ -6344,6 +6817,12 @@ func (ec *executionContext) unmarshalInputTransactionInfo(ctx context.Context, v
 		case "propertyID":
 			var err error
 			it.PropertyID, err = ec.unmarshalNID2string(ctx, v)
+			if err != nil {
+				return it, err
+			}
+		case "landlordID":
+			var err error
+			it.LandlordID, err = ec.unmarshalNID2string(ctx, v)
 			if err != nil {
 				return it, err
 			}
@@ -6674,6 +7153,16 @@ func (ec *executionContext) _Mutation(ctx context.Context, sel ast.SelectionSet)
 			}
 		case "createTransaction":
 			out.Values[i] = ec._Mutation_createTransaction(ctx, field)
+			if out.Values[i] == graphql.Null {
+				invalid = true
+			}
+		case "createMileTransaction":
+			out.Values[i] = ec._Mutation_createMileTransaction(ctx, field)
+			if out.Values[i] == graphql.Null {
+				invalid = true
+			}
+		case "editTransaction":
+			out.Values[i] = ec._Mutation_editTransaction(ctx, field)
 			if out.Values[i] == graphql.Null {
 				invalid = true
 			}
@@ -7024,6 +7513,17 @@ func (ec *executionContext) _Query(ctx context.Context, sel ast.SelectionSet) gr
 				}
 				return res
 			})
+		case "getTransactions":
+			field := field
+			out.Concurrently(i, func() (res graphql.Marshaler) {
+				defer func() {
+					if r := recover(); r != nil {
+						ec.Error(ctx, ec.Recover(ctx, r))
+					}
+				}()
+				res = ec._Query_getTransactions(ctx, field)
+				return res
+			})
 		case "getTransactionByType":
 			field := field
 			out.Concurrently(i, func() (res graphql.Marshaler) {
@@ -7238,6 +7738,8 @@ func (ec *executionContext) _Transaction(ctx context.Context, sel ast.SelectionS
 			if out.Values[i] == graphql.Null {
 				invalid = true
 			}
+		case "description":
+			out.Values[i] = ec._Transaction_description(ctx, field, obj)
 		case "type":
 			field := field
 			out.Concurrently(i, func() (res graphql.Marshaler) {
@@ -7247,9 +7749,6 @@ func (ec *executionContext) _Transaction(ctx context.Context, sel ast.SelectionS
 					}
 				}()
 				res = ec._Transaction_type(ctx, field, obj)
-				if res == graphql.Null {
-					invalid = true
-				}
 				return res
 			})
 		case "category":
@@ -7261,6 +7760,28 @@ func (ec *executionContext) _Transaction(ctx context.Context, sel ast.SelectionS
 					}
 				}()
 				res = ec._Transaction_category(ctx, field, obj)
+				return res
+			})
+		case "vehicle":
+			field := field
+			out.Concurrently(i, func() (res graphql.Marshaler) {
+				defer func() {
+					if r := recover(); r != nil {
+						ec.Error(ctx, ec.Recover(ctx, r))
+					}
+				}()
+				res = ec._Transaction_vehicle(ctx, field, obj)
+				return res
+			})
+		case "Landlord":
+			field := field
+			out.Concurrently(i, func() (res graphql.Marshaler) {
+				defer func() {
+					if r := recover(); r != nil {
+						ec.Error(ctx, ec.Recover(ctx, r))
+					}
+				}()
+				res = ec._Transaction_Landlord(ctx, field, obj)
 				if res == graphql.Null {
 					invalid = true
 				}
@@ -7422,6 +7943,40 @@ func (ec *executionContext) _UserCategory(ctx context.Context, sel ast.Selection
 				res = ec._UserCategory_Agent(ctx, field, obj)
 				return res
 			})
+		default:
+			panic("unknown field " + strconv.Quote(field.Name))
+		}
+	}
+	out.Dispatch()
+	if invalid {
+		return graphql.Null
+	}
+	return out
+}
+
+var vehicleTypeImplementors = []string{"VehicleType"}
+
+func (ec *executionContext) _VehicleType(ctx context.Context, sel ast.SelectionSet, obj *prisma.VehicleType) graphql.Marshaler {
+	fields := graphql.CollectFields(ctx, sel, vehicleTypeImplementors)
+
+	out := graphql.NewFieldSet(fields)
+	invalid := false
+	for i, field := range fields {
+		switch field.Name {
+		case "__typename":
+			out.Values[i] = graphql.MarshalString("VehicleType")
+		case "id":
+			out.Values[i] = ec._VehicleType_id(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				invalid = true
+			}
+		case "vehicleType":
+			out.Values[i] = ec._VehicleType_vehicleType(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				invalid = true
+			}
+		case "description":
+			out.Values[i] = ec._VehicleType_description(ctx, field, obj)
 		default:
 			panic("unknown field " + strconv.Quote(field.Name))
 		}
@@ -7778,6 +8333,10 @@ func (ec *executionContext) unmarshalNLandlordInfo2githubᚗcomᚋkrishnaᚋroge
 	return ec.unmarshalInputLandlordInfo(ctx, v)
 }
 
+func (ec *executionContext) unmarshalNMileInfo2githubᚗcomᚋkrishnaᚋrogerappᚐMileInfo(ctx context.Context, v interface{}) (rogerapp.MileInfo, error) {
+	return ec.unmarshalInputMileInfo(ctx, v)
+}
+
 func (ec *executionContext) marshalNProperty2githubᚗcomᚋkrishnaᚋrogerappᚋgeneratedᚋprismaᚑclientᚐProperty(ctx context.Context, sel ast.SelectionSet, v prisma.Property) graphql.Marshaler {
 	return ec._Property(ctx, sel, &v)
 }
@@ -7892,16 +8451,6 @@ func (ec *executionContext) unmarshalNTransactionInfo2githubᚗcomᚋkrishnaᚋr
 
 func (ec *executionContext) marshalNType2githubᚗcomᚋkrishnaᚋrogerappᚋgeneratedᚋprismaᚑclientᚐType(ctx context.Context, sel ast.SelectionSet, v prisma.Type) graphql.Marshaler {
 	return ec._Type(ctx, sel, &v)
-}
-
-func (ec *executionContext) marshalNType2ᚖgithubᚗcomᚋkrishnaᚋrogerappᚋgeneratedᚋprismaᚑclientᚐType(ctx context.Context, sel ast.SelectionSet, v *prisma.Type) graphql.Marshaler {
-	if v == nil {
-		if !ec.HasError(graphql.GetResolverContext(ctx)) {
-			ec.Errorf(ctx, "must not be null")
-		}
-		return graphql.Null
-	}
-	return ec._Type(ctx, sel, v)
 }
 
 func (ec *executionContext) marshalNTypeOfLet2githubᚗcomᚋkrishnaᚋrogerappᚋgeneratedᚋprismaᚑclientᚐTypeOfLet(ctx context.Context, sel ast.SelectionSet, v prisma.TypeOfLet) graphql.Marshaler {
@@ -8699,6 +9248,17 @@ func (ec *executionContext) marshalOUserCategory2ᚕgithubᚗcomᚋkrishnaᚋrog
 	}
 	wg.Wait()
 	return ret
+}
+
+func (ec *executionContext) marshalOVehicleType2githubᚗcomᚋkrishnaᚋrogerappᚋgeneratedᚋprismaᚑclientᚐVehicleType(ctx context.Context, sel ast.SelectionSet, v prisma.VehicleType) graphql.Marshaler {
+	return ec._VehicleType(ctx, sel, &v)
+}
+
+func (ec *executionContext) marshalOVehicleType2ᚖgithubᚗcomᚋkrishnaᚋrogerappᚋgeneratedᚋprismaᚑclientᚐVehicleType(ctx context.Context, sel ast.SelectionSet, v *prisma.VehicleType) graphql.Marshaler {
+	if v == nil {
+		return graphql.Null
+	}
+	return ec._VehicleType(ctx, sel, v)
 }
 
 func (ec *executionContext) marshalO__EnumValue2ᚕgithubᚗcomᚋ99designsᚋgqlgenᚋgraphqlᚋintrospectionᚐEnumValue(ctx context.Context, sel ast.SelectionSet, v []introspection.EnumValue) graphql.Marshaler {

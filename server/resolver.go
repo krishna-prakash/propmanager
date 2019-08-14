@@ -3,6 +3,7 @@ package main
 import (
 	"context"
 	"fmt"
+	"time"
 	input "github.com/krishna/rogerapp"
 	"github.com/krishna/rogerapp/utils"
 	"github.com/krishna/rogerapp/auth0"
@@ -322,10 +323,16 @@ func (r *mutationResolver) CreateUserCategory(ctx context.Context, userCategoryI
 }
 
 func (r *mutationResolver) CreateTransaction(ctx context.Context, transactionInfo input.TransactionInfo) (*prisma.Transaction, error) {
+	transDate, err := time.Parse("2006-01-02", transactionInfo.TransactionDate);
+
+	if err != nil {
+		return nil, err
+	}
+	
 	userCategory, err := r.Prisma.CreateTransaction(prisma.TransactionCreateInput{
 		Amount: utils.ToInt32(&transactionInfo.Amount),
 		Currency: transactionInfo.Currency,
-		TransactionDate: &transactionInfo.TransactionDate,
+		TransactionDate: &transDate,
 		Category: &prisma.CategoryCreateOneInput{
 			Connect: &prisma.CategoryWhereUniqueInput{
 					ID: &transactionInfo.CategoryID,
@@ -341,14 +348,69 @@ func (r *mutationResolver) CreateTransaction(ctx context.Context, transactionInf
 					ID: &transactionInfo.PropertyID,
 				},
 		},
-		// Agent: &prisma.AgentCreateOneInput{
-		// 	Connect: &prisma.AgentWhereUniqueInput{
-		// 			ID: userCategoryInfo.AgentID,
-		// 		},
-		// },
+		Landlord: &prisma.LandlordCreateOneInput{
+			Connect: &prisma.LandlordWhereUniqueInput{
+					ID: &transactionInfo.LandlordID,
+				},
+		},
 	}).Exec(ctx)
 
 	return userCategory, err
+}
+
+func (r *mutationResolver) CreateMileTransaction(ctx context.Context, transactionInfo input.MileInfo) (*prisma.Transaction, error) {
+	userCategory, err := r.Prisma.CreateTransaction(prisma.TransactionCreateInput{
+		Amount: utils.ToInt32(&transactionInfo.Amount),
+		Currency: transactionInfo.Currency,
+		TransactionDate: &transactionInfo.TransactionDate,
+		Vehicle: &prisma.VehicleTypeCreateOneInput{
+			Connect: &prisma.VehicleTypeWhereUniqueInput{
+					ID: &transactionInfo.VehicleID,
+				},
+		},
+		Property: &prisma.PropertyCreateOneInput{
+			Connect: &prisma.PropertyWhereUniqueInput{
+					ID: &transactionInfo.PropertyID,
+				},
+		},
+		Landlord: &prisma.LandlordCreateOneInput{
+			Connect: &prisma.LandlordWhereUniqueInput{
+					ID: &transactionInfo.LandlordID,
+				},
+		},
+	}).Exec(ctx)
+
+	return userCategory, err
+}
+
+func (r *mutationResolver) EditTransaction(ctx context.Context, transactionID string, transactionInfo input.TransactionInfo) (*prisma.Transaction, error) {
+	landlord, err := r.Prisma.UpdateTransaction(prisma.TransactionUpdateParams{
+		Data: prisma.TransactionUpdateInput{
+			Amount: utils.ToInt32(&transactionInfo.Amount),
+			Currency: transactionInfo.Currency,
+			TransactionDate: &transactionInfo.TransactionDate,
+			Category: &prisma.CategoryUpdateOneInput{
+				Connect: &prisma.CategoryWhereUniqueInput{
+						ID: &transactionInfo.CategoryID,
+					},
+			},
+			Type: &prisma.TypeUpdateOneInput{
+				Connect: &prisma.TypeWhereUniqueInput{
+						ID: &transactionInfo.TypeID,
+					},
+			},
+			Property: &prisma.PropertyUpdateOneInput{
+				Connect: &prisma.PropertyWhereUniqueInput{
+						ID: &transactionInfo.PropertyID,
+					},
+			},
+		},
+		Where: prisma.TransactionWhereUniqueInput{
+			ID: &transactionID,
+		},
+	}).Exec(ctx)
+
+	return landlord, err
 }
 
 type queryResolver struct{ *Resolver }
@@ -427,6 +489,18 @@ func (r *queryResolver) GetTenant(ctx context.Context, id string) (*prisma.Tenan
 	return tes, err
 }
 
+func (r *queryResolver) GetTransactions(ctx context.Context, landlordID string) ([]prisma.Transaction, error) {
+	tes, err := r.Prisma.Transactions(&prisma.TransactionsParams{
+		Where: &prisma.TransactionWhereInput{
+				Landlord: &prisma.LandlordWhereInput{
+					ID: &landlordID,
+				},
+	},  
+	}).Exec(ctx)
+
+	return tes, err
+}
+
 func (r *queryResolver) GetTransactionByType(ctx context.Context, typeID string) ([]prisma.Transaction, error) {
 	tes, err := r.Prisma.Transactions(&prisma.TransactionsParams{
 		Where: &prisma.TransactionWhereInput{
@@ -439,7 +513,15 @@ func (r *queryResolver) GetTransactionByType(ctx context.Context, typeID string)
 	return tes, err
 }
 func (r *queryResolver) GetTransactionByCategory(ctx context.Context, categoryID string) ([]prisma.Transaction, error) {
-	panic("not implemented")
+	tes, err := r.Prisma.Transactions(&prisma.TransactionsParams{
+		Where: &prisma.TransactionWhereInput{
+			Category: &prisma.CategoryWhereInput{
+				ID: &categoryID,
+			},
+	},  
+	}).Exec(ctx)
+
+	return tes, err
 }
 
 type propertyResolver struct{ *Resolver }
@@ -548,6 +630,24 @@ func (r *transactionResolver) Type(ctx context.Context, obj *prisma.Transaction)
 
 	return let, err
 }
+
+func (r *transactionResolver) Vehicle(ctx context.Context, obj *prisma.Transaction) (*prisma.VehicleType, error) {
+
+	let, err := r.Prisma.Transaction(prisma.TransactionWhereUniqueInput{
+		ID: &obj.ID,
+	}).Vehicle().Exec(ctx)
+
+	return let, err
+}
+
+func (r *transactionResolver) Landlord(ctx context.Context, obj *prisma.Transaction) (*prisma.Landlord, error) {
+	let, err := r.Prisma.Transaction(prisma.TransactionWhereUniqueInput{
+		ID: &obj.ID,
+	}).Landlord().Exec(ctx)
+
+	return let, err
+}
+
 func (r *transactionResolver) Category(ctx context.Context, obj *prisma.Transaction) (*prisma.Category, error) {
 	let, err := r.Prisma.Transaction(prisma.TransactionWhereUniqueInput{
 		ID: &obj.ID,
